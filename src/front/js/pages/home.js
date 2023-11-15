@@ -69,8 +69,173 @@ export const Home = () => {
 
       </div>
     </section>
-    
-    
+    <section id="cta" className="cta">
+      <div className="container" data-aos="zoom-in">
+
+        <div className="row">
+          <div className="col-lg-9 text-center text-lg-start">
+            <h3>Call To Action</h3>
+            <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+          <div className="col-lg-3 cta-btn-container text-center">
+            <a className="cta-btn align-middle" href="#">Call To Action</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="team" className="team section-bg">
+      <div className="container" data-aos="fade-up">
+
+        <div className="section-title">
+          <h2>Team</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div className="row">
+
+          <div className="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
+            <div className="member d-flex align-items-start">
+              {/* <div className="pic"><img src="assets/img/team/team-1.jpg" className="img-fluid" alt=""/></div> */}
+              <div className="member-info">
+                <h4>Walter White</h4>
+                <span>Chief Executive Officer</span>
+                <p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
+                <div className="social">
+                  <a href=""><i className="ri-twitter-fill"></i></a>
+                  <a href=""><i className="ri-facebook-fill"></i></a>
+                  <a href=""><i className="ri-instagram-fill"></i></a>
+                  <a href=""> <i className="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-6 mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="200">
+            <div className="member d-flex align-items-start">
+              {/* <div className="pic"><img src="assets/img/team/team-2.jpg" className="img-fluid" alt=""/></div> */}
+              <div className="member-info">
+                <h4>Sarah Jhonson</h4>
+                <span>Product Manager</span>
+                <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
+                <div className="social">
+                  <a href=""><i className="ri-twitter-fill"></i></a>
+                  <a href=""><i className="ri-facebook-fill"></i></a>
+                  <a href=""><i className="ri-instagram-fill"></i></a>
+                  <a href=""> <i className="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-6 mt-4" data-aos="zoom-in" data-aos-delay="300">
+            <div className="member d-flex align-items-start">
+              {/* <div className="pic"><img src="assets/img/team/team-3.jpg" className="img-fluid" alt=""/></div> */}
+              <div className="member-info">
+                <h4>William Anderson</h4>
+                <span>CTO</span>
+                <p>Quisquam facilis cum velit laborum corrupti fuga rerum quia</p>
+                <div className="social">
+                  <a href=""><i className="ri-twitter-fill"></i></a>
+                  <a href=""><i className="ri-facebook-fill"></i></a>
+                  <a href=""><i className="ri-instagram-fill"></i></a>
+                  <a href=""> <i className="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-6 mt-4" data-aos="zoom-in" data-aos-delay="400">
+            <div className="member d-flex align-items-start">
+              {/* <div className="pic"><img src="assets/img/team/team-4.jpg" className="img-fluid" alt=""/></div> */}
+              <div className="member-info">
+                <h4>Amanda Jepson</h4>
+                <span>Accountant</span>
+                <p>Dolorum tempora officiis odit laborum officiis et et accusamus</p>
+                <div className="social">
+                  <a href=""><i className="ri-twitter-fill"></i></a>
+                  <a href=""><i className="ri-facebook-fill"></i></a>
+                  <a href=""><i className="ri-instagram-fill"></i></a>
+                  <a href=""> <i className="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section id="contact" className="contact">
+      <div className="container" data-aos="fade-up">
+
+        <div className="section-title">
+          <h2>Contact</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div className="row">
+
+          <div className="col-lg-5 d-flex align-items-stretch">
+            <div className="info">
+              <div className="address">
+                <i className="bi bi-geo-alt"></i>
+                <h4>Location:</h4>
+                <p>A108 Adam Street, New York, NY 535022</p>
+              </div>
+
+              <div className="email">
+                <i className="bi bi-envelope"></i>
+                <h4>Email:</h4>
+                <p>info@example.com</p>
+              </div>
+
+              <div className="phone">
+                <i className="bi bi-phone"></i>
+                <h4>Call:</h4>
+                <p>+1 5589 55488 55s</p>
+              </div>
+
+              {/* <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" style={{border:0 , width: 100% ,height: 290px}} /></iframe> */}
+            </div>
+
+          </div>
+
+          <div className="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+            <form action="forms/contact.php" method="post" role="form" className="php-email-form">
+              <div className="row">
+                <div className="form-group col-md-6">
+                  <label htmlFor="name">Your Name</label>
+                  <input type="text" name="name" className="form-control" id="name" required/>
+                </div>
+                <div className="form-group col-md-6">
+                  <label htmlFor="name">Your Email</label>
+                  <input type="email" className="form-control" name="email" id="email" required/>
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="name">Subject</label>
+                <input type="text" className="form-control" name="subject" id="subject" required/>
+              </div>
+              <div className="form-group">
+                <label htmlFor="name">Message</label>
+                <textarea className="form-control" name="message" rows="10" required></textarea>
+              </div>
+              <div className="my-3">
+                <div className="loading">Loading</div>
+                <div className="error-message"></div>
+                <div className="sent-message">Your message has been sent. Thank you!</div>
+              </div>
+              <div className="text-center"><button type="submit">Send Message</button></div>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
     </>
 	);
 };
