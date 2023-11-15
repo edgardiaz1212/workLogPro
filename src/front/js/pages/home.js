@@ -54,7 +54,7 @@ export const Home = () => {
             <ul>
               <li><i className="ri-check-double-line"></i> Comunicacion constante con proveedores internos para asegurar la Infraestructura</li>
               <li><i className="ri-check-double-line"></i> Verificacion de cumplimiento de acuerdos con los diversos proveedores</li>
-              <li><i className="ri-check-double-line"></i> Grupo integral para dar soluciones acertadas</li>
+              <li><i className="ri-check-double-line"></i> Grupo multidiciplinario para dar soluciones acertadas</li>
             </ul>
           </div>
           <div className="col-lg-6 pt-4 pt-lg-0">
@@ -75,7 +75,8 @@ export const Home = () => {
         <div className="row">
           <div className="col-lg-9 text-center text-lg-start">
             <h3>Ayudante de Llenado</h3>
-            <p> Para servicios de colocacaion podras utilizar nuestro ayudante de llenado de la planilla FOR-BA7D para Instalar, Mudanza interna o Retiro de equipamiento de nuestros clientes</p>
+            <p> Para servicios de colocacion podras utilizar nuestro ayudante de llenado de la planilla FOR-BA7D para Instalaciones, Mudanza interna o Retiro de equipamiento de nuestros clientes. 
+              </p><p>Recuerda que la formalidad de las solicitudes se realizan por el correo requerimientosdcce@dch.cantv.com.ve</p>
           </div>
           <div className="col-lg-3 cta-btn-container text-center">
             <a className="cta-btn align-middle" href="#">Comenzar</a>
@@ -100,14 +101,11 @@ export const Home = () => {
             <div className="member d-flex align-items-start">
               {/* <div className="pic"><img src="assets/img/team/team-1.jpg" className="img-fluid" alt=""/></div> */}
               <div className="member-info">
-                <h4>Walter White</h4>
-                <span>Chief Executive Officer</span>
+                <h4>Ing Dayana Medina</h4>
+                <span>Consultor</span>
                 <p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
                 <div className="social">
-                  <a href=""><i className="ri-twitter-fill"></i></a>
-                  <a href=""><i className="ri-facebook-fill"></i></a>
-                  <a href=""><i className="ri-instagram-fill"></i></a>
-                  <a href=""> <i className="ri-linkedin-box-fill"></i> </a>
+                    <a href=""> <i className="ri-linkedin-box-fill"></i> </a>
                 </div>
               </div>
             </div>
@@ -117,13 +115,11 @@ export const Home = () => {
             <div className="member d-flex align-items-start">
               {/* <div className="pic"><img src="assets/img/team/team-2.jpg" className="img-fluid" alt=""/></div> */}
               <div className="member-info">
-                <h4>Sarah Jhonson</h4>
-                <span>Product Manager</span>
+                <h4>Ing Esthefany Aguilarte</h4>
+                <span>Consultor</span>
                 <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
                 <div className="social">
-                  <a href=""><i className="ri-twitter-fill"></i></a>
-                  <a href=""><i className="ri-facebook-fill"></i></a>
-                  <a href=""><i className="ri-instagram-fill"></i></a>
+                  
                   <a href=""> <i className="ri-linkedin-box-fill"></i> </a>
                 </div>
               </div>
@@ -134,13 +130,11 @@ export const Home = () => {
             <div className="member d-flex align-items-start">
               {/* <div className="pic"><img src="assets/img/team/team-3.jpg" className="img-fluid" alt=""/></div> */}
               <div className="member-info">
-                <h4>William Anderson</h4>
-                <span>CTO</span>
+                <h4>Ing Edgar Diaz</h4>
+                <span>Lider Infraestructura</span>
                 <p>Quisquam facilis cum velit laborum corrupti fuga rerum quia</p>
                 <div className="social">
-                  <a href=""><i className="ri-twitter-fill"></i></a>
-                  <a href=""><i className="ri-facebook-fill"></i></a>
-                  <a href=""><i className="ri-instagram-fill"></i></a>
+                  
                   <a href=""> <i className="ri-linkedin-box-fill"></i> </a>
                 </div>
               </div>
@@ -173,8 +167,8 @@ export const Home = () => {
       <div className="container" data-aos="fade-up">
 
         <div className="section-title">
-          <h2>Contact</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+          <h2>Contacto</h2>
+          <p>Distintas vias para comunicarse.</p>
         </div>
 
         <div className="row">
@@ -186,13 +180,14 @@ export const Home = () => {
               <div className="email">
                 <i className="bi bi-envelope"></i>
                 <h4>Email:</h4>
-                <p>info@example.com</p>
+                <p>requerimientosdcce@dch.cantv.com.ve</p>
+                <p>coinfra_cdh@cantv.com.ve</p>
               </div>
 
               <div className="phone">
                 <i className="bi bi-phone"></i>
-                <h4>Call:</h4>
-                <p>+1 5589 55488 55s</p>
+                <h4>Telefono Central:</h4>
+                <p>0212-9060200</p>
               </div>
 
               {/* <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" style={{border:0 , width: 100% ,height: 290px}} ></iframe> */}
