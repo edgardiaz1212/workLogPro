@@ -75,7 +75,7 @@ export const Home = () => {
         <div className="row">
           <div className="col-lg-9 text-center text-lg-start">
             <h3>Ayudante de Llenado</h3>
-            <p> Aca podras utilizar nuestro ayudante de llenado de la planilla FOR-BA7D para Instalar, Mudanza interna o Retiro de equipamiento de nuestros clientes</p>
+            <p> Para servicios de colocacaion podras utilizar nuestro ayudante de llenado de la planilla FOR-BA7D para Instalar, Mudanza interna o Retiro de equipamiento de nuestros clientes</p>
           </div>
           <div className="col-lg-3 cta-btn-container text-center">
             <a className="cta-btn align-middle" href="#">Comenzar</a>
@@ -90,8 +90,8 @@ export const Home = () => {
       <div className="container" data-aos="fade-up">
 
         <div className="section-title">
-          <h2>Team</h2>
-          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+          <h2>Equipo</h2>
+          <p>Presentamos el equipo que compone la unidad de Infraestructura DCH</p>
         </div>
 
         <div className="row">
@@ -147,9 +147,9 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="col-lg-6 mt-4" data-aos="zoom-in" data-aos-delay="400">
+          {/* <div className="col-lg-6 mt-4" data-aos="zoom-in" data-aos-delay="400">
             <div className="member d-flex align-items-start">
-              {/* <div className="pic"><img src="assets/img/team/team-4.jpg" className="img-fluid" alt=""/></div> */}
+              <div className="pic"><img src="assets/img/team/team-4.jpg" className="img-fluid" alt=""/></div>
               <div className="member-info">
                 <h4>Amanda Jepson</h4>
                 <span>Accountant</span>
@@ -162,7 +162,7 @@ export const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
         </div>
 
