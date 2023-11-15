@@ -16,7 +16,7 @@ export const Navbar = () => {
         <ul>
           <li><a className="nav-link scrollto active" href="#hero">Inicio</a></li>
           <li><a className="nav-link scrollto" href="#about">About</a></li>
-          <li><a className="nav-link scrollto" href="#services">Servicios</a></li>
+          <li><a className="nav-link scrollto" href="#cta">Solicitudes Colocacion</a></li>
           <li><a className="nav-link   scrollto" href="#portfolio">Portafolio</a></li>
           <li><a className="nav-link scrollto" href="#team">Equipo</a></li>
           <li className="dropdown"><a href="#"><span>Drop Down</span> <i className="bi bi-chevron-down"></i></a>

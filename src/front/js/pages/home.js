@@ -74,11 +74,12 @@ export const Home = () => {
 
         <div className="row">
           <div className="col-lg-9 text-center text-lg-start">
-            <h3>Call To Action</h3>
-            <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <h3>Ayudante de Llenado</h3>
+            <p> Aca podras utilizar nuestro ayudante de llenado de la planilla FOR-BA7D para Instalar, Mudanza interna o Retiro de equipamiento de nuestros clientes</p>
           </div>
           <div className="col-lg-3 cta-btn-container text-center">
-            <a className="cta-btn align-middle" href="#">Call To Action</a>
+            <a className="cta-btn align-middle" href="#">Comenzar</a>
+            {/* aca enlace para el movement colocacion */}
           </div>
         </div>
 
@@ -180,11 +181,7 @@ export const Home = () => {
 
           <div className="col-lg-5 d-flex align-items-stretch">
             <div className="info">
-              <div className="address">
-                <i className="bi bi-geo-alt"></i>
-                <h4>Location:</h4>
-                <p>A108 Adam Street, New York, NY 535022</p>
-              </div>
+              
 
               <div className="email">
                 <i className="bi bi-envelope"></i>
@@ -198,7 +195,7 @@ export const Home = () => {
                 <p>+1 5589 55488 55s</p>
               </div>
 
-              {/* <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" style={{border:0 , width: 100% ,height: 290px}} /></iframe> */}
+              {/* <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" style={{border:0 , width: 100% ,height: 290px}} ></iframe> */}
             </div>
 
           </div>
