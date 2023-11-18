@@ -4,10 +4,10 @@ export const Footer = () => (
 	<>
 	<footer id="footer">
 
-{/* <div class="footer-newsletter">
-  <div class="container">
-	<div class="row justify-content-center">
-	  <div class="col-lg-6">
+{/* <div className="footer-newsletter">
+  <div className="container">
+	<div className="row justify-content-center">
+	  <div className="col-lg-6">
 		<h4>Join Our Newsletter</h4>
 		<p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
 		<form action="" method="post">
@@ -18,11 +18,11 @@ export const Footer = () => (
   </div>
 </div> */}
 
-<div class="footer-top">
-  <div class="container">
-	<div class="row">
+<div className="footer-top">
+  <div className="container">
+	<div className="row">
 
-	  <div class="col-lg-3 col-md-6 footer-contact">
+	  <div className="col-lg-3 col-md-6 footer-contact">
 		<h3>Infraestructura DCCE</h3>
 		<p>
 		  Av Intercomunal El Hatillo 
@@ -32,37 +32,37 @@ export const Footer = () => (
 		</p>
 	  </div>
 
-	  <div class="col-lg-3 col-md-6 footer-links">
+	  <div className="col-lg-3 col-md-6 footer-links">
 		<h4>Links</h4>
 		<ul>
-		  <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-		  <li><i class="bx bx-chevron-right"></i> <a href="#">Inicio de sesion </a></li>
-		  <li><i class="bx bx-chevron-right"></i> <a href="#">Solicitudes Colocacion</a></li>
-		  <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-		  <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Inicio de sesion </a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Solicitudes Colocacion</a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
 		</ul>
 	  </div>
 
-	  {/* <div class="col-lg-3 col-md-6 footer-links">
+	  {/* <div className="col-lg-3 col-md-6 footer-links">
 		<h4>Our Services</h4>
 		<ul>
-		  <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-		  <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-		  <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-		  <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-		  <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
 		</ul>
 	  </div> */}
 {/* 
-	  <div class="col-lg-3 col-md-6 footer-links">
+	  <div className="col-lg-3 col-md-6 footer-links">
 		<h4>Our Social Networks</h4>
 		<p>Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies</p>
-		<div class="social-links mt-3">
-		  <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-		  <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-		  <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-		  <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-		  <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+		<div className="social-links mt-3">
+		  <a href="#" className="twitter"><i className="bx bxl-twitter"></i></a>
+		  <a href="#" className="facebook"><i className="bx bxl-facebook"></i></a>
+		  <a href="#" className="instagram"><i className="bx bxl-instagram"></i></a>
+		  <a href="#" className="google-plus"><i className="bx bxl-skype"></i></a>
+		  <a href="#" className="linkedin"><i className="bx bxl-linkedin"></i></a>
 		</div>
 	  </div> */}
 
@@ -70,11 +70,11 @@ export const Footer = () => (
   </div>
 </div>
 
-<div class="container footer-bottom clearfix">
-  <div class="copyright">
+<div className="container footer-bottom clearfix">
+  <div className="copyright">
 	&copy;  <strong><span>DCCE</span></strong> Cantv
   </div>
-  <div class="credits">
+  <div className="credits">
 	{/* <!-- All the links in the footer should remain intact. -->
 	<!-- You can delete the links only if you purchased the pro version. -->
 	<!-- Licensing information: https://bootstrapmade.com/license/ -->

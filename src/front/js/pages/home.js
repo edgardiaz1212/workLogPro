@@ -27,7 +27,7 @@ export const Home = () => {
           <h1>Infraestructura DCCE</h1>
           <h2>Varias soluciones un solo lugar</h2>
           <div className="d-flex justify-content-center justify-content-lg-start">
-            <a href="#about" className="btn-get-started scrollto">Comencemos</a>
+            {/* <a href="#about" className="btn-get-started scrollto">Comencemos</a> */}
             
           </div>
         </div>
