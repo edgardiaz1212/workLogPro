@@ -12,15 +12,15 @@ export const Navbar = () => {
 
           <nav id="navbar" className="navbar">
             <ul>
-              <li><a className="nav-link scrollto active" href="#hero">Inicio</a></li>
-              <li><a className="nav-link scrollto" href="#about">About</a></li>
-              <li><a className="nav-link scrollto" href="#cta">Solicitudes Colocacion</a></li>
+              <li><a className="nav-link scrollto active" href="/#hero">Inicio</a></li>
+              <li><a className="nav-link scrollto" href="/#about">About</a></li>
+              <li><a className="nav-link scrollto" href="/#cta">Solicitudes Colocacion</a></li>
 
               <li><a className="nav-link scrollto" href="#team">Equipo</a></li>
               <li className="dropdown"><a href="#"><span>Actividades</span> <i className="bi bi-chevron-down"></i></a>
                 <ul>
                   <li><a href="#">Gestion Almacen</a></li>
-                  <li className="dropdown"><a href="#"><span>Documentos</span> <i className="bi bi-chevron-right"></i></a>
+                  <li className="dropdown"><a href="/docs"><span>Documentos</span> <i className="bi bi-chevron-right"></i></a>
                     <ul>
                       <li><a href="#">Procedimientos</a></li>
                       <li><a href="#">Plantillas</a></li>
@@ -28,7 +28,7 @@ export const Navbar = () => {
                       <li><a href="#">De otras Gerencias</a></li>
                     </ul>
                   </li>
-                  <li><a href="#">Registro Actividad Energia</a></li>
+                  <li><a href="/activities">Registro Actividad Energia</a></li>
                   <li><a href="#">Drop Down 4</a></li>
                 </ul>
               </li>

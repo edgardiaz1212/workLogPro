@@ -38,8 +38,8 @@ export const Footer = () => (
 		  <li><i className="bx bx-chevron-right"></i> <a href="#">Home</a></li>
 		  <li><i className="bx bx-chevron-right"></i> <a href="#">Inicio de sesion </a></li>
 		  <li><i className="bx bx-chevron-right"></i> <a href="#">Solicitudes Colocacion</a></li>
-		  <li><i className="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-		  <li><i className="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+		  {/* <li><i className="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
+		  <li><i className="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li> */}
 		</ul>
 	  </div>
 
