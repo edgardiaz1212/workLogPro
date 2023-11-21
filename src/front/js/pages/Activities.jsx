@@ -3,7 +3,9 @@ import React from "react";
 function Activities() {
     return (
         <>
-            <div className="container">
+        <p>fehca de la actividad, control de incidente, control de cambio cor, control de cambio dcce, tecnico , nombre y apellido.,personal infra, nombre y apellido</p>
+            <p>actividad(1 mant motognerador, 1.1 prueba con carga. 1.2 mant prev)2mant transfer, 3 Mantenimiento tableros electronicos, 4 Mantenimiento extratores, 5 Mantenimiento baterias UPS, 6 Mantenimiento transformadores, 7 Mantenimiento A/A de presión  , actividad satisfactoria, si no.</p>
+            <div className="container m-3">
                 <div className="input-group mb-3">
                     <span className="input-group-text" id="basic-addon1">@</span>
                     <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
