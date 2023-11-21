@@ -168,7 +168,7 @@ export const Home = () => {
 
         <div className="section-title">
           <h2>Contacto</h2>
-          <p>Distintas vias para comunicarse.</p>
+          <p>Nuestras vias para comunicarse.</p>
         </div>
 
         <div className="row">
@@ -182,6 +182,7 @@ export const Home = () => {
                 <h4>Email:</h4>
                 <p>requerimientosdcce@dch.cantv.com.ve</p>
                 <p>coinfra_cdh@cantv.com.ve</p>
+                <p>infraestructura@dch.cantv.com.ve</p>
               </div>
 
               <div className="phone">

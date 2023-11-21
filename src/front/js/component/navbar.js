@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logoCantv from "../../img/cantv.jpg"
+import logoCantv from "../../img/CDHLogo.jpg"
 
 export const Navbar = () => {
 	return (
@@ -37,7 +37,7 @@ export const Navbar = () => {
             </ul>
           </li>
           <li><a className="nav-link scrollto" href="#contact">Contacto</a></li>
-          <li><a className="getstarted scrollto" href="register">Ingreso</a></li>
+          <li><a className="getstarted scrollto" href="register">Ingreso Personal</a></li>
         </ul>
         <i className="bi bi-list mobile-nav-toggle"></i>
       </nav>
