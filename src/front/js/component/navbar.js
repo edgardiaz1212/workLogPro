@@ -29,7 +29,7 @@ export const Navbar = () => {
                     </ul>
                   </li>
                   <li><a href="/activities">Registro Actividad Energia</a></li>
-                  <li><a href="#">Drop Down 4</a></li>
+                  <li><a href="/register">Agregar Personal</a></li>
                 </ul>
               </li>
               <li><a className="nav-link scrollto" href="#contact">Contacto</a></li>
