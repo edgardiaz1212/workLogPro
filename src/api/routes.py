@@ -58,5 +58,4 @@ def register_user():
             return jsonify({"msg": "Error registering user", "error": str(error)}), 500
         return jsonify([]), 200
 
-
     return jsonify(response_body), 200
