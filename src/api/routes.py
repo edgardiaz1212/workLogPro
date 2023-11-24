@@ -4,9 +4,15 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
+from base64 import b64encode
+import os
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 api = Blueprint('api', __name__)
 
+def set_password(password, salt):
+    return generate_password_hash(f"{password}{salt}")
 
 @api.route('/user', methods=['POST'])
 def register_user():
@@ -17,10 +23,10 @@ def register_user():
             "name": data_form.get("name"),
             "surname": data_form.get("surname"),
             "email": data_form.get("email"),
-            "email_dch": data_form.get("emailDCH"),
+            "emailDCH": data_form.get("emailDCH"),
             "unit": data_form.get("unit"),
             "password": data_form.get("password"),
-            "job_position": data_form.get("jobPosition"),
+            "jobPosition": data_form.get("jobPosition"),
             "description": data_form.get("description")
         }
 
@@ -43,8 +49,8 @@ def register_user():
             surname=data.get("surname"),
             unit=data.get("unit"),
             email=data.get("email"),
-            email_dch=data.get("emailDCH"),
-            job_position=data.get("jobPosition"),
+            emailDCH=data.get("emailDCH"),
+            jobPosition=data.get("jobPosition"),
             description=data.get("description"),
             password=password_hash,
         )

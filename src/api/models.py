@@ -8,10 +8,10 @@ class User(db.Model):
     surname=db.Column(db.String(20),nullable=False)
     unit=db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    email_dch= db.Column(db.String(120), unique=True, nullable=False)
-    job_position=db.Column(db.String(120), nullable=False)
+    emailDCH= db.Column(db.String(120), unique=True, nullable=False)
+    jobPosition=db.Column(db.String(120), nullable=False)
     description=db.Column(db.String(120))
-    password = db.Column(db.String(80), unique=False, nullable=False)
+    password = db.Column(db.String(255), unique=False, nullable=False)
     
 
     def __repr__(self):
@@ -24,8 +24,8 @@ class User(db.Model):
             "surname": self.surname,
             "unit": self.unit,
             "email": self.email,
-            "email_dch": self.email_dch,
-            "job_position": self.job_position,
+            "emailDCH": self.emailDCH,
+            "jobPosition": self.jobPosition,
             "description": self.description,
             # do not serialize the password, its a security breach
         }
