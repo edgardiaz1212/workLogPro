@@ -15,8 +15,10 @@ api = Blueprint('api', __name__)
 def set_password(password, salt):
     return generate_password_hash(f"{password}{salt}")
 
+
 def check_password(hash_password, password, salt):
     return check_password_hash(hash_password, f"{password}{salt}")
+
 
 @api.route('/user', methods=['POST'])
 def register_user():
@@ -88,7 +90,23 @@ def login():
         if user is not None:
             if check_password(user.password, password, user.salt):
                 token = create_access_token(identity=user.id)
-                return jsonify({"token": token, "name": user.name}), 200
+                # Utiliza el método serialize() para obtener la información del usuario
+                return jsonify({
+                    "token": token,
+                    "user": user.serialize()
+                }), 200
             else:
                 return jsonify({"msg": "Bad credentials"}), 400
         return jsonify({"msg": "Bad credentials"}), 400
+
+
+@api.route('/user', methods=['GET'])
+@jwt_required()
+def get_user_by_alias():
+    if request.method == "GET":
+        user = User.query.filter_by(id=get_jwt_identity()).first()
+
+        if user:
+            return jsonify(user.serialize()), 200
+        else:
+            return jsonify({'error': 'User not found'}), 404

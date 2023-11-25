@@ -17,21 +17,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 
 					let data = await response.json()
-					return response.status
+					if (!response.ok) {
+						console.error("Error registering user:", data.msg || "Unknown error");
+					}
+					return data
 
 				} catch (error) {
 					console.log("Error registering user:", error);
 					return 500;
 				}
 			},
-			loginUser: async (email, password) => {
+			loginUser: async (body) => {
+				const store = getStore()
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/login`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
 						},
-						body: JSON.stringify({ email, password }),
+						body: JSON.stringify(body),
 					});
 
 					const data = await response.json();
@@ -42,40 +46,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 							token: data.token
 						});
 						localStorage.setItem("token", data.token)
-						localStorage.setItem("user", data.user)
+						localStorage.setItem("user", JSON.stringify(data.user));
+						console.log("logueo listo")
 					} else {
 						// Manejar errores, mostrar mensajes, etc.
-						console.error("Error logging in:", data.message);
+						console.error("Error logging in:");
+						return {
+							status: response.status,
+							data: data,
+						};
 					}
 
-					return response.status;
+					return response.ok;
 				} catch (error) {
 					console.error("Error logging in:", error);
 					return 500;
 				}
 			},
-			getUserData: async () => {
-				const store = getStore();
-				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/user`, {
-						method: "GET",
-						headers: {
-							"Content-Type": "aplication/json",
-							"Authorization": `Bearer ${store.token}`
-						}
-					});
-					if (response.ok) {
-						const responseData = await response.json();
-						console.log("User data:", responseData);
-						setStore({ userData: responseData });
-						localStorage.setItem("userData", JSON.stringify(responseData));
-					} else {
-						console.log("Error fetching user data:", response.status);
-					}
-				} catch (error) {
-					console.log("Error fetching user data:", error);
-				}
-			},
+
 
 
 		}
