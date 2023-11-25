@@ -40,6 +40,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					const data = await response.json();
 
+					const result = {
+						status: response.status,
+						data: data,
+					};
+
 					if (response.ok) {
 						setStore({
 							user: data.user,
@@ -47,21 +52,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 						});
 						localStorage.setItem("token", data.token)
 						localStorage.setItem("user", JSON.stringify(data.user));
-						console.log("logueo listo")
+						console.log("Inicio de sesión exitoso!!")
 					} else {
 						// Manejar errores, mostrar mensajes, etc.
-						console.error("Error logging in:");
-						return {
-							status: response.status,
-							data: data,
-						};
-					}
-
-					return response.ok;
-				} catch (error) {
+						console.error("Error logging in:", result);
+					};
+					return result;
+				
+				} catch (error)  {
 					console.error("Error logging in:", error);
-					return 500;
-				}
+					return {
+					  status: 500,
+					  data: { message: "Error inesperado" },
+					};
+				  }
 			},
 
 

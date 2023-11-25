@@ -10,7 +10,7 @@ const initialState = {
 };
 
 function Login() {
-  const { actions } = useContext(Context);
+  const { store, actions } = useContext(Context);
   const [user, setUser] = useState(initialState)
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ function Login() {
       const { status, data } = await actions.loginUser(user);
 
       if (status=== 201 || status === 200) {
-        toast.success(`¡Bienvenido, ${actions.store.user.name}!`,{
+        toast.success(`¡Bienvenido, ${store.user.name}!`,{
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -29,12 +29,12 @@ function Login() {
           progress: undefined,
           theme: "colored"
         });
-        console.log("Registro exitoso")
+        console.log("Inicio de sesión exitoso")
         setTimeout(() => {
           navigate("/")
         }, 2000)
       } else {
-        toast.error(`Error de Inicio de sesión: ${data.message}`, {
+        toast.error(`Error de Inicio de sesión: ${data.message|| "Error desconocido"}`, {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
