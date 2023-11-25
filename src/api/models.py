@@ -12,7 +12,7 @@ class User(db.Model):
     jobPosition=db.Column(db.String(120), nullable=False)
     description=db.Column(db.String(120))
     password = db.Column(db.String(255), unique=False, nullable=False)
-    
+    salt = db.Column(db.String(100), unique=False, nullable=False)
 
     def __repr__(self):
         return f'<User {self.email}>'

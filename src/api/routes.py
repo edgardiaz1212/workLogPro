@@ -15,6 +15,8 @@ api = Blueprint('api', __name__)
 def set_password(password, salt):
     return generate_password_hash(f"{password}{salt}")
 
+def check_password(hash_password, password, salt):
+    return check_password_hash(hash_password, f"{password}{salt}")
 
 @api.route('/user', methods=['POST'])
 def register_user():
@@ -55,6 +57,7 @@ def register_user():
             jobPosition=data.get("jobPosition"),
             description=data.get("description"),
             password=password_hash,
+            salt=password_salt
         )
 
         db.session.add(new_user)
@@ -69,22 +72,23 @@ def register_user():
     return jsonify(response_body), 200
 
 
-@api_route('/login', method=['GET'])
+@api.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        data.request.json
-        email = data.get('email', None)
-        password = data.get('password', None)
+    if request.method == "POST":
+        data = request.json
+        email = data.get("email", None)
+        password = data.get("password", None)
 
         if email is None:
-            return jsonify({"msg": "Missing email parameter"})
+            return jsonify({"msg": "Missing email parameter"}), 400
         if password is None:
-            return jsonify({"msg": "Missing password parameter"})
+            return jsonify({"msg": "Missing password parameter"}), 400
+
         user = User.query.filter_by(email=email).one_or_none()
         if user is not None:
             if check_password(user.password, password, user.salt):
                 token = create_access_token(identity=user.id)
-                return jsonify({"toekn": token, "name": user.name})
+                return jsonify({"token": token, "name": user.name}), 200
             else:
                 return jsonify({"msg": "Bad credentials"}), 400
         return jsonify({"msg": "Bad credentials"}), 400

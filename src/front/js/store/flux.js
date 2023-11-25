@@ -2,7 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			token: localStorage.getItem("token") || null,
-			userData: JSON.parse(localStorage.getItem("userData")) || [],
+			user: JSON.parse(localStorage.getItem("user")) || [],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
