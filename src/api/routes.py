@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Activity
 from api.utils import generate_sitemap, APIException
 from base64 import b64encode
 import os
@@ -116,9 +116,26 @@ def get_user_by_alias():
 def add_activity():
     if request.method =='POST': 
         try:
-            # Obtener los datos del cuerpo de la solicitud
-            data = request.json
+            data_form = request.form
+            
+            data = {
+                "fecha_actividad":data_form.get('fecha_actividad'),
+                "control_incidente":data_form.get('control_incidente'),
+                "control_cambio_cor":data_form.get('control_cambio_cor'),
+                "control_cambio_dcce":data_form.get('control_cambio_dcce'),
+                "tecnico_nombre_apellido":data_form.get('tecnico_nombre_apellido'),
+                "personal_infra_nombre_apellido":data_form.get('personal_infra_nombre_apellido'),
+                "actividad":data_form.get('actividad'),
+                "actividad_satisfactoria":data_form.get('actividad_satisfactoria')
+                }
+            
+             # Validación de parámetros
+            missing_params = [param for param in ["fecha_actividad", "tecnico_nombre_apellido", "personal_infra_nombre_apellido"]
+                          if data.get(param) is None]
 
+            if missing_params:
+                return jsonify({"msg": f"Missing parameters: {', '.join(missing_params)}"}), 400
+          
             # Crear una nueva instancia de Activity con los datos proporcionados
             new_activity = Activity(
                 fecha_actividad=data.get('fecha_actividad'),
@@ -131,6 +148,7 @@ def add_activity():
                 actividad_satisfactoria=data.get('actividad_satisfactoria')
             )
 
+
             # Agregar la nueva actividad a la base de datos
             db.session.add(new_activity)
             db.session.commit()
@@ -141,5 +159,5 @@ def add_activity():
         except Exception as e:
             # En caso de error, realizar un rollback y devolver un mensaje de error
             db.session.rollback()
-            return jsonify({"msg": "Error adding activity", "error": str(e)}), 500
+            return jsonify({"msg": "Error adding activity", "error1": str(e)}), 500
     
