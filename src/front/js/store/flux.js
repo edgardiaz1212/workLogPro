@@ -58,38 +58,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.error("Error logging in:", result);
 					};
 					return result;
-				
-				} catch (error)  {
+
+				} catch (error) {
 					console.error("Error logging in:", error);
 					return {
-					  status: 500,
-					  data: { message: "Error inesperado" },
+						status: 500,
+						data: { message: "Error inesperado" },
 					};
-				  }
+				}
 			},
-			addActivity:async(body)=>{
-				const store =getStore
+			addActivity: async (body) => {
+				const store = getStore()
 				try {
+					
 					const response = await fetch(`${process.env.BACKEND_URL}/activity`, {
 						method: "POST",
 						headers: {
-							"Content-Type": "application/json",
+							
 							"Authorization": `Bearer ${store.token}`
 						},
-						body: JSON.stringify(body)
+						body: body
 					});
-			
-					const data = await response.json();
-			
+
 					if (response.ok) {
+						return response;
 						// Se puede añadir alguna actividad adicional aquí
 					} else {
-						console.log("Error adding activity:", data.message);
+						console.log("Error adding equipment flux:", response.statusText)
 					}
-			
-					return response.ok;
 				} catch (error) {
 					console.log("Error al añadir actividad", error);
+					return 500
 				}
 			}
 

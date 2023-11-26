@@ -110,32 +110,33 @@ def get_user_by_alias():
             return jsonify(user.serialize()), 200
         else:
             return jsonify({'error': 'User not found'}), 404
-        
-@api.route('/activity',methods=['POST'])
+
+
+@api.route('/activity', methods=['POST'])
 @jwt_required()
 def add_activity():
-    if request.method =='POST': 
+    if request.method == 'POST':
         try:
             data_form = request.form
-            
+
             data = {
-                "fecha_actividad":data_form.get('fecha_actividad'),
-                "control_incidente":data_form.get('control_incidente'),
-                "control_cambio_cor":data_form.get('control_cambio_cor'),
-                "control_cambio_dcce":data_form.get('control_cambio_dcce'),
-                "tecnico_nombre_apellido":data_form.get('tecnico_nombre_apellido'),
-                "personal_infra_nombre_apellido":data_form.get('personal_infra_nombre_apellido'),
-                "actividad":data_form.get('actividad'),
-                "actividad_satisfactoria":data_form.get('actividad_satisfactoria')
-                }
-            
-             # Validación de parámetros
+                "fecha_actividad": data_form.get('fecha_actividad'),
+                "control_incidente": data_form.get('control_incidente'),
+                "control_cambio_cor": data_form.get('control_cambio_cor'),
+                "control_cambio_dcce": data_form.get('control_cambio_dcce'),
+                "tecnico_nombre_apellido": data_form.get('tecnico_nombre_apellido'),
+                "personal_infra_nombre_apellido": data_form.get('personal_infra_nombre_apellido'),
+                "actividad": data_form.get('actividad'),
+                "actividad_satisfactoria": data_form.get('actividad_satisfactoria')
+            }
+
+            # Validación de parámetros
             missing_params = [param for param in ["fecha_actividad", "tecnico_nombre_apellido", "personal_infra_nombre_apellido"]
-                          if data.get(param) is None]
+                              if data.get(param) is None]
 
             if missing_params:
                 return jsonify({"msg": f"Missing parameters: {', '.join(missing_params)}"}), 400
-          
+
             # Crear una nueva instancia de Activity con los datos proporcionados
             new_activity = Activity(
                 fecha_actividad=data.get('fecha_actividad'),
@@ -143,21 +144,20 @@ def add_activity():
                 control_cambio_cor=data.get('control_cambio_cor'),
                 control_cambio_dcce=data.get('control_cambio_dcce'),
                 tecnico_nombre_apellido=data.get('tecnico_nombre_apellido'),
-                personal_infra_nombre_apellido=data.get('personal_infra_nombre_apellido'),
+                personal_infra_nombre_apellido=data.get(
+                    'personal_infra_nombre_apellido'),
                 actividad=data.get('actividad'),
                 actividad_satisfactoria=data.get('actividad_satisfactoria')
             )
-
 
             # Agregar la nueva actividad a la base de datos
             db.session.add(new_activity)
             db.session.commit()
 
             # Devolver una respuesta exitosa
-            return jsonify({"msg": "Activity added successfully"}), 201
+            return jsonify(response_body), 200
 
         except Exception as e:
             # En caso de error, realizar un rollback y devolver un mensaje de error
             db.session.rollback()
-            return jsonify({"msg": "Error adding activity", "error1": str(e)}), 500
-    
+            return jsonify({"msg": "Error adding Activity", "error1": str(e)}), 500
