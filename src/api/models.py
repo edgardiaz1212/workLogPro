@@ -29,3 +29,29 @@ class User(db.Model):
             "description": self.description,
             # do not serialize the password, its a security breach
         }
+class Activity(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    fecha_actividad = db.Column(db.Date, nullable=False)
+    control_incidente = db.Column(db.String(50), nullable=True)
+    control_cambio_cor = db.Column(db.String(50), nullable=True)
+    control_cambio_dcce = db.Column(db.String(50), nullable=True)
+    tecnico_nombre_apellido = db.Column(db.String(50), nullable=False)
+    personal_infra_nombre_apellido = db.Column(db.String(50), nullable=False)
+    actividad = db.Column(db.String(50), nullable=True)
+    actividad_satisfactoria = db.Column(db.Boolean, nullable=True)
+
+    def __repr__(self):
+        return f'<Activity {self.fecha_actividad} >'
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "fecha_actividad": self.fecha_actividad.strftime('%Y-%m-%d'),
+            "control_incidente": self.control_incidente,
+            "control_cambio_cor": self.control_cambio_cor,
+            "control_cambio_dcce": self.control_cambio_dcce,
+            "tecnico_nombre_apellido": self.tecnico_nombre_apellido,
+            "personal_infra_nombre_apellido": self.personal_infra_nombre_apellido,
+            "actividad": self.actividad,
+            "actividad_satisfactoria": self.actividad_satisfactoria
+        }

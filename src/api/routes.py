@@ -110,3 +110,36 @@ def get_user_by_alias():
             return jsonify(user.serialize()), 200
         else:
             return jsonify({'error': 'User not found'}), 404
+        
+@api.route('/activity',methods=['POST'])
+@jwt_required()
+def add_activity():
+    if request.method =='POST': 
+        try:
+            # Obtener los datos del cuerpo de la solicitud
+            data = request.json
+
+            # Crear una nueva instancia de Activity con los datos proporcionados
+            new_activity = Activity(
+                fecha_actividad=data.get('fecha_actividad'),
+                control_incidente=data.get('control_incidente'),
+                control_cambio_cor=data.get('control_cambio_cor'),
+                control_cambio_dcce=data.get('control_cambio_dcce'),
+                tecnico_nombre_apellido=data.get('tecnico_nombre_apellido'),
+                personal_infra_nombre_apellido=data.get('personal_infra_nombre_apellido'),
+                actividad=data.get('actividad'),
+                actividad_satisfactoria=data.get('actividad_satisfactoria')
+            )
+
+            # Agregar la nueva actividad a la base de datos
+            db.session.add(new_activity)
+            db.session.commit()
+
+            # Devolver una respuesta exitosa
+            return jsonify({"msg": "Activity added successfully"}), 201
+
+        except Exception as e:
+            # En caso de error, realizar un rollback y devolver un mensaje de error
+            db.session.rollback()
+            return jsonify({"msg": "Error adding activity", "error": str(e)}), 500
+    

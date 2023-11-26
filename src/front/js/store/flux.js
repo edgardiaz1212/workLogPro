@@ -67,7 +67,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					};
 				  }
 			},
-
+			addActivity:async(body)=>{
+				const store =getStore
+				try {
+					const response=await fetch(`${process.env.BACKEND_URL}/activity`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						},
+						body: JSON.stringify(body)
+					})
+					const data = await response.json()
+					if (response.ok){
+						//se puede anadir alguna actividad adicional aca
+					} else{
+						console.log("Error adding activity:", data.message)
+					}
+					return response.ok
+				} catch (error) {
+					console.log("error anadir actividad", error)
+				}
+			}
 
 
 		}

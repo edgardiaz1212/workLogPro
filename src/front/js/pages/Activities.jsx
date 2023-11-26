@@ -1,46 +1,93 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../store/appContext";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Activities() {
+    const { store, actions } = useContext(Context)
+
+
     return (
         <>
-        <p>fehca de la actividad, control de incidente, control de cambio cor, control de cambio dcce, tecnico , nombre y apellido.,personal infra, nombre y apellido</p>
-            <p>actividad(1 mant motognerador, 1.1 prueba con carga. 1.2 mant prev)2mant transfer, 3 Mantenimiento tableros electronicos, 4 Mantenimiento extratores, 5 Mantenimiento baterias UPS, 6 Mantenimiento transformadores, 7 Mantenimiento A/A de presión  , actividad satisfactoria, si no.</p>
-            <div className="container m-3">
+            <ToastContainer theme="dark" position="top-center" pauseOnFocusLoss={false} autoClose={3000} hideProgressBar />
+            <div className="container mt-3 border border-danger">
                 <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">@</span>
-                    <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
-                </div>
-
-                <div className="input-group mb-3">
-                    <input type="text" className="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2" />
-                    <span className="input-group-text" id="basic-addon2">@example.com</span>
-                </div>
-
-                <div className="mb-3">
-                    <label for="basic-url" className="form-label">Your vanity URL</label>
-                    <div className="input-group">
-                        <span className="input-group-text" id="basic-addon3">https://example.com/users/</span>
-                        <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4" />
-                    </div>
-                    <div className="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+                    <span className="input-group-text">Fecha de la actividad</span>
+                    <input
+                        type="date"
+                        className="form-control"
+                        aria-label="Fecha de la actividad"
+                    />
                 </div>
 
                 <div className="input-group mb-3">
-                    <span className="input-group-text">$</span>
-                    <input type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
-                    <span className="input-group-text">.00</span>
+                    <span className="input-group-text">Control de incidente</span>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Ingrese el control de incidente"
+                        aria-label="Control de incidente"
+                    />
                 </div>
 
                 <div className="input-group mb-3">
-                    <input type="text" className="form-control" placeholder="Username" aria-label="Username" />
-                    <span className="input-group-text">@</span>
-                    <input type="text" className="form-control" placeholder="Server" aria-label="Server" />
+                    <span className="input-group-text">Control de cambio COR</span>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Ingrese el control de cambio COR"
+                        aria-label="Control de cambio COR"
+                    />
                 </div>
 
-                <div className="input-group">
-                    <span className="input-group-text">With textarea</span>
-                    <textarea className="form-control" aria-label="With textarea"></textarea>
+                <div className="input-group mb-3">
+                    <span className="input-group-text">Control de Cambio DCCE</span>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Ingrese el control de cambio DCCE"
+                        aria-label="Control de cambio DCCE"
+                    />
                 </div>
+
+                <div className="input-group mb-3">
+                    <span className="input-group-text">Tecnico Energia</span>
+                    <input type="text"
+                        className="form-control"
+                        placeholder="Nombre y apellido"
+                        aria-label="Tecnico Energia" />
+                </div>
+
+                <div className="input-group mb-3">
+                    <span className="input-group-text">Personal Infraestructura DCCE</span>
+                    <input
+                        className="form-control"
+                        placeholder="Nombre y Apellido"
+                        aria-label="Personal Infraestructura DCCE" />
+                </div>
+
+
+                <div className="input-group mb-3">
+                    <span className="input-group-text" id="basic-addon6">Actividad </span>
+
+                    <select
+                        className="form-select"
+                        aria-label="Actividad"
+                    >
+                        <option value="">Seleccionar Actividad</option>
+                        <option value="1"> Mantenimiento motognerador</option>
+                        <option value="1.1">Prueba con carga</option>
+                        <option value="1.2">Mantenimiento preventivo</option>
+                        <option value="2">Mantenimiento transfer</option>
+                        <option value="3">Mantenimiento tableros electronicos</option>
+                        <option value="4">Mantenimiento extratores</option>
+                        <option value="5">Mantenimiento baterias UPS</option>
+                        <option value="6">Mantenimiento transformadores</option>
+                        <option value="7">Mantenimiento A/A de precisión</option>
+                    </select>
+                </div>
+
             </div>
         </>
     )
