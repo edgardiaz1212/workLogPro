@@ -74,10 +74,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const response = await fetch(`${process.env.BACKEND_URL}/activity`, {
 						method: "POST",
 						headers: {
-							
+							"Content-Type": "application/json",
 							"Authorization": `Bearer ${store.token}`
 						},
-						body: body
+						body: JSON.stringify(body)
 					});
 
 					if (response.ok) {

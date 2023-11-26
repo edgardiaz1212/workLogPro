@@ -25,41 +25,11 @@ function Activities() {
         }));
     }, [store.user]);
 
-    // const handleUpload = async () => {
-    //     try {
-    //         const formData = new FormData()
-
-    //         formData.append("fecha_actividad", newActivity.fecha_actividad);
-    //         formData.append("control_incidente", newActivity.control_incidente);
-    //         formData.append("control_cambio_cor", newActivity.control_cambio_cor);
-    //         formData.append("control_cambio_dcce", newActivity.control_cambio_dcce);
-    //         formData.append("tecnico_nombre_apellido", newActivity.tecnico_nombre_apellido);
-    //         formData.append("personal_infra_nombre_apellido", newActivity.personal_infra_nombre_apellido);
-    //         formData.append("actividad", newActivity.actividad);
-    //         formData.append("actividad_satisfactoria", newActivity.actividad_satisfactoria);
-
-    //         const response = await actions.addActivity(formData)
-
-    //         if (response.status === 201 || response.status === 200) {
-    //             console.log("activity Uploaded:", {
-    //                 newActivity,
-    //             });
-    //             return true
-    //         } else {
-    //             console.log("Error en Upload");
-    //             return false
-    //         }
-    //     } catch (error) {
-    //         console.log("Error en la solicitud de Upload:", error)
-    //         return false;
-    //     }
-    // };
-
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setNewActivity((prevData) => ({
             ...prevData,
-            [name] : value,
+            [name]: value,
         }));
     };
 
@@ -81,13 +51,14 @@ function Activities() {
             formData.append("actividad", newActivity.actividad);
             formData.append("actividad_satisfactoria", newActivity.actividad_satisfactoria)
 
-            const response = await actions.addActivity(formData)
+            const response = await actions.addActivity(newActivity)
 
             if (response.status === 201 || response.status === 200) {
                 toast.success("Equipo registrado")
                 console.log("Equipo anadido")
             } else {
                 toast.error("Error registrando")
+                console.error("Error del servidor:", response.statusText);
             }
 
         } catch (error) {
