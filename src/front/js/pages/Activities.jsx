@@ -17,7 +17,7 @@ function Activities() {
         actividad_satisfactoria: false,
     });
     // Estado para rastrear los errores
-    
+
     const [errors, setErrors] = useState({
         fecha_actividad: false,
         tecnico_nombre_apellido: false,
@@ -35,14 +35,14 @@ function Activities() {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-    // Marcar el campo como no erróneo cuando se empieza a escribir
+        // Marcar el campo como no erróneo cuando se empieza a escribir
         setErrors((prevErrors) => ({
             ...prevErrors,
             [name]: false,
         }));
 
         const updatedValue = type === "radio" ? value === "true" : value;
-    
+
         setNewActivity((prevData) => ({
             ...prevData,
             [name]: updatedValue,
@@ -80,16 +80,16 @@ function Activities() {
                 toast.success("Actividad registrada")
                 console.log("Actividad anadido")
                 // Restablecer los campos al estado inicial
-            setNewActivity({
-                fecha_actividad: "",
-                control_incidente: "",
-                control_cambio_cor: "",
-                control_cambio_dcce: "",
-                tecnico_nombre_apellido: "",
-                personal_infra_nombre_apellido: `${store.user.name} ${store.user.surname}`,
-                actividad: "",
-                actividad_satisfactoria: false,
-            });
+                setNewActivity({
+                    fecha_actividad: "",
+                    control_incidente: "",
+                    control_cambio_cor: "",
+                    control_cambio_dcce: "",
+                    tecnico_nombre_apellido: "",
+                    personal_infra_nombre_apellido: `${store.user.name} ${store.user.surname}`,
+                    actividad: "",
+                    actividad_satisfactoria: false,
+                });
             } else {
                 toast.error("Error registrando")
                 console.error("Error del servidor:", response.statusText);
