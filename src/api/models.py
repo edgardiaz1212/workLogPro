@@ -39,7 +39,9 @@ class Activity(db.Model):
     personal_infra_nombre_apellido = db.Column(db.String(50), nullable=False)
     actividad = db.Column(db.String(50), nullable=True)
     actividad_satisfactoria = db.Column(db.Boolean, nullable=True)
-
+    tipo_de_mantenimiento= db.Column(db.String(50))
+    observaciones= db.Column(db.String(50))
+    
     def __repr__(self):
         return f'<Activity {self.fecha_actividad} >'
 
@@ -53,5 +55,7 @@ class Activity(db.Model):
             "tecnico_nombre_apellido": self.tecnico_nombre_apellido,
             "personal_infra_nombre_apellido": self.personal_infra_nombre_apellido,
             "actividad": self.actividad,
-            "actividad_satisfactoria": self.actividad_satisfactoria
+            "actividad_satisfactoria": self.actividad_satisfactoria,
+            "tipo_de_mantenimiento": self.tipo_de_mantenimiento,
+            "observaciones":self.observaciones
         }
