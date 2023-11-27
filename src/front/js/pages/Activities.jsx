@@ -16,6 +16,14 @@ function Activities() {
         actividad: "",
         actividad_satisfactoria: false,
     });
+    // Estado para rastrear los errores
+    
+    const [errors, setErrors] = useState({
+        fecha_actividad: false,
+        tecnico_nombre_apellido: false,
+        personal_infra_nombre_apellido: false,
+        // ... (agrega más campos según sea necesario)
+    })
 
     //cuando se carga el componente por defecto coloca al que esta registrado
     useEffect(() => {
@@ -27,9 +35,17 @@ function Activities() {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
+    // Marcar el campo como no erróneo cuando se empieza a escribir
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: false,
+        }));
+
+        const updatedValue = type === "radio" ? value === "true" : value;
+    
         setNewActivity((prevData) => ({
             ...prevData,
-            [name]: value,
+            [name]: updatedValue,
         }));
     };
 
@@ -38,6 +54,13 @@ function Activities() {
         if (!newActivity.fecha_actividad || !newActivity.tecnico_nombre_apellido || !newActivity.personal_infra_nombre_apellido) {
             toast.error("Por favor, complete todos los campos obligatorios.");
             console.log("Campos obligatorios faltantes");
+            // Marcar los campos faltantes como erróneos
+            setErrors({
+                fecha_actividad: !newActivity.fecha_actividad,
+                tecnico_nombre_apellido: !newActivity.tecnico_nombre_apellido,
+                personal_infra_nombre_apellido: !newActivity.personal_infra_nombre_apellido,
+                // ... (agrega más campos según sea necesario)
+            });
             return;
         }
         try {
@@ -54,8 +77,19 @@ function Activities() {
             const response = await actions.addActivity(newActivity)
 
             if (response.status === 201 || response.status === 200) {
-                toast.success("Equipo registrado")
-                console.log("Equipo anadido")
+                toast.success("Actividad registrada")
+                console.log("Actividad anadido")
+                // Restablecer los campos al estado inicial
+            setNewActivity({
+                fecha_actividad: "",
+                control_incidente: "",
+                control_cambio_cor: "",
+                control_cambio_dcce: "",
+                tecnico_nombre_apellido: "",
+                personal_infra_nombre_apellido: `${store.user.name} ${store.user.surname}`,
+                actividad: "",
+                actividad_satisfactoria: false,
+            });
             } else {
                 toast.error("Error registrando")
                 console.error("Error del servidor:", response.statusText);
@@ -70,12 +104,12 @@ function Activities() {
     return (
         <>
             <ToastContainer theme="dark" position="top-center" pauseOnFocusLoss={false} autoClose={3000} hideProgressBar />
-            <div className="container mt-3 border border-danger">
-                <div className="input-group mb-3">
+            <div className="container mt-3 ">
+                <div className={`input-group mb-3 ${errors.fecha_actividad ? 'error' : ''}`}>
                     <span className="input-group-text">Fecha de la actividad</span>
                     <input
                         type="date"
-                        className="form-control"
+                        className={`form-control ${errors.fecha_actividad ? 'error' : ''}`}
                         id="fecha_actividad"
                         name="fecha_actividad"
                         onChange={handleChange}
@@ -122,10 +156,10 @@ function Activities() {
                     />
                 </div>
 
-                <div className="input-group mb-3">
+                <div className={`input-group mb-3 ${errors.tecnico_nombre_apellido ? 'error' : ''}`}>
                     <span className="input-group-text">Tecnico Energia</span>
                     <input type="text"
-                        className="form-control"
+                        className={`form-control ${errors.tecnico_nombre_apellido ? 'error' : ''}`}
                         placeholder="Nombre y apellido"
                         id="tecnico_nombre_apellido"
                         name="tecnico_nombre_apellido"
@@ -133,10 +167,10 @@ function Activities() {
                         value={newActivity.tecnico_nombre_apellido} />
                 </div>
 
-                <div className="input-group mb-3">
+                <div className={`input-group mb-3 ${errors.personal_infra_nombre_apellido ? 'error' : ''}`}>
                     <span className="input-group-text">Personal Infraestructura DCCE</span>
                     <input
-                        className="form-control"
+                        className={`form-control ${errors.personal_infra_nombre_apellido ? 'error' : ''}`}
                         placeholder="Nombre y Apellido"
                         id="personal_infra_nombre_apellido"
                         name="personal_infra_nombre_apellido"
@@ -168,17 +202,34 @@ function Activities() {
 
                 <div className="input-group mb-3">
                     <span className="input-group-text">Actividad Satisfactoria?</span>
-                    <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="actividad_satisfactoria"
-                        name="actividad_satisfactoria"
-                        value={newActivity.actividad_satisfactoria}
-                        onChange={handleChange}
-                    />
-                    <label className="form-check-label" htmlFor="actividad_satisfactoria">
-                        Si
-                    </label>
+                    <div className="form-check form-check-inline">
+                        <input
+                            className="form-check-input"
+                            type="radio"
+                            id="actividad_satisfactoria_si"
+                            name="actividad_satisfactoria"
+                            value={true}
+                            checked={newActivity.actividad_satisfactoria === true}
+                            onChange={handleChange}
+                        />
+                        <label className="form-check-label" htmlFor="actividad_satisfactoria_si">
+                            Si
+                        </label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                        <input
+                            className="form-check-input"
+                            type="radio"
+                            id="actividad_satisfactoria_no"
+                            name="actividad_satisfactoria"
+                            value={false}
+                            checked={newActivity.actividad_satisfactoria === false}
+                            onChange={handleChange}
+                        />
+                        <label className="form-check-label" htmlFor="actividad_satisfactoria_no">
+                            No
+                        </label>
+                    </div>
 
                 </div>
                 <button type="button" className="btn btn-primary" onClick={handleSave}>
