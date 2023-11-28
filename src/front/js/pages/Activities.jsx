@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import GraphActivities from "../component/GraphActivities.jsx";
 
 function Activities() {
     const { store, actions } = useContext(Context)
@@ -266,6 +267,9 @@ function Activities() {
                 <button type="button" className="btn btn-primary" onClick={handleSave}>
                     Guardar
                 </button>
+            </div>
+            <div className="mt-3">
+                <GraphActivities/>
             </div>
         </>
     )

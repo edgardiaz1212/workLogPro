@@ -139,8 +139,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return 500;
 				}
 			},
-
-
+			getYears : async () => {
+				const store = getStore();
+			  
+				try {
+				  const response = await fetch(`${process.env.BACKEND_URL}/get-available-years`, {
+					method: "GET",
+					headers: {
+					  "Authorization": `Bearer ${store.token}`,
+					},
+				  });
+			  
+				  if (response.ok) {
+					const data = await response.json();
+					return data.years;  // Ajusta según la estructura de tus datos
+				  } else {
+					console.error("Error al obtener años disponibles:", response.statusText);
+					return [];
+				  }
+				} catch (error) {
+				  console.error("Error al obtener años disponibles", error);
+				  return [];
+				}
+			  },
 		}
 	};
 };

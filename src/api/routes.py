@@ -175,3 +175,10 @@ def get_activities_by_month(year, month):
                         "tipo_de_mantenimiento": activity.tipo_de_mantenimiento} for activity in activities]
 
     return jsonify({"activities": activities_data})
+
+@api.route('/get-available-years', methods=['GET'])
+@jwt_required()
+def get_available_years():
+    years = db.session.query(db.extract('year', Activity.fecha_actividad)).distinct().all()
+    years_list = [year[0] for year in years]  # Convertir a lista
+    return jsonify({"years": years_list})
