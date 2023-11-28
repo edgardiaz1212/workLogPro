@@ -134,7 +134,9 @@ def add_activity():
             tecnico_nombre_apellido=data.get('tecnico_nombre_apellido'),
             personal_infra_nombre_apellido=data.get('personal_infra_nombre_apellido'),
             actividad=data.get('actividad'),
-            actividad_satisfactoria=data.get('actividad_satisfactoria')
+            actividad_satisfactoria=data.get('actividad_satisfactoria'),
+            tipo_de_mantenimiento=data.get('tipo_de_mantenimiento'),
+            observaciones=data.get('observaciones')
         )
 
         # Agregar la nueva actividad a la base de datos
@@ -148,3 +150,28 @@ def add_activity():
         # En caso de error, realizar un rollback y devolver un mensaje de error
         db.session.rollback()
         return jsonify({"msg": "Error adding activity", "error1": str(e)}), 500
+
+@api.route('/activities-by-year/<int:year>', methods=['GET'])
+@jwt_required()
+def get_activities_by_year(year):
+    # Filtrar actividades por año
+    activities = Activity.query.filter(db.extract('year', Activity.fecha_actividad) == year).all()
+
+    # Convertir actividades a un formato que puedas enviar al frontend
+    activities_data = [{"fecha_actividad": activity.fecha_actividad,
+                        "tipo_de_mantenimiento": activity.tipo_de_mantenimiento} for activity in activities]
+
+    return jsonify({"activities": activities_data})
+
+@api.route('/activities-by-month/<int:year>/<int:month>', methods=['GET'])
+@jwt_required()
+def get_activities_by_month(year, month):
+    # Filtrar actividades por año y mes
+    activities = Activity.query.filter(db.extract('year', Activity.fecha_actividad) == year,
+                                       db.extract('month', Activity.fecha_actividad) == month).all()
+
+    # Convertir actividades a un formato que puedas enviar al frontend
+    activities_data = [{"fecha_actividad": activity.fecha_actividad,
+                        "tipo_de_mantenimiento": activity.tipo_de_mantenimiento} for activity in activities]
+
+    return jsonify({"activities": activities_data})

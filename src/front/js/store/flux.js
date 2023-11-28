@@ -70,7 +70,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			addActivity: async (body) => {
 				const store = getStore()
 				try {
-					
+
 					const response = await fetch(`${process.env.BACKEND_URL}/activity`, {
 						method: "POST",
 						headers: {
@@ -90,7 +90,55 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error al añadir actividad", error);
 					return 500
 				}
-			}
+			},
+			graphYear: async (year) => {
+				const store = getStore();
+
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/activities-by-year/${year}`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${store.token}`,
+						},
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+
+						// Llama a la función de acción para actualizar el store con los datos recibidos
+						setGraphYearData(data.activities);  // Ajusta según tu estructura de datos
+					} else {
+						console.error("Error al obtener actividades por año:", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error al obtener actividad por año", error);
+					return 500;
+				}
+			},
+			graphMonth: async (year, month) => {
+				const store = getStore();
+
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/activities-by-month/${year}/${month}`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${store.token}`,
+						},
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+
+
+						setGraphMonthData(data.activities);
+					} else {
+						console.error("Error al obtener actividades por mes", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error al obtener actividad por mes", error);
+					return 500;
+				}
+			},
 
 
 		}

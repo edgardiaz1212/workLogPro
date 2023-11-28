@@ -15,6 +15,8 @@ function Activities() {
         personal_infra_nombre_apellido: `${store.user.name} ${store.user.surname}`,
         actividad: "",
         actividad_satisfactoria: false,
+        tipo_de_mantenimiento: "",
+        observaciones: ""
     });
     // Estado para rastrear los errores
 
@@ -73,6 +75,8 @@ function Activities() {
             formData.append("personal_infra_nombre_apellido", newActivity.personal_infra_nombre_apellido);
             formData.append("actividad", newActivity.actividad);
             formData.append("actividad_satisfactoria", newActivity.actividad_satisfactoria)
+            formData.append("tipo_de_mantenimiento", newActivity.tipo_de_mantenimiento)
+            formData.append("observaciones", newActivity.observaciones)
 
             const response = await actions.addActivity(newActivity)
 
@@ -89,6 +93,8 @@ function Activities() {
                     personal_infra_nombre_apellido: `${store.user.name} ${store.user.surname}`,
                     actividad: "",
                     actividad_satisfactoria: false,
+                    tipo_de_mantenimiento: "",
+                    observaciones: ""
                 });
             } else {
                 toast.error("Error registrando")
@@ -230,7 +236,32 @@ function Activities() {
                             No
                         </label>
                     </div>
+                    <div className="input-group mb-3">
+                        <span className="input-group-text" id="basic-addon6">Tipo de Mantenimiento </span>
+                        <select
+                            className="form-select"
+                            id="tipo_de_mantenimiento"
+                            name="tipo_de_mantenimiento"
+                            onChange={handleChange}
+                            value={newActivity.tipo_de_mantenimiento}
+                        >
+                            <option value="">Seleccionar Mantenimiento</option>
+                            <option value="Mantenimiento Preventivo"> Mantenimiento Preventivo</option>
+                            <option value="Mantenimiento Correctivo">Mantenimiento Correctivo</option>
 
+                        </select>
+                    </div>
+                    <div className="input-group mb-3">
+                    <span className="input-group-text">Observaciones</span>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="observaciones"
+                        name="observaciones"
+                        onChange={handleChange}
+                        value={newActivity.observaciones}
+                    />
+                </div>
                 </div>
                 <button type="button" className="btn btn-primary" onClick={handleSave}>
                     Guardar

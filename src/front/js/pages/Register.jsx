@@ -19,20 +19,46 @@ function Register() {
   const { store, actions } = useContext(Context);
   const [user, setUser] = useState(initialState);
 
-  const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+  const handleChange = ({ target }) => {
+    setUser({ ...user, [target.name]: target.value });
   };
-  const handleSubmit = async () => {
-    // Validar campos, si es necesario
-    // Puedes utilizar bibliotecas de validación como Yup o simplemente comprobar los campos aquí
+ 
+  const handleSignup = async () => {
+    if (!user.name || !user.surname || !user.password || !user.emailDCH) {
+      console.log("Por favor completa todos los campos");
+      toast.error("Faltan campos por llenar")
+      return;
+    }
 
-    const status = await actions.registerUser(user);
+    try {
+      const formData = new FormData();
 
-    if (status === 201) {
-      toast.success('Usuario registrado exitosamente');
-      setUser(initialState); // Limpiar el formulario después de registrar el usuario
-    } else {
-      toast.error('Error al registrar usuario');
+      formData.append("name", user.name);
+      formData.append("surname", user.surname);
+      formData.append("email", user.email);
+      formData.append("emailDCH", user.emailDCH);
+      formData.append("unit", user.unit);
+      formData.append("password", user.password)
+      formData.append("jobPosition", user.jobPosition)
+      formData.append("description", user.description)
+
+      const response = await actions.registerUser(formData);
+
+      if (response === 201 || 200) {
+        toast.success("Registro Exitoso")
+        console.log("Registro exitoso")
+        //retrasa el cambio a home por 2 segundos
+        setTimeout(() => {
+          navigate("/")
+        }, 2000)
+
+      } else {
+        toast.error("Error registrando")
+
+        console.log("Error en el registro")
+      }
+    } catch (error) {
+      console.log("Error en la solicitud de registro:", error)
     }
   };
 
@@ -40,7 +66,7 @@ function Register() {
     <>
       <ToastContainer theme="dark" position="top-center" pauseOnFocusLoss={false} autoClose={3000} hideProgressBar />
       <div className="container ls mt-4 ">
-        <form onSubmit={handleSubmit}>
+        <form >
           <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon1">Nombre </span>
             <input type="text" className="form-control" placeholder="Nombre" aria-label="name"
@@ -70,7 +96,7 @@ function Register() {
             <input type="text" className="form-control" placeholder="@dch.cantv.com.ve" aria-label="emaildch"
               aria-describedby="basic-addon4"
               name="emailDCH"
-              value={user.surname}
+              value={user.emailDCH}
               onChange={handleChange} />
           </div>
           <div className="input-group mb-3">
@@ -98,9 +124,9 @@ function Register() {
               <option value="Gerente">Gerente</option>
             </select>
           </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text">Descripcion</span>
-            <textarea class="form-control" aria-label="description"
+          <div className="input-group mb-3">
+            <span className="input-group-text">Descripcion</span>
+            <textarea className="form-control" aria-label="description"
               name="description"
               onChange={handleChange}
               value={user.description}>
@@ -116,7 +142,7 @@ function Register() {
           </div>
 
           <Link to="/">
-            <button className="btn btn-primary mt-3 mb-3" onClick={handleSubmit}>Guardar</button>
+            <button className="btn btn-primary mt-3 mb-3" onClick={handleSignup}>Guardar</button>
           </Link>
         </form>
       </div>
