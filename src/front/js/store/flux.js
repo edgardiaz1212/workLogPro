@@ -93,28 +93,46 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			graphYear: async (year) => {
 				const store = getStore();
-
+			  
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/activities-by-year/${year}`, {
-						method: "GET",
-						headers: {
-							"Authorization": `Bearer ${store.token}`,
-						},
+				  const response = await fetch(`${process.env.BACKEND_URL}/activities-by-year/${year}`, {
+					method: "GET",
+					headers: {
+					  "Authorization": `Bearer ${store.token}`,
+					},
+				  });
+			  
+				  if (response.ok) {
+					const data = await response.json();
+			  
+					// Procesar los datos antes de actualizar el estado
+					const processedData = data.activities.map(activity => {
+					  // Extraer información adicional de la actividad
+					  const { fecha_actividad, tipo_de_mantenimiento, actividad } = activity;
+			  
+					  // Extraer el mes y el año de la fecha de actividad
+					  const fecha = new Date(fecha_actividad);
+					  const month = fecha.toLocaleString('default', { month: 'long' });
+					  const year = fecha.getFullYear();
+			  
+					  // Devolver la actividad con la información adicional
+					  return {
+						...activity,
+						month,
+						year,
+					  };
 					});
-
-					if (response.ok) {
-						const data = await response.json();
-
-						// Llama a la función de acción para actualizar el store con los datos recibidos
-						setGraphYearData(data.activities);  // Ajusta según tu estructura de datos
-					} else {
-						console.error("Error al obtener actividades por año:", response.statusText);
-					}
+			  
+					// Llama a la función de acción para actualizar el estado con los datos procesados
+					setGraphYearData(processedData);
+				  } else {
+					console.error("Error al obtener actividades por año:", response.statusText);
+				  }
 				} catch (error) {
-					console.error("Error al obtener actividad por año", error);
-					return 500;
+				  console.error("Error al obtener actividad por año", error);
+				  return 500;
 				}
-			},
+			  },
 			graphMonth: async (year, month) => {
 				const store = getStore();
 

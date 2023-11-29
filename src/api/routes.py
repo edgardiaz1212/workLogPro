@@ -158,8 +158,14 @@ def get_activities_by_year(year):
     activities = Activity.query.filter(db.extract('year', Activity.fecha_actividad) == year).all()
 
     # Convertir actividades a un formato que puedas enviar al frontend
-    activities_data = [{"fecha_actividad": activity.fecha_actividad,
-                        "tipo_de_mantenimiento": activity.tipo_de_mantenimiento} for activity in activities]
+    activities_data = [
+        {
+            "mes": activity.fecha_actividad.month,
+            "actividad": activity.actividad,
+            # Agrega otros campos según sea necesario
+        }
+        for activity in activities
+    ]
 
     return jsonify({"activities": activities_data})
 
