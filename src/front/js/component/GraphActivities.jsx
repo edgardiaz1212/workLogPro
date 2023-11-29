@@ -35,19 +35,18 @@ const GraphActivities = () => {
   useEffect(() => {
     // Llamar a la función de flux para obtener datos de actividades por año
     if (selectedYear) {
-      console.log("el ano selec", selectedYear);
+
       graphYear(selectedYear).then((data) => {
         // Procesar los datos para crear el gráfico de barras agrupadas
-        console.log("la data jalada", data);
+
         if (data.activities) {
           const groupedChartData = data.activities.reduce((acc, activity) => {
             const year = activity.year;
             const month = activity.mes;
-            console.log("el", acc);
-            console.log("la", activity);
-  
+
+
             const existingDataset = acc.find((dataset) => dataset.label === activity.actividad);
-  
+
             if (existingDataset) {
               existingDataset.data[month - 1]++;
             } else {
@@ -58,49 +57,57 @@ const GraphActivities = () => {
               newDataset.data[month - 1]++;
               acc.push(newDataset);
             }
-  
+
             return acc;
           }, []);
-  
+
           setChartData({
             labels: Array.from({ length: 12 }, (_, i) => i + 1),
             datasets: groupedChartData,
           });
-          console.log("elchar", groupedChartData);
+
         } else {
           console.error("Error al procesar datos:", data.error);
         }
       });
     }
+    console.log(chartData)
   }, [selectedYear]);
   return (
     <>
-      <select onChange={(e) => handleYearChange(e.target.value)}>
-        <option value="">Seleccionar Año</option>
-        {availableYears.map((year) => (
-          <option key={year} value={year}>
-            {year}
-          </option>
-        ))}
-      </select>
+      <div className="container ">
+<h2>Gráfico de Actividades </h2>
+        <select onChange={(e) => handleYearChange(e.target.value)}>
+          <option value="">Seleccionar Año</option>
+          {availableYears.map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
 
-      <div>
-        <h2>Gráfico de Actividades</h2>
+        <div>
 
-        <Bar
-          data={chartData}
-          options={{
-            responsive: true,
-            scales: {
-              x: {
-                stacked: true,
+
+
+          <Bar
+            data={chartData}
+            options={{
+              responsive: true,
+              scales: {
+                x: {
+                  stacked: true,
+                },
+                y: {
+                  stacked: true,
+                  ticks: {
+                    stepSize: 1, // Establece el tamaño del paso a 1 para unidades enteras
+                    beginAtZero: true, // Comienza el eje Y desde cero
+                  }
+                },
               },
-              y: {
-                stacked: true,
-              },
-            },
-          }}
-        />
+            }}
+          /></div>
       </div>
     </>
   );
