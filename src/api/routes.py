@@ -160,8 +160,10 @@ def get_activities_by_year(year):
     # Convertir actividades a un formato que puedas enviar al frontend
     activities_data = [
         {
+            "year":activity.fecha_actividad.year,
             "mes": activity.fecha_actividad.month,
             "actividad": activity.actividad,
+            "tipo_de_mantenimiento":activity.tipo_de_mantenimiento
             # Agrega otros campos según sea necesario
         }
         for activity in activities

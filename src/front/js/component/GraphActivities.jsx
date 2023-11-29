@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Bar } from "react-chartjs-2";
+import 'chart.js/auto';
 import { Context } from "../store/appContext";
 
 const GraphActivities = () => {
@@ -24,6 +25,7 @@ const GraphActivities = () => {
     };
 
     fetchAvailableYears();
+
   }, [getYears]);
 
   const handleYearChange = (selectedYear) => {
@@ -33,39 +35,44 @@ const GraphActivities = () => {
   useEffect(() => {
     // Llamar a la función de flux para obtener datos de actividades por año
     if (selectedYear) {
-      graphYear(selectedYear);
+      console.log("el ano selec", selectedYear);
+      graphYear(selectedYear).then((data) => {
+        // Procesar los datos para crear el gráfico de barras agrupadas
+        console.log("la data jalada", data);
+        if (data.activities) {
+          const groupedChartData = data.activities.reduce((acc, activity) => {
+            const year = activity.year;
+            const month = activity.mes;
+            console.log("el", acc);
+            console.log("la", activity);
+  
+            const existingDataset = acc.find((dataset) => dataset.label === activity.actividad);
+  
+            if (existingDataset) {
+              existingDataset.data[month - 1]++;
+            } else {
+              const newDataset = {
+                label: activity.actividad,
+                data: Array(12).fill(0),
+              };
+              newDataset.data[month - 1]++;
+              acc.push(newDataset);
+            }
+  
+            return acc;
+          }, []);
+  
+          setChartData({
+            labels: Array.from({ length: 12 }, (_, i) => i + 1),
+            datasets: groupedChartData,
+          });
+          console.log("elchar", groupedChartData);
+        } else {
+          console.error("Error al procesar datos:", data.error);
+        }
+      });
     }
   }, [selectedYear]);
-
-  useEffect(() => {
-    // Procesar los datos para crear el gráfico de barras agrupadas
-    if (chartData.activities) {
-      const groupedChartData = chartData.activities.reduce((acc, activity) => {
-        const month = activity.mes;
-  
-        const existingDataset = acc.find((dataset) => dataset.label === activity.actividad);
-  
-        if (existingDataset) {
-          existingDataset.data[month - 1]++;
-        } else {
-          const newDataset = {
-            label: activity.actividad,
-            data: Array(12).fill(0),
-          };
-          newDataset.data[month - 1]++;
-          acc.push(newDataset);
-        }
-  
-        return acc;
-      }, []);
-      
-      setChartData((prevData) => ({
-        ...prevData,
-        datasets: groupedChartData,
-      }));
-    }
-  }, [chartData]);
-
   return (
     <>
       <select onChange={(e) => handleYearChange(e.target.value)}>
@@ -79,20 +86,21 @@ const GraphActivities = () => {
 
       <div>
         <h2>Gráfico de Actividades</h2>
-       <Bar
-  data={chartData}
-  options={{
-    responsive: true,
-    scales: {
-      x: {
-        stacked: true,
-      },
-      y: {
-        stacked: true,
-      },
-    },
-  }}
-/>
+
+        <Bar
+          data={chartData}
+          options={{
+            responsive: true,
+            scales: {
+              x: {
+                stacked: true,
+              },
+              y: {
+                stacked: true,
+              },
+            },
+          }}
+        />
       </div>
     </>
   );

@@ -3,6 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			token: localStorage.getItem("token") || null,
 			user: JSON.parse(localStorage.getItem("user")) || [],
+			processedData: ""
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -93,46 +94,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			graphYear: async (year) => {
 				const store = getStore();
-			  
+
 				try {
-				  const response = await fetch(`${process.env.BACKEND_URL}/activities-by-year/${year}`, {
-					method: "GET",
-					headers: {
-					  "Authorization": `Bearer ${store.token}`,
-					},
-				  });
-			  
-				  if (response.ok) {
-					const data = await response.json();
-			  
-					// Procesar los datos antes de actualizar el estado
-					const processedData = data.activities.map(activity => {
-					  // Extraer información adicional de la actividad
-					  const { fecha_actividad, tipo_de_mantenimiento, actividad } = activity;
-			  
-					  // Extraer el mes y el año de la fecha de actividad
-					  const fecha = new Date(fecha_actividad);
-					  const month = fecha.toLocaleString('default', { month: 'long' });
-					  const year = fecha.getFullYear();
-			  
-					  // Devolver la actividad con la información adicional
-					  return {
-						...activity,
-						month,
-						year,
-					  };
+					const response = await fetch(`${process.env.BACKEND_URL}/activities-by-year/${year}`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${store.token}`,
+						},
 					});
-			  
-					// Llama a la función de acción para actualizar el estado con los datos procesados
-					setGraphYearData(processedData);
-				  } else {
-					console.error("Error al obtener actividades por año:", response.statusText);
-				  }
-				} catch (error) {
-				  console.error("Error al obtener actividad por año", error);
-				  return 500;
-				}
-			  },
+
+					if (response.ok) {
+						const data = await response.json();
+						// Devolver los datos procesados directamente
+						return { activities: data.activities };
+					  } else {
+						console.error("Error al obtener actividades por año:", response.statusText);
+						return { error: response.statusText };
+					  }
+					} catch (error) {
+					  console.error("Error al obtener actividad por año", error);
+					  return { error };
+					}
+				  },
+
 			graphMonth: async (year, month) => {
 				const store = getStore();
 
@@ -157,29 +141,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return 500;
 				}
 			},
-			getYears : async () => {
+			getYears: async () => {
 				const store = getStore();
-			  
+
 				try {
-				  const response = await fetch(`${process.env.BACKEND_URL}/get-available-years`, {
-					method: "GET",
-					headers: {
-					  "Authorization": `Bearer ${store.token}`,
-					},
-				  });
-			  
-				  if (response.ok) {
-					const data = await response.json();
-					return data.years;  // Ajusta según la estructura de tus datos
-				  } else {
-					console.error("Error al obtener años disponibles:", response.statusText);
-					return [];
-				  }
+					const response = await fetch(`${process.env.BACKEND_URL}/get-available-years`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${store.token}`,
+						},
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						return data.years;  // Ajusta según la estructura de tus datos
+					} else {
+						console.error("Error al obtener años disponibles:", response.statusText);
+						return [];
+					}
 				} catch (error) {
-				  console.error("Error al obtener años disponibles", error);
-				  return [];
+					console.error("Error al obtener años disponibles", error);
+					return [];
 				}
-			  },
+			},
 		}
 	};
 };
