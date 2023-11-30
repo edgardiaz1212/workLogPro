@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logoCantv from "../../img/CDHLogo.jpg"
 import { Context } from "../store/appContext";
 
 export const Navbar = () => {
-  const {store} = useContext(Context)
+  const { store, actions } = useContext(Context)
   // Verifica si el usuario tiene un token y pertenece a la unidad de infraestructura
   const isUserAuthenticated = store.token !== null && store.user.unit === "Infraestructura";
-
-   // Función para cerrar sesión
-   const handleLogout = () => {
+  const navigate = useNavigate()
+  // Función para cerrar sesión
+  const handleLogout = () => {
     actions.logout();
+    
   };
 
   return (
@@ -18,7 +19,7 @@ export const Navbar = () => {
       <header id="header" className="navbar sticky-top">
         <div className="container d-flex align-items-center">
 
-         <a href="/" className="logo me-auto"><img src={logoCantv} alt="" className="img-fluid" /></a>
+          <a href="/" className="logo me-auto"><img src={logoCantv} alt="" className="img-fluid" /></a>
 
           <nav id="navbar" className="navbar">
             <ul>
@@ -49,7 +50,7 @@ export const Navbar = () => {
               <li><a className="nav-link scrollto" href="#contact">Contacto</a></li>
               <li><a className="nav-link scrollto" href="/">OpenDCIM</a></li>
               {isUserAuthenticated ? (
-                <li><a className="getstarted scrollto" onClick={handleLogout}>Salir</a></li>
+                <li><a className="getstarted scrollto" href="/" onClick={handleLogout}>Salir</a></li>
               ) : (
                 <li><a className="getstarted scrollto" href="login">Ingreso Personal</a></li>
               )}

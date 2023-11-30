@@ -165,9 +165,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			logout: () => {
-				localStorage.removeItem("userData")
-				setStore({ token: null, user: ""})
-			},
+				localStorage.removeItem("user");
+				setStore({ token: "", user: "" });
+			  }
+			  
 		}
 	};
 };

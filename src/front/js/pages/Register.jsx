@@ -18,7 +18,7 @@ const initialState = {
 function Register() {
   const { store, actions } = useContext(Context);
   const [user, setUser] = useState(initialState);
-
+  const navigate = useNavigate();
   const handleChange = ({ target }) => {
     setUser({ ...user, [target.name]: target.value });
   };
