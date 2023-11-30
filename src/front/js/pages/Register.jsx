@@ -103,13 +103,23 @@ function Register() {
               onChange={handleChange} />
           </div>
           <div className="input-group mb-3">
-            <span className="input-group-text" id="basic-addon6">Unidad</span>
-            <input type="text" className="form-control" placeholder="Unidad" aria-label="unity"
-              aria-describedby="basic-addon5"
+            <span className="input-group-text" id="basic-addon6">Unidad </span>
+
+            <select
+              className="form-select"
+              aria-label="unit"
+              id="unit"
               name="unit"
+              onChange={handleChange}
               value={user.unit}
-              onChange={handleChange} />
+            >
+              <option value="">Seleccionar Cargo</option>
+              <option value="Infraestructura">Infraestructura</option>
+              <option value="Operaciones">Operaciones</option>
+              <option value="Gerencia">Gerencia</option>
+            </select>
           </div>
+
           <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon6">Cargo </span>
 

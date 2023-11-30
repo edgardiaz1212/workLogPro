@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import logoCantv from "../../img/CDHLogo.jpg"
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
+  const {store} = useContext(Context)
+  // Verifica si el usuario tiene un token y pertenece a la unidad de infraestructura
+  const isUserAuthenticated = store.token !== null && store.user.unit === "Infraestructura";
+
+   // Función para cerrar sesión
+   const handleLogout = () => {
+    actions.logout();
+  };
+
   return (
     <>
       <header id="header" className="navbar sticky-top">
@@ -17,24 +27,32 @@ export const Navbar = () => {
               <li><a className="nav-link scrollto" href="/#cta">Solicitudes Colocacion</a></li>
 
               <li><a className="nav-link scrollto" href="#team">Equipo</a></li>
-              <li className="dropdown"><a href="#"><span>Actividades</span> <i className="bi bi-chevron-down"></i></a>
-                <ul>
-                  <li><a href="#">Gestion Almacen</a></li>
-                  <li className="dropdown"><a href="/docs"><span>Documentos</span> <i className="bi bi-chevron-right"></i></a>
-                    <ul>
-                      <li><a href="#">Procedimientos</a></li>
-                      <li><a href="#">Plantillas</a></li>
-                      <li><a href="#">Normas</a></li>
-                      <li><a href="#">De otras Gerencias</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="/activities">Registro Actividad Energia</a></li>
-                  <li><a href="/register">Agregar Personal</a></li>
-                </ul>
-              </li>
+              {isUserAuthenticated && (
+                <li className="dropdown">
+                  <a href="#"><span>Actividades</span> <i className="bi bi-chevron-down"></i></a>
+                  <ul>
+                    <li><a href="#">Gestion Almacen</a></li>
+                    <li className="dropdown">
+                      <a href="/docs"><span>Documentos</span> <i className="bi bi-chevron-right"></i></a>
+                      <ul>
+                        <li><a href="#">Procedimientos</a></li>
+                        <li><a href="#">Plantillas</a></li>
+                        <li><a href="#">Normas</a></li>
+                        <li><a href="#">De otras Gerencias</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="/activities">Registro Actividad Energia</a></li>
+                    <li><a href="/register">Agregar Personal</a></li>
+                  </ul>
+                </li>
+              )}
               <li><a className="nav-link scrollto" href="#contact">Contacto</a></li>
               <li><a className="nav-link scrollto" href="/">OpenDCIM</a></li>
-              <li><a className="getstarted scrollto" href="login">Ingreso Personal</a></li>
+              {isUserAuthenticated ? (
+                <li><a className="getstarted scrollto" onClick={handleLogout}>Salir</a></li>
+              ) : (
+                <li><a className="getstarted scrollto" href="login">Ingreso Personal</a></li>
+              )}
             </ul>
             <i className="bi bi-list mobile-nav-toggle"></i>
           </nav>
