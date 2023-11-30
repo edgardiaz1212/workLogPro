@@ -111,165 +111,180 @@ function Activities() {
     return (
         <>
             <ToastContainer theme="dark" position="top-center" pauseOnFocusLoss={false} autoClose={3000} hideProgressBar />
-            <div className="container mt-3 ">
-                <div className={`input-group mb-3 ${errors.fecha_actividad ? 'error' : ''}`}>
-                    <span className="input-group-text">Fecha de la actividad</span>
-                    <input
-                        type="date"
-                        className={`form-control ${errors.fecha_actividad ? 'error' : ''}`}
-                        id="fecha_actividad"
-                        name="fecha_actividad"
-                        onChange={handleChange}
-                        value={newActivity.fecha_actividad}
-                    />
-                </div>
+            <div className="section-title mt-3">
+                <h2>Registro Actividades de la Gerencia de Energia</h2>
+            </div>
+            <div className="container  ">
+                <div className="row  ">
+                    <div className="col-8 g-5 w-5">
+                        <div className={`input-group mb-3 ${errors.fecha_actividad ? 'error' : ''}`}>
+                            <span className="input-group-text">Fecha de la actividad</span>
+                            <input
+                                type="date"
+                                className={`form-control ${errors.fecha_actividad ? 'error' : ''}`}
+                                id="fecha_actividad"
+                                name="fecha_actividad"
+                                onChange={handleChange}
+                                value={newActivity.fecha_actividad}
+                            />
+                        </div>
 
-                <div className="input-group mb-3">
-                    <span className="input-group-text">Control de incidente</span>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Ingrese el control de incidente"
-                        id="control_incidente"
-                        name="control_incidente"
-                        onChange={handleChange}
-                        value={newActivity.control_incidente}
-                    />
-                </div>
+                        <div className="input-group mb-3">
+                            <span className="input-group-text">Control de incidente</span>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Ingrese el control de incidente"
+                                id="control_incidente"
+                                name="control_incidente"
+                                onChange={handleChange}
+                                value={newActivity.control_incidente}
+                            />
+                        </div>
 
-                <div className="input-group mb-3">
-                    <span className="input-group-text">Control de cambio COR</span>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Ingrese el control de cambio COR"
-                        id="control_cambio_cor"
-                        name="control_cambio_cor"
-                        onChange={handleChange}
-                        value={newActivity.control_cambio_cor}
-                    />
-                </div>
+                        <div className="input-group mb-3">
+                            <span className="input-group-text">Control de cambio COR</span>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Ingrese el control de cambio COR"
+                                id="control_cambio_cor"
+                                name="control_cambio_cor"
+                                onChange={handleChange}
+                                value={newActivity.control_cambio_cor}
+                            />
+                        </div>
 
-                <div className="input-group mb-3">
-                    <span className="input-group-text">Control de Cambio DCCE</span>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Ingrese el control de cambio DCCE"
-                        id="control_cambio_dcce"
-                        name="control_cambio_dcce"
-                        onChange={handleChange}
-                        value={newActivity.control_cambio_dcce}
-                    />
-                </div>
+                        <div className="input-group mb-3">
+                            <span className="input-group-text">Control de Cambio DCCE</span>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Ingrese el control de cambio DCCE"
+                                id="control_cambio_dcce"
+                                name="control_cambio_dcce"
+                                onChange={handleChange}
+                                value={newActivity.control_cambio_dcce}
+                            />
+                        </div>
 
-                <div className={`input-group mb-3 ${errors.tecnico_nombre_apellido ? 'error' : ''}`}>
-                    <span className="input-group-text">Tecnico Energia</span>
-                    <input type="text"
-                        className={`form-control ${errors.tecnico_nombre_apellido ? 'error' : ''}`}
-                        placeholder="Nombre y apellido"
-                        id="tecnico_nombre_apellido"
-                        name="tecnico_nombre_apellido"
-                        onChange={handleChange}
-                        value={newActivity.tecnico_nombre_apellido} />
-                </div>
+                        <div className={`input-group mb-3 ${errors.tecnico_nombre_apellido ? 'error' : ''}`}>
+                            <span className="input-group-text">Tecnico Energia</span>
+                            <input type="text"
+                                className={`form-control ${errors.tecnico_nombre_apellido ? 'error' : ''}`}
+                                placeholder="Nombre y apellido"
+                                id="tecnico_nombre_apellido"
+                                name="tecnico_nombre_apellido"
+                                onChange={handleChange}
+                                value={newActivity.tecnico_nombre_apellido} />
+                        </div>
 
-                <div className={`input-group mb-3 ${errors.personal_infra_nombre_apellido ? 'error' : ''}`}>
-                    <span className="input-group-text">Personal Infraestructura DCCE</span>
-                    <input
-                        className={`form-control ${errors.personal_infra_nombre_apellido ? 'error' : ''}`}
-                        placeholder="Nombre y Apellido"
-                        id="personal_infra_nombre_apellido"
-                        name="personal_infra_nombre_apellido"
-                        onChange={handleChange}
-                        value={newActivity.personal_infra_nombre_apellido} />
-                </div>
+                        <div className={`input-group mb-3 ${errors.personal_infra_nombre_apellido ? 'error' : ''}`}>
+                            <span className="input-group-text">Personal Infraestructura DCCE</span>
+                            <input
+                                className={`form-control ${errors.personal_infra_nombre_apellido ? 'error' : ''}`}
+                                placeholder="Nombre y Apellido"
+                                id="personal_infra_nombre_apellido"
+                                name="personal_infra_nombre_apellido"
+                                onChange={handleChange}
+                                value={newActivity.personal_infra_nombre_apellido} />
+                        </div>
 
-                <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon6">Actividad </span>
-                    <select
-                        className="form-select"
-                        id="actividad"
-                        name="actividad"
-                        onChange={handleChange}
-                        value={newActivity.actividad}
-                    >
-                        <option value="">Seleccionar Actividad</option>
-                        <option value="1"> Mantenimiento motognerador</option>
-                        <option value="1.1">Prueba con carga</option>
-                        <option value="1.2">Mantenimiento preventivo</option>
-                        <option value="2">Mantenimiento transfer</option>
-                        <option value="3">Mantenimiento tableros electronicos</option>
-                        <option value="4">Mantenimiento extratores</option>
-                        <option value="5">Mantenimiento baterias UPS</option>
-                        <option value="6">Mantenimiento transformadores</option>
-                        <option value="7">Mantenimiento A/A de precisión</option>
-                    </select>
-                </div>
+                        <div className="input-group mb-3">
+                            <span className="input-group-text" id="basic-addon6">Actividad </span>
+                            <select
+                                className="form-select"
+                                id="actividad"
+                                name="actividad"
+                                onChange={handleChange}
+                                value={newActivity.actividad}
+                            >
+                                <option value="">Seleccionar Actividad</option>
+                                <option value="1"> Mantenimiento motognerador</option>
+                                <option value="1.1">Prueba con carga</option>
+                                <option value="1.2">Mantenimiento preventivo</option>
+                                <option value="2">Mantenimiento transfer</option>
+                                <option value="3">Mantenimiento tableros electronicos</option>
+                                <option value="4">Mantenimiento extratores</option>
+                                <option value="5">Mantenimiento baterias UPS</option>
+                                <option value="6">Mantenimiento transformadores</option>
+                                <option value="7">Mantenimiento A/A de precisión</option>
+                            </select>
+                        </div>
 
-                <div className="input-group mb-3">
-                    <span className="input-group-text">Actividad Satisfactoria?</span>
-                    <div className="form-check form-check-inline">
-                        <input
-                            className="form-check-input"
-                            type="radio"
-                            id="actividad_satisfactoria_si"
-                            name="actividad_satisfactoria"
-                            value={true}
-                            checked={newActivity.actividad_satisfactoria === true}
-                            onChange={handleChange}
-                        />
-                        <label className="form-check-label" htmlFor="actividad_satisfactoria_si">
-                            Si
-                        </label>
+                        <div className="input-group mb-3 ">
+                            <span className="input-group-text">Actividad Satisfactoria?</span>
+                            <div className="form-check form-check-inline">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="actividad_satisfactoria_si"
+                                    name="actividad_satisfactoria"
+                                    value={true}
+                                    checked={newActivity.actividad_satisfactoria === true}
+                                    onChange={handleChange}
+                                />
+                                <label className="form-check-label" htmlFor="actividad_satisfactoria_si">
+                                    Si
+                                </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="actividad_satisfactoria_no"
+                                    name="actividad_satisfactoria"
+                                    value={false}
+                                    checked={newActivity.actividad_satisfactoria === false}
+                                    onChange={handleChange}
+                                />
+                                <label className="form-check-label" htmlFor="actividad_satisfactoria_no">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                        <div className="input-group mb-3">
+                            <span className="input-group-text" id="basic-addon6">Tipo de Mantenimiento </span>
+                            <select
+                                className="form-select"
+                                id="tipo_de_mantenimiento"
+                                name="tipo_de_mantenimiento"
+                                onChange={handleChange}
+                                value={newActivity.tipo_de_mantenimiento}
+                            >
+                                <option value="">Seleccionar Mantenimiento</option>
+                                <option value="Mantenimiento Preventivo"> Mantenimiento Preventivo</option>
+                                <option value="Mantenimiento Correctivo">Mantenimiento Correctivo</option>
+
+                            </select>
+                        </div>
+
+                        <div className="input-group mb-3">
+                            <span className="input-group-text">Observaciones</span>
+                            <textarea
+                                type="text"
+                                className="form-control"
+                                id="observaciones"
+                                name="observaciones"
+                                onChange={handleChange}
+                                value={newActivity.observaciones}
+                            ></textarea>
+                        </div>
+
+                        <button type="button" className="btn btn-primary" onClick={handleSave}>
+                            Guardar
+                        </button>
                     </div>
-                    <div className="form-check form-check-inline">
-                        <input
-                            className="form-check-input"
-                            type="radio"
-                            id="actividad_satisfactoria_no"
-                            name="actividad_satisfactoria"
-                            value={false}
-                            checked={newActivity.actividad_satisfactoria === false}
-                            onChange={handleChange}
-                        />
-                        <label className="form-check-label" htmlFor="actividad_satisfactoria_no">
-                            No
-                        </label>
+                    <div className="col-4 border border-danger">
+                        <div className="row d-flex justify-content-center">
+                            <button>Generar Planilla dia</button>
+                            <button>Generar Planilla mes</button>
+                        </div>
                     </div>
-                    <div className="input-group mb-3">
-                        <span className="input-group-text" id="basic-addon6">Tipo de Mantenimiento </span>
-                        <select
-                            className="form-select"
-                            id="tipo_de_mantenimiento"
-                            name="tipo_de_mantenimiento"
-                            onChange={handleChange}
-                            value={newActivity.tipo_de_mantenimiento}
-                        >
-                            <option value="">Seleccionar Mantenimiento</option>
-                            <option value="Mantenimiento Preventivo"> Mantenimiento Preventivo</option>
-                            <option value="Mantenimiento Correctivo">Mantenimiento Correctivo</option>
-
-                        </select>
-                    </div>
-                    <div className="input-group mb-3">
-                    <span className="input-group-text">Observaciones</span>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="observaciones"
-                        name="observaciones"
-                        onChange={handleChange}
-                        value={newActivity.observaciones}
-                    />
                 </div>
-                </div>
-                <button type="button" className="btn btn-primary" onClick={handleSave}>
-                    Guardar
-                </button>
             </div>
             <div className="mt-3">
-                <GraphActivities/>
+                <GraphActivities />
             </div>
         </>
     )

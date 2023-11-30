@@ -65,6 +65,9 @@ function Register() {
   return (
     <>
       <ToastContainer theme="dark" position="top-center" pauseOnFocusLoss={false} autoClose={3000} hideProgressBar />
+      <div className="section-title mt-3">
+                <h2>Registro Nuevo Personal</h2>
+            </div>
       <div className="container ls mt-4 ">
         <form >
           <div className="input-group mb-3">
