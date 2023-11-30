@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GraphActivities from "../component/GraphActivities.jsx";
+import ModalActivitiDay from "../component/ModalActivitiDay.jsx";
 
 function Activities() {
     const { store, actions } = useContext(Context)
@@ -277,7 +278,7 @@ function Activities() {
                     </div>
                     <div className="col-4 border border-danger">
                         <div className="row d-flex justify-content-center">
-                            <button>Generar Planilla dia</button>
+                            <ModalActivitiDay/>
                             <button>Generar Planilla mes</button>
                         </div>
                     </div>
