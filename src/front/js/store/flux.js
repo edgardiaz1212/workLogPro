@@ -1,7 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			token: localStorage.getItem("token") || null,
+			token:"",
 			user: JSON.parse(localStorage.getItem("user")) || [],
 			processedData: ""
 		},
@@ -51,7 +51,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							user: data.user,
 							token: data.token
 						});
-						localStorage.setItem("token", data.token)
+						
 						localStorage.setItem("user", JSON.stringify(data.user));
 						console.log("Inicio de sesión exitoso!!")
 					} else {
@@ -163,6 +163,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error al obtener años disponibles", error);
 					return [];
 				}
+			},
+			logout: () => {
+				localStorage.removeItem("userData")
+				setStore({ token: null, user: ""})
 			},
 		}
 	};
