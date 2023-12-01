@@ -41,6 +41,7 @@ class Activity(db.Model):
     actividad_satisfactoria = db.Column(db.Boolean, nullable=True)
     tipo_de_mantenimiento= db.Column(db.String(50))
     observaciones= db.Column(db.String(50))
+    create_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
     
     def __repr__(self):
         return f'<Activity {self.fecha_actividad} >'
@@ -57,5 +58,6 @@ class Activity(db.Model):
             "actividad": self.actividad,
             "actividad_satisfactoria": self.actividad_satisfactoria,
             "tipo_de_mantenimiento": self.tipo_de_mantenimiento,
-            "observaciones":self.observaciones
+            "observaciones":self.observaciones,
+            "created_at":self.create_at
         }

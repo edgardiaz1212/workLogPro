@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GraphActivities from "../component/GraphActivities.jsx";
 import ModalActivitiDay from "../component/ModalActivitiDay.jsx";
+import { Link } from "react-router-dom";
 
 function Activities() {
     const { store, actions } = useContext(Context)
@@ -277,16 +278,13 @@ function Activities() {
                         </button>
                     </div>
                     <div className="col-4 border border-danger">
-                        <div className="row d-flex justify-content-center">
-                            <ModalActivitiDay/>
-                            <button>Generar Planilla mes</button>
+                        <div className="row d-flex justify-content-center ">
+                            <Link  to="/historial-energia" className="m-3" >Ver historial</Link>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="mt-3">
-                <GraphActivities />
-            </div>
+
         </>
     )
 }

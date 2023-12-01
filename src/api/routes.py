@@ -190,3 +190,9 @@ def get_available_years():
     years = db.session.query(db.extract('year', Activity.fecha_actividad)).distinct().all()
     years_list = [year[0] for year in years]  # Convertir a lista
     return jsonify({"years": years_list})
+
+@api.route('/activities-day')
+@jwt_required()
+def get_activities_day():
+    activities_day = Activity.query.filter_by( fecha_actividad=date.today()).all()
+    return jsonify(activities_day)

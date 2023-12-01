@@ -14,6 +14,7 @@ import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 import Docs from "./pages/Docs.jsx";
 import Activities from "./pages/Activities.jsx";
+import GraphActivities from "./component/GraphActivities.jsx";
 
 //create your first component
 const Layout = () => {
@@ -37,6 +38,7 @@ const Layout = () => {
                         <Route element={<Login/>} path= '/login'/> 
                         <Route element={<Docs/>} path="/docs"/>
                         <Route element={<Activities/>} path="/activities"/>
+                        <Route element={<GraphActivities/>} path="/historial-energia" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>
