@@ -1,7 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			token:"",
+			token:localStorage.getItem("token") || null,
 			user: JSON.parse(localStorage.getItem("user")) || [],
 			processedData: ""
 		},
@@ -53,6 +53,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						});
 						
 						localStorage.setItem("user", JSON.stringify(data.user));
+						localStorage.setItem("token", data.token)
 						console.log("Inicio de sesión exitoso!!")
 					} else {
 						// Manejar errores, mostrar mensajes, etc.
