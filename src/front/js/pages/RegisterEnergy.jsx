@@ -276,9 +276,7 @@ function RegisterEnergy() {
                         </button>
                     </div>
                     <div className="col-4 border border-danger">
-                        <div className="row d-flex justify-content-center ">
-                            <Link  to="/historial-energia" className="m-3" >Ver historial</Link>
-                        </div>
+                       
                     </div>
                 </div>
             </div>

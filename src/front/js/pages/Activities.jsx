@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Bar } from "react-chartjs-2";
 import 'chart.js/auto';
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 const Activities = () => {
   const [chartData, setChartData] = useState({
@@ -72,9 +73,15 @@ const Activities = () => {
 
   return (
     <>
+    <div className="section-title mt-3">
+                <h2>Registro Actividades de la Gerencia de Energia</h2>
+            </div>
       <div className="container">
-        <h2>Gráfico de Actividades</h2>
-        <select onChange={(e) => handleYearChange(e.target.value)}>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <Link to="/registro-energia" className="btn btn-outline-primary" >Registra acá una Nueva Actividad</Link>
+        </div>
+        <h2 className="m-2">Gráfico de Actividades</h2>
+        <select className="m-3" onChange={(e) => handleYearChange(e.target.value)}>
           <option value="">Seleccionar Año</option>
           {availableYears.map((year) => (
             <option key={year} value={year}>
@@ -83,7 +90,7 @@ const Activities = () => {
           ))}
         </select>
 
-        <div className="border border-danger">
+        <div >
           <Bar
             data={chartData}
             options={{
