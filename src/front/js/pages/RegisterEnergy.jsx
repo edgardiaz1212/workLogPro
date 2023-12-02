@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function RegisterEnergy() {
     const { store, actions } = useContext(Context)
@@ -20,6 +20,7 @@ function RegisterEnergy() {
         observaciones: ""
     });
     // Estado para rastrear los errores
+    const navigate = useNavigate()
 
     const [errors, setErrors] = useState({
         fecha_actividad: false,
@@ -107,6 +108,9 @@ function RegisterEnergy() {
 
         }
     }
+    const goBack = () => {
+        navigate(-1);
+    };
 
     return (
         <>
@@ -270,13 +274,17 @@ function RegisterEnergy() {
                                 value={newActivity.observaciones}
                             ></textarea>
                         </div>
-
-                        <button type="button" className="btn btn-primary" onClick={handleSave}>
-                            Guardar
-                        </button>
+                        <div className="m-2">
+                            <button type="button" className="btn btn-primary" onClick={handleSave}>
+                                Guardar
+                            </button>
+                            <button type="button" className="btn btn-secondary ms-3" onClick={goBack}>
+                                Volver
+                            </button>
+                        </div>
                     </div>
                     <div className="col-4 border border-danger">
-                       
+
                     </div>
                 </div>
             </div>
