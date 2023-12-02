@@ -107,7 +107,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						// Devolver los datos procesados directamente
-						console.log("la",data)
+
 						return { activities: data.activities };
 					  } else {
 						console.error("Error al obtener actividades por año:", response.statusText);
