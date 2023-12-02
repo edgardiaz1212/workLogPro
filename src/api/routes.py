@@ -162,8 +162,13 @@ def get_activities_by_year(year):
         {
             "year":activity.fecha_actividad.year,
             "mes": activity.fecha_actividad.month,
+            "dia":activity.fecha_actividad.day,
             "actividad": activity.actividad,
-            "tipo_de_mantenimiento":activity.tipo_de_mantenimiento
+            "tipo_de_mantenimiento":activity.tipo_de_mantenimiento,
+            "tecnico_nombre_apellido":activity.tecnico_nombre_apellido,
+            "fecha_actividad": activity.fecha_actividad,
+            "actividad_satisfactoria": activity.actividad_satisfactoria,
+            "control_cambio_cor": activity.control_cambio_cor,
             # Agrega otros campos según sea necesario
         }
         for activity in activities
@@ -180,7 +185,8 @@ def get_activities_by_month(year, month):
 
     # Convertir actividades a un formato que puedas enviar al frontend
     activities_data = [{"fecha_actividad": activity.fecha_actividad,
-                        "tipo_de_mantenimiento": activity.tipo_de_mantenimiento} for activity in activities]
+                        "tipo_de_mantenimiento": activity.tipo_de_mantenimiento,
+                        } for activity in activities]
 
     return jsonify({"activities": activities_data})
 

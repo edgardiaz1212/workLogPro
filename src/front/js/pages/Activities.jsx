@@ -78,7 +78,7 @@ const Activities = () => {
                 <h2>Registro Actividades de la Gerencia de Energia</h2>
             </div>
             <div className="container">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <div className="d-grid gap-2 d-md-flex justify-content-md-end">
                     <Link to="/registro-energia" className="btn btn-outline-primary" >Registra acá una Nueva Actividad</Link>
                 </div>
                 <h2 className="m-2">Gráfico de Actividades</h2>
@@ -123,7 +123,7 @@ const Activities = () => {
                         }}
                     />
                 </div>
-                <EnergyTable/>
+                <EnergyTable selectedYear={selectedYear}/>
             </div>
         </>
     );
