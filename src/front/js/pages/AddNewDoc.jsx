@@ -8,6 +8,7 @@ const initialState = {
   document_type: '',
   document_version: '',
   document_unit: '',
+  document_file: null,
 };
 
 function AddNewDoc() {
@@ -24,21 +25,19 @@ function AddNewDoc() {
  // Función para manejar cambios en el campo de carga de archivos
  const handleFileChange = (e) => {
   const file = e.target.files[0];
-  setNewDoc({ ...newDoc, file });
+  setNewDoc({ ...newDoc, document_file: file });
 };
   // Función para manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Crear un objeto FormData para incluir el archivo en la solicitud
       const formData = new FormData();
-      formData.append('file', newDoc.document_file);
-      // Agregar los demás campos al FormData
-      formData.append('document_name', newDoc.document_name);
-      formData.append('document_type', newDoc.document_type);
-      formData.append('document_version', newDoc.document_version);
-      formData.append('document_unit', newDoc.document_unit);
+    formData.append('file', newDoc.document_file);
+    formData.append('document_name', newDoc.document_name);
+    formData.append('document_type', newDoc.document_type);
+    formData.append('document_version', newDoc.document_version);
+    formData.append('document_unit', newDoc.document_unit);
 
       // Realizar la solicitud para registrar el nuevo documento
       const response = await actions.addDocument(formData);
@@ -55,7 +54,7 @@ function AddNewDoc() {
         toast.error('Error al registrar el documento');
       }
     } catch (error) {
-      console.error('Error al registrar el documento:', error);
+      console.error('Error para registrar el documento:', error);
       // Mostrar mensaje de error en caso de una excepción
       toast.error('Error inesperado al registrar el documento');
     }

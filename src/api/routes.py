@@ -194,16 +194,9 @@ def get_available_years():
 @jwt_required()
 def add_document():
     if request.method == "POST":
-        data_form = request.form
-        file = request.files.get('file')  # Obtener el archivo de la solicitud
-
-
-        data = {
-            "document_name": data_form.get("document_name"),
-            "document_type": data_form.get("document_type"),
-            "document_version": data_form.get("document_version"),
-            "document_unit": data_form.get("document_unit"),
-        }
+        data = request.get_json()
+        file = request.files.get('document_file')  # Obtener el archivo de la solicitud
+      
 
         # Validación de parámetros
         missing_params = [param for param in ["document_name", "document_type", "document_version", "document_unit"]
