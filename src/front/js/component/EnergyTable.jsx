@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import ModalEnergy from "./ModalEnergy.jsx";
@@ -6,6 +5,7 @@ import ModalEnergy from "./ModalEnergy.jsx";
 const EnergyTable = ({ selectedYear }) => {
     const { store, actions } = useContext(Context);
     const [activities, setActivities] = useState([]);
+    const [selectedActivities, setSelectedActivities] = useState([]);
 
     useEffect(() => {
         // Llamar a la función de flux para obtener las actividades del año seleccionado
@@ -15,6 +15,7 @@ const EnergyTable = ({ selectedYear }) => {
                     const data = await actions.graphYear(selectedYear);
                     if (data.activities) {
                         setActivities(data.activities);
+                        console.log(data.activities)
                     } else {
                         console.error("Error al obtener actividades:", data.error);
                     }
@@ -26,6 +27,17 @@ const EnergyTable = ({ selectedYear }) => {
             fetchActivities();
         }
     }, [selectedYear, actions]);
+
+    const handleCheckboxChange = (activity) => {
+        const isSelected = selectedActivities.some((selected) => selected.id === activity.id);
+
+        if (isSelected) {
+            setSelectedActivities((prevSelected) => prevSelected.filter((selected) => selected.id !== activity.id));
+        } else {
+            setSelectedActivities((prevSelected) => [...prevSelected, activity]);
+        }
+    };
+    
 
     return (
         <div className="mt-5">
@@ -50,17 +62,22 @@ const EnergyTable = ({ selectedYear }) => {
                             <td>{activity.tipo_de_mantenimiento}</td>
                             <td>{activity.tecnico_nombre_apellido}</td>
                             <td>{activity.actividad_satisfactoria}</td>
-                            <td><div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-
-                            </div></td>
+                            <td>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        onChange={() => handleCheckboxChange(activity)}
+                                        checked={selectedActivities.some((selected) => selected.id === activity.id)}
+                                    />
+                                </div>
+                            </td>
                             {/* Agrega más celdas según sea necesario */}
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <ModalEnergy/>
-
+            <ModalEnergy selectedActivities={selectedActivities} />
         </div>
     );
 };

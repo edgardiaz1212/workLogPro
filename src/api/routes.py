@@ -169,6 +169,7 @@ def get_activities_by_year(year):
             "fecha_actividad": activity.fecha_actividad,
             "actividad_satisfactoria": activity.actividad_satisfactoria,
             "control_cambio_cor": activity.control_cambio_cor,
+            "id":activity.id,
             # Agrega otros campos según sea necesario
         }
         for activity in activities

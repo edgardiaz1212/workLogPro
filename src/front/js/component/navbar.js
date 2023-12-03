@@ -36,6 +36,7 @@ export const Navbar = () => {
                     <li className="dropdown">
                       <a href="/docs"><span>Documentos</span> <i className="bi bi-chevron-right"></i></a>
                       <ul>
+                        <li><a>Agregar Documentos</a></li>
                         <li><a href="#">Procedimientos</a></li>
                         <li><a href="#">Plantillas</a></li>
                         <li><a href="#">Normas</a></li>
