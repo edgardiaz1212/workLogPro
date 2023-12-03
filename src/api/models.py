@@ -67,8 +67,10 @@ class Documents(db.Model):
     document_type = db.Column(db.String(255), nullable=False)
     document_version = db.Column(db.String(255), nullable=False)
     document_unit=db.Column(db.String(255), nullable=False)
-
-    def seerialize(self):
+    document_file = db.Column(db.String(255), nullable=True)
+    create_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    
+    def serialize(self):
         return {
             "id": self.id,
             "document_name": self.document_name,

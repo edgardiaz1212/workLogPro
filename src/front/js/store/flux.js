@@ -118,31 +118,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					  return { error };
 					}
 				  },
-
-			graphMonth: async (year, month) => {
-				const store = getStore();
-
-				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/activities-by-month/${year}/${month}`, {
-						method: "GET",
-						headers: {
-							"Authorization": `Bearer ${store.token}`,
-						},
-					});
-
-					if (response.ok) {
-						const data = await response.json();
-
-
-						setGraphMonthData(data.activities);
-					} else {
-						console.error("Error al obtener actividades por mes", response.statusText);
-					}
-				} catch (error) {
-					console.error("Error al obtener actividad por mes", error);
-					return 500;
-				}
-			},
 			getYears: async () => {
 				const store = getStore();
 
@@ -169,7 +144,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logout: () => {
 				localStorage.removeItem("user");
 				setStore({ token: "", user: "" });
-			  }
+			},
+			addDocument:async(document)=>{
+				const store = getStore()
+				try {
+					let response = await fetch(`${process.env.BACKEND_URL}/documents`, {
+						method: "POST",
+						body: JSON.stringify(document), // Convierte el objeto a JSON
+						headers: {
+							"Content-Type": "application/json",
+						},
+					})
+
+					let data = await response.json()
+					if (!response.ok) {
+						console.error("Error registering Document:", data.msg || "Unknown error");
+					}
+					return data
+
+				} catch (error) {
+					console.log("Error registering Document:", error);
+					return 500;
+				}
+			},
 			  
 		}
 	};

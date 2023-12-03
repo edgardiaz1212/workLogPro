@@ -177,20 +177,6 @@ def get_activities_by_year(year):
 
     return jsonify({"activities": activities_data})
 
-@api.route('/activities-by-month/<int:year>/<int:month>', methods=['GET'])
-@jwt_required()
-def get_activities_by_month(year, month):
-    # Filtrar actividades por año y mes
-    activities = Activity.query.filter(db.extract('year', Activity.fecha_actividad) == year,
-                                       db.extract('month', Activity.fecha_actividad) == month).all()
-
-    # Convertir actividades a un formato que puedas enviar al frontend
-    activities_data = [{"fecha_actividad": activity.fecha_actividad,
-                        "tipo_de_mantenimiento": activity.tipo_de_mantenimiento,
-                        } for activity in activities]
-
-    return jsonify({"activities": activities_data})
-
 @api.route('/get-available-years', methods=['GET'])
 @jwt_required()
 def get_available_years():
@@ -198,8 +184,46 @@ def get_available_years():
     years_list = [year[0] for year in years]  # Convertir a lista
     return jsonify({"years": years_list})
 
-@api.route('/activities-day')
+@api.route('/documents', methods=['POST'])
 @jwt_required()
-def get_activities_day():
-    activities_day = Activity.query.filter_by( fecha_actividad=date.today()).all()
-    return jsonify(activities_day)
+def add_document():
+    if request.method == "POST":
+        data_form = request.form
+
+        data = {
+            "document_name": data_form.get("document_name"),
+            "document_type": data_form.get("document_type"),
+            "document_version": data_form.get("document_version"),
+            "document_unit": data_form.get("document_unit"),
+        }
+
+        # Validación de parámetros
+        missing_params = [param for param in ["document_name", "document_type", "document_version", "document_unit"]
+                          if data.get(param) is None]
+
+        if missing_params:
+            return jsonify({"msg": f"Missing parameters: {', '.join(missing_params)}"}), 400
+
+  # Verificar si el documento ya existe
+        document = Documents.query.filter_by(document_name=data.get("document_name")).first()
+
+        if document is not None and document.document_version == data.get("document_version"):
+            return jsonify({"msg": "Document version already registered"}), 400
+
+        new_document = Documents(
+            document_name=data.get("document_name"),
+            document_type=data.get("document_type"),
+            document_version=data.get("document_version"),
+            document_unit=data.get("document_unit"),
+        )
+
+        db.session.add(new_document)
+        try:
+            db.session.commit()
+            return jsonify({"msg": "Document successfully registered"}), 201
+        except Exception as error:
+            db.session.rollback()
+            return jsonify({"msg": "Error registering Document", "error": str(error)}), 500
+        return jsonify([]), 200
+
+    return jsonify(response_body), 200
