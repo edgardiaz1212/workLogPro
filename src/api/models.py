@@ -61,3 +61,19 @@ class Activity(db.Model):
             "observaciones":self.observaciones,
             "created_at":self.create_at
         }
+class Documents(db.Model):
+    id =db.Column(db.Integer, primary_key=True)
+    document_name = db.Column(db.String(255), nullable=False)
+    document_type = db.Column(db.String(255), nullable=False)
+    document_version = db.Column(db.String(255), nullable=False)
+    document_unit=db.Column(db.String(255), nullable=False)
+
+    def seerialize(self):
+        return {
+            "id": self.id,
+            "document_name": self.document_name,
+            "document_type": self.document_type,
+            "document_version": self.document_version,
+            "document_unit": self.document_unit,
+            "created_at":self.create_at
+        }
