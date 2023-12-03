@@ -153,6 +153,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify(document), // Convierte el objeto a JSON
 						headers: {
 							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`,
 						},
 					})
 

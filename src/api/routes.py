@@ -1,15 +1,22 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from api.models import db, User, Activity
 from api.utils import generate_sitemap, APIException
 from base64 import b64encode
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from werkzeug.utils import secure_filename
+
+ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xlsx'}  # Extensiones permitidas para los archivos
 
 api = Blueprint('api', __name__)
+
+def allowed_file(filename): 
+     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 
 def set_password(password, salt):
@@ -18,7 +25,6 @@ def set_password(password, salt):
 
 def check_password(hash_password, password, salt):
     return check_password_hash(hash_password, f"{password}{salt}")
-
 
 @api.route('/user', methods=['POST'])
 def register_user():
@@ -189,6 +195,8 @@ def get_available_years():
 def add_document():
     if request.method == "POST":
         data_form = request.form
+        file = request.files.get('file')  # Obtener el archivo de la solicitud
+
 
         data = {
             "document_name": data_form.get("document_name"),
@@ -203,6 +211,9 @@ def add_document():
 
         if missing_params:
             return jsonify({"msg": f"Missing parameters: {', '.join(missing_params)}"}), 400
+        
+        if missing_params or file is None or not allowed_file(file.filename):
+            return jsonify({"msg": "Invalid parameters or file missing or invalid file format"}), 400
 
   # Verificar si el documento ya existe
         document = Documents.query.filter_by(document_name=data.get("document_name")).first()
@@ -210,11 +221,17 @@ def add_document():
         if document is not None and document.document_version == data.get("document_version"):
             return jsonify({"msg": "Document version already registered"}), 400
 
+# Guardar el archivo en el sistema de archivos
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+
         new_document = Documents(
             document_name=data.get("document_name"),
             document_type=data.get("document_type"),
             document_version=data.get("document_version"),
             document_unit=data.get("document_unit"),
+            document_file=file_path  # Almacenar la ruta del archivo en la base de datos
         )
 
         db.session.add(new_document)
