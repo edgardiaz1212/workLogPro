@@ -29,7 +29,7 @@ function Login() {
           progress: undefined,
           theme: "colored"
         });
-        console.log("Inicio de sesión exitoso")
+        
         setTimeout(() => {
           navigate("/")
         }, 2000)
