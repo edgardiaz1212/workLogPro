@@ -195,12 +195,11 @@ def get_available_years():
 def add_document():
     if request.method == "POST":
         data = request.get_json()
-        file = request.files.get('document_file')  # Obtener el archivo de la solicitud
-      
+        file = request.files.get('file')  # Obtener el archivo de la solicitud
 
         # Validación de parámetros
         missing_params = [param for param in ["document_name", "document_type", "document_version", "document_unit"]
-                          if data.get(param) is None]
+                          if not data.get(param)]
 
         if missing_params:
             return jsonify({"msg": f"Missing parameters: {', '.join(missing_params)}"}), 400

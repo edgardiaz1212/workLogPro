@@ -26,19 +26,21 @@ function AddNewDoc() {
  const handleFileChange = (e) => {
   const file = e.target.files[0];
   setNewDoc({ ...newDoc, document_file: file });
+  console.log(setNewDoc)
 };
   // Función para manejar el envío del formulario
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+   
 
     try {
       const formData = new FormData();
-    formData.append('file', newDoc.document_file);
+    formData.append('document_file', newDoc.document_file);
     formData.append('document_name', newDoc.document_name);
     formData.append('document_type', newDoc.document_type);
     formData.append('document_version', newDoc.document_version);
     formData.append('document_unit', newDoc.document_unit);
 
+    
       // Realizar la solicitud para registrar el nuevo documento
       const response = await actions.addDocument(formData);
 
