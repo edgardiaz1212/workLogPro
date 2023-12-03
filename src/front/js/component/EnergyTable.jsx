@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
+import ModalEnergy from "./ModalEnergy.jsx";
 
 const EnergyTable = ({ selectedYear }) => {
     const { store, actions } = useContext(Context);
@@ -58,7 +59,7 @@ const EnergyTable = ({ selectedYear }) => {
                     ))}
                 </tbody>
             </table>
-            <button className="btn btn-primary">Crear planilla de seleccionados</button>
+            <ModalEnergy/>
 
         </div>
     );
