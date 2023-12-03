@@ -15,6 +15,7 @@ import Login from "./pages/Login.jsx";
 import Docs from "./pages/Docs.jsx";
 import Activities from "./pages/Activities.jsx";
 import RegisterEnergy from "./pages/RegisterEnergy.jsx";
+import AddNewDoc from "./pages/AddNewDoc.jsx";
 
 
 //create your first component
@@ -23,7 +24,7 @@ const Layout = () => {
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
 
-    if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
+    if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
         <div>
@@ -35,11 +36,12 @@ const Layout = () => {
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} />
-                        <Route element={<Register/>} path= "/register"/>
-                        <Route element={<Login/>} path= '/login'/> 
-                        <Route element={<Docs/>} path="/docs"/>
-                        <Route element={<Activities/>} path="/activities"/>
-                       <Route element={<RegisterEnergy/>} path="/registro-energia"/>
+                        <Route element={<Register />} path="/register" />
+                        <Route element={<Login />} path='/login' />
+                        <Route element={<Docs />} path="/docs" />
+                        <Route element={<Activities />} path="/activities" />
+                        <Route element={<RegisterEnergy />} path="/registro-energia" />
+                        <Route element={<AddNewDoc />} path="/new-doc" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

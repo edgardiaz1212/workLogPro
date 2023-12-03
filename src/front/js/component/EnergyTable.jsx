@@ -61,7 +61,7 @@ const EnergyTable = ({ selectedYear }) => {
                             <td>{activity.actividad}</td>
                             <td>{activity.tipo_de_mantenimiento}</td>
                             <td>{activity.tecnico_nombre_apellido}</td>
-                            <td>{activity.actividad_satisfactoria}</td>
+                            <td>{activity.actividad_satisfactoria ? 'Sí' : 'No'}</td>
                             <td>
                                 <div className="form-check">
                                     <input
