@@ -47,7 +47,7 @@ export const Navbar = () => {
                     <li><a href="/register">Agregar Personal</a></li>
                   </ul>
                 </li>
-                 <li><a className="nav-link scrollto" href="/">Perfil</a></li>
+                 <li><a className="nav-link scrollto" href="/profile">Perfil</a></li>
                  </>
               )}
               <li><a className="nav-link scrollto" href="#contact">Contacto</a></li>

@@ -16,6 +16,7 @@ import Docs from "./pages/Docs.jsx";
 import Activities from "./pages/Activities.jsx";
 import RegisterEnergy from "./pages/RegisterEnergy.jsx";
 import AddNewDoc from "./pages/AddNewDoc.jsx";
+import Profile from "./pages/Profile.jsx";
 
 
 //create your first component
@@ -42,6 +43,7 @@ const Layout = () => {
                         <Route element={<Activities />} path="/activities" />
                         <Route element={<RegisterEnergy />} path="/registro-energia" />
                         <Route element={<AddNewDoc />} path="/new-doc" />
+                        <Route element={<Profile/>} path="/profile"/>
                     </Routes>
                     <Footer />
                 </ScrollToTop>
