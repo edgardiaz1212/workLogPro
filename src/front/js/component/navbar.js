@@ -28,7 +28,7 @@ export const Navbar = () => {
               <li><a className="nav-link scrollto" href="/#cta">Solicitudes Colocacion</a></li>
 
               <li><a className="nav-link scrollto" href="#team">Equipo</a></li>
-              {isUserAuthenticated && (
+              {isUserAuthenticated && (<>
                 <li className="dropdown">
                   <a href="#"><span>Actividades</span> <i className="bi bi-chevron-down"></i></a>
                   <ul>
@@ -47,6 +47,8 @@ export const Navbar = () => {
                     <li><a href="/register">Agregar Personal</a></li>
                   </ul>
                 </li>
+                 <li><a className="nav-link scrollto" href="/">Perfil</a></li>
+                 </>
               )}
               <li><a className="nav-link scrollto" href="#contact">Contacto</a></li>
               <li><a className="nav-link scrollto" href="/">OpenDCIM</a></li>
