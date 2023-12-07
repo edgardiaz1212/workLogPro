@@ -41,7 +41,7 @@ const EnergyTable = ({ selectedYear }) => {
 
     return (
         <div className="mt-5">
-            <h2>Tabla de Actividades</h2>
+            <h2>Tabla de Mantenimientos</h2>
             <table className="table">
                 <thead>
                     <tr>

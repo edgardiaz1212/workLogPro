@@ -159,12 +159,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					let data = await response.json()
 					if (!response.ok) {
-						console.error("Error registering Document:", data.msg || "Unknown error");
+						console.error("Error Registering Document:", data.msg || "Unknown error");
 					}
 					return data
 
 				} catch (error) {
-					console.log("Error registering Document:", error);
+					console.log("Error registering document:", error);
 					return 500;
 				}
 			},

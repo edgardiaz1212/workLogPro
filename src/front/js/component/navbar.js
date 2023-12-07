@@ -43,7 +43,8 @@ export const Navbar = () => {
                         <li><a href="#">De otras Gerencias</a></li>
                       </ul>
                     </li>
-                    <li><a href="/activities">Registro Actividad Energia</a></li>
+                    <li><a href="/activities">Registro Mantenimientos Energia</a></li>
+                    <li><a href="/activities">Registro Temperaturas</a></li>
                     <li><a href="/register">Agregar Personal</a></li>
                   </ul>
                 </li>

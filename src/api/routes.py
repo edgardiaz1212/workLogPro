@@ -10,9 +10,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
 
-ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xlsx'}  # Extensiones permitidas para los archivos
 
 api = Blueprint('api', __name__)
+
+ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xlsx'}  # Extensiones permitidas para los archivos
 
 def allowed_file(filename): 
      return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -193,46 +194,50 @@ def get_available_years():
 @api.route('/documents', methods=['POST'])
 @jwt_required()
 def add_document():
-    if request.method == "POST":
-        data = request.get_json()
-        file = request.files.get('file')  # Obtener el archivo de la solicitud
+    
+    try:
+        document_name = request.form.get("document_name")
+        document_type = request.form.get("document_type")
+        document_version = request.form.get("document_version")
+        document_unit = request.form.get("document_unit")
 
         # Validación de parámetros
-        missing_params = [param for param in ["document_name", "document_type", "document_version", "document_unit"]
-                          if not data.get(param)]
+        if not all([document_name, document_type, document_version, document_unit]):
+            return jsonify({"msg": "Missing parameters"}), 400
 
-        if missing_params:
-            return jsonify({"msg": f"Missing parameters: {', '.join(missing_params)}"}), 400
-        
-        if missing_params or file is None or not allowed_file(file.filename):
-            return jsonify({"msg": "Invalid parameters or file missing or invalid file format"}), 400
+        # Verificar si el documento ya existe
+        document = Documents.query.filter_by(document_name=document_name).first()
 
-  # Verificar si el documento ya existe
-        document = Documents.query.filter_by(document_name=data.get("document_name")).first()
-
-        if document is not None and document.document_version == data.get("document_version"):
+        if document is not None and document.document_version == document_version:
             return jsonify({"msg": "Document version already registered"}), 400
 
-# Guardar el archivo en el sistema de archivos
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
+        # Obtener el archivo de la solicitud
+        file = request.files.get("document_file")
 
+        if file and allowed_file(file.filename):
+            # Guardar el archivo en el sistema de archivos
+            filename = secure_filename(file.filename)
+            file_path = os.path.join("uploads", filename)
+            file.save(file_path)
+        else:
+            return jsonify({"msg": "Invalid file or file format"}), 400
+
+        # Guardar la información en la base de datos
         new_document = Documents(
-            document_name=data.get("document_name"),
-            document_type=data.get("document_type"),
-            document_version=data.get("document_version"),
-            document_unit=data.get("document_unit"),
-            document_file=file_path  # Almacenar la ruta del archivo en la base de datos
+            document_name=document_name,
+            document_type=document_type,
+            document_version=document_version,
+            document_unit=document_unit,
+            document_file=file_path,
+            
         )
 
         db.session.add(new_document)
-        try:
-            db.session.commit()
-            return jsonify({"msg": "Document successfully registered"}), 201
-        except Exception as error:
-            db.session.rollback()
-            return jsonify({"msg": "Error registering Document", "error": str(error)}), 500
-        return jsonify([]), 200
+        db.session.commit()
 
-    return jsonify(response_body), 200
+        return jsonify({"msg": "Document successfully registered"}), 201
+
+    except Exception as error:
+        db.session.rollback()
+        return jsonify({"msg": f"Error registering Document: {str(error)}"}), 500
+

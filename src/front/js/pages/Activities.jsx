@@ -75,13 +75,13 @@ const Activities = () => {
     return (
         <>
             <div className="section-title mt-3">
-                <h2>Registro Actividades de la Gerencia de Energia</h2>
+                <h2>Registro de Mantenimientos de la Gerencia de Energia</h2>
             </div>
             <div className="container">
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end">
                     <Link to="/registro-energia" className="btn btn-outline-primary" >Registra acá una Nueva Actividad</Link>
                 </div>
-                <h2 className="m-2">Gráfico de Actividades</h2>
+                <h2 className="m-2">Gráfico de Mantenimientos</h2>
                 <select className="m-3" onChange={(e) => handleYearChange(e.target.value)}>
                     <option value="">Seleccionar Año</option>
                     {availableYears.map((year) => (
