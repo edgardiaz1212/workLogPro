@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import ModalEnergy from "./ModalEnergy.jsx";
 
 const EnergyTable = ({ selectedYear }) => {
     const { store, actions } = useContext(Context);
     const [activities, setActivities] = useState([]);
-    const [selectedActivities, setSelectedActivities] = useState([]);
+    const [selectedActivityForEvidence, setSelectedActivityForEvidence] = useState(null);
+    const [selectedActivityForView, setSelectedActivityForView] = useState(null);
 
     useEffect(() => {
         // Llamar a la función de flux para obtener las actividades del año seleccionado
@@ -15,7 +15,6 @@ const EnergyTable = ({ selectedYear }) => {
                     const data = await actions.graphYear(selectedYear);
                     if (data.activities) {
                         setActivities(data.activities);
-                        console.log(data.activities)
                     } else {
                         console.error("Error al obtener actividades:", data.error);
                     }
@@ -28,16 +27,17 @@ const EnergyTable = ({ selectedYear }) => {
         }
     }, [selectedYear, actions]);
 
-    const handleCheckboxChange = (activity) => {
-        const isSelected = selectedActivities.some((selected) => selected.id === activity.id);
-
-        if (isSelected) {
-            setSelectedActivities((prevSelected) => prevSelected.filter((selected) => selected.id !== activity.id));
-        } else {
-            setSelectedActivities((prevSelected) => [...prevSelected, activity]);
-        }
+    const handleSubirEvidencia = (activity) => {
+        // Lógica para subir evidencia, puedes abrir un modal o redirigir a una página de subir evidencia
+        setSelectedActivityForEvidence(activity);
+        // Aquí puedes realizar la acción correspondiente
     };
-    
+
+    const handleVer = (activity) => {
+        // Lógica para ver detalles, puedes abrir un modal o redirigir a una página de detalles
+        setSelectedActivityForView(activity);
+        // Aquí puedes realizar la acción correspondiente
+    };
 
     return (
         <div className="mt-5">
@@ -50,7 +50,7 @@ const EnergyTable = ({ selectedYear }) => {
                         <th>Tipo de Mantenimiento</th>
                         <th>Técnico energía</th>
                         <th>Actividad satisfactoria</th>
-                        <th>Seleccion</th>
+                        <th>Acciones</th>
                         {/* Agrega más columnas según sea necesario */}
                     </tr>
                 </thead>
@@ -63,13 +63,21 @@ const EnergyTable = ({ selectedYear }) => {
                             <td>{activity.tecnico_nombre_apellido}</td>
                             <td>{activity.actividad_satisfactoria ? 'Sí' : 'No'}</td>
                             <td>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        onChange={() => handleCheckboxChange(activity)}
-                                        checked={selectedActivities.some((selected) => selected.id === activity.id)}
-                                    />
+                                <div className="btn-group" role="group" aria-label="Acciones">
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary"
+                                        onClick={() => handleSubirEvidencia(activity)}
+                                    >
+                                        Subir Evidencia
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-info"
+                                        onClick={() => handleVer(activity)}
+                                    >
+                                        Ver
+                                    </button>
                                 </div>
                             </td>
                             {/* Agrega más celdas según sea necesario */}
@@ -77,7 +85,6 @@ const EnergyTable = ({ selectedYear }) => {
                     ))}
                 </tbody>
             </table>
-            <ModalEnergy selectedActivities={selectedActivities} />
         </div>
     );
 };
