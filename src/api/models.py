@@ -80,3 +80,22 @@ class Documents(db.Model):
             "created_at":self.create_at
         }
         
+class MaintenanceEvidence(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'), nullable=False)
+    evidence_file = db.Column(db.LargeBinary, nullable=False)
+    create_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
+
+    # Relación con la tabla Activity
+    activity = db.relationship('Activity', backref=db.backref('maintenance_evidences', lazy=True))
+
+    def __repr__(self):
+        return f'<MaintenanceEvidence {self.create_at}>'
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "activity_id": self.activity_id,
+            "create_at": self.create_at,
+            # Puedes agregar más campos según sea necesario
+        }
