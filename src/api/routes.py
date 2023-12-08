@@ -280,3 +280,55 @@ def add_maintenance_evidence(activity_id):
     except Exception as error:
         db.session.rollback()
         return jsonify({"msg": f"Error adding maintenance evidence: {str(error)}"}), 500
+    
+@api.route('/user/profile', methods=['GET'])
+@jwt_required()
+def get_user_profile():
+    try:
+        # Obtener el ID del usuario desde el token
+        user_id = get_jwt_identity()
+
+        # Buscar al usuario en la base de datos por su ID
+        user = User.query.filter_by(id=user_id).first()
+
+        if user:
+            # Devolver los datos del perfil del usuario
+            return jsonify(user.serialize()), 200
+        else:
+            return jsonify({"msg": "User not found"}), 404
+
+    except Exception as error:
+        return jsonify({"msg": f"Error getting user profile: {str(error)}"}), 500
+    
+@api.route('/user/profile', methods=['PUT'])
+@jwt_required()
+def update_user_profile():
+    try:
+        # Obtener el ID del usuario desde el token
+        user_id = get_jwt_identity()
+
+        # Buscar al usuario en la base de datos por su ID
+        user = User.query.filter_by(id=user_id).first()
+
+        if user:
+            # Actualizar los campos del usuario según los datos proporcionados en la solicitud
+            data = request.json
+            user.name = data.get("name", user.name)
+            user.surname = data.get("surname", user.surname)
+            user.unit = data.get("unit", user.unit)
+            user.emailDCH = data.get("emailDCH", user.emailDCH)
+            user.jobPosition = data.get("jobPosition", user.jobPosition)
+            user.description = data.get("description", user.description)
+
+            # Guardar los cambios en la base de datos
+            db.session.commit()
+
+            # Devolver una respuesta exitosa
+            return jsonify({"msg": "User profile updated successfully"}), 200
+        else:
+            return jsonify({"msg": "User not found"}), 404
+
+    except Exception as error:
+        # En caso de error, realizar un rollback y devolver un mensaje de error
+        db.session.rollback()
+        return jsonify({"msg": f"Error updating user profile: {str(error)}"}), 500    

@@ -1,5 +1,6 @@
 // ModalEvidenceEnergy.jsx
-import React, { useContext } from 'react';
+import React, { useState ,useContext } from 'react';
+import { Context } from "../store/appContext";
 
 
 function ModalEvidenceEnergy({ selectedActivity, activitiesWithSameDate, onClose, onGenerate, handleGeneratePlanilla, activity }) {
@@ -11,7 +12,7 @@ function ModalEvidenceEnergy({ selectedActivity, activitiesWithSameDate, onClose
         // Asegúrate de que formData incluya el archivo y otros datos necesarios
         const formData = new FormData();
         formData.append("evidence_file", file);  // Asegúrate de tener la referencia correcta al archivo
-        formData.append("other_data", otherData);  // Añade otros datos necesarios
+       
 
         // Llama a la acción para agregar la evidencia
         const response = await actions.addMaintenanceEvidence(selectedActivity.id, formData);
