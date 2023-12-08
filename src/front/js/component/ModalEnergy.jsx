@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ModalEnergy({ selectedActivities }) {
+function ModalEnergy() {
     return (
         <>
             <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -15,19 +15,13 @@ function ModalEnergy({ selectedActivities }) {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            {selectedActivities.length > 0 ? (
-                                <ul>
-                                    {selectedActivities.map((activity) => (
-                                        <li key={activity.id}>{`${activity.year}-${activity.mes}-${activity.dia}, Actividad: ${activity.actividad}`}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>No se han seleccionado actividades</p>
-                            )}
+                            
+                                <p>Lista</p>
+                            
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" className="btn btn-primary">Generar</button>
+                            <button type="button" className="btn btn-primary">Guardar</button>
                         </div>
                     </div>
                 </div>

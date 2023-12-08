@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
+import ModalEvidenceEnergy from "./ModalEvidenceEnergy.jsx";
 
 const EnergyTable = ({ selectedYear }) => {
     const { store, actions } = useContext(Context);
     const [activities, setActivities] = useState([]);
-    const [selectedActivityForEvidence, setSelectedActivityForEvidence] = useState(null);
-    const [selectedActivityForView, setSelectedActivityForView] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const [selectedActivity, setSelectedActivity] = useState(null);
+    const [activitiesWithSameDate, setActivitiesWithSameDate] = useState([]);
 
     useEffect(() => {
         // Llamar a la función de flux para obtener las actividades del año seleccionado
@@ -27,16 +30,26 @@ const EnergyTable = ({ selectedYear }) => {
         }
     }, [selectedYear, actions]);
 
-    const handleSubirEvidencia = (activity) => {
-        // Lógica para subir evidencia, puedes abrir un modal o redirigir a una página de subir evidencia
-        setSelectedActivityForEvidence(activity);
-        // Aquí puedes realizar la acción correspondiente
+    const handleGeneratePlanilla = (activity) => {
+        // Obtener actividades con la misma fecha
+        const activitiesWithSameDate = activities.filter(
+            (otherActivity) =>
+                otherActivity.year === activity.year &&
+                otherActivity.mes === activity.mes &&
+                otherActivity.dia === activity.dia &&
+                otherActivity.id !== activity.id
+        );
+
+        // Abrir el modal y pasar la actividad y las actividades con la misma fecha
+        setSelectedActivity(activity);
+        setActivitiesWithSameDate(activitiesWithSameDate);
+        setModalOpen(true);
     };
 
-    const handleVer = (activity) => {
-        // Lógica para ver detalles, puedes abrir un modal o redirigir a una página de detalles
-        setSelectedActivityForView(activity);
-        // Aquí puedes realizar la acción correspondiente
+    const handleCloseModal = () => {
+        setSelectedActivity(null);
+        setActivitiesWithSameDate([]);
+        setModalOpen(false);
     };
 
     return (
@@ -51,7 +64,6 @@ const EnergyTable = ({ selectedYear }) => {
                         <th>Técnico energía</th>
                         <th>Actividad satisfactoria</th>
                         <th>Acciones</th>
-                        {/* Agrega más columnas según sea necesario */}
                     </tr>
                 </thead>
                 <tbody>
@@ -64,23 +76,19 @@ const EnergyTable = ({ selectedYear }) => {
                             <td>{activity.actividad_satisfactoria ? 'Sí' : 'No'}</td>
                             <td>
                                 <div className="btn-group" role="group" aria-label="Acciones">
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary"
-                                        onClick={() => handleSubirEvidencia(activity)}
-                                    >
-                                        Subir Evidencia
-                                    </button>
+                                    <ModalEvidenceEnergy
+                                        onClose={handleCloseModal}
+                                        onGenerate={() => handleGeneratePlanilla(activity)}
+                                    />
                                     <button
                                         type="button"
                                         className="btn btn-info"
-                                        onClick={() => handleVer(activity)}
+                                        onClick={() => handleGeneratePlanilla(activity)}
                                     >
                                         Ver
                                     </button>
                                 </div>
                             </td>
-                            {/* Agrega más celdas según sea necesario */}
                         </tr>
                     ))}
                 </tbody>
