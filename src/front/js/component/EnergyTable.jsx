@@ -5,10 +5,9 @@ import ModalEvidenceEnergy from "./ModalEvidenceEnergy.jsx";
 const EnergyTable = ({ selectedYear }) => {
     const { store, actions } = useContext(Context);
     const [activities, setActivities] = useState([]);
-    const [modalOpen, setModalOpen] = useState(false);
-
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [activitiesWithSameDate, setActivitiesWithSameDate] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         // Llamar a la función de flux para obtener las actividades del año seleccionado
@@ -43,13 +42,13 @@ const EnergyTable = ({ selectedYear }) => {
         // Abrir el modal y pasar la actividad y las actividades con la misma fecha
         setSelectedActivity(activity);
         setActivitiesWithSameDate(activitiesWithSameDate);
-        setModalOpen(true);
+        setOpenModal(true);
     };
 
     const handleCloseModal = () => {
         setSelectedActivity(null);
         setActivitiesWithSameDate([]);
-        setModalOpen(false);
+        setOpenModal(false);
     };
 
     return (
@@ -76,10 +75,18 @@ const EnergyTable = ({ selectedYear }) => {
                             <td>{activity.actividad_satisfactoria ? 'Sí' : 'No'}</td>
                             <td>
                                 <div className="btn-group" role="group" aria-label="Acciones">
+                                    
                                     <ModalEvidenceEnergy
-                                        onClose={handleCloseModal}
-                                        onGenerate={() => handleGeneratePlanilla(activity)}
-                                    />
+                                            selectedActivity={selectedActivity}
+                                            activity={activity}
+                                            handleGeneratePlanilla={handleGeneratePlanilla}
+                                            activitiesWithSameDate={activitiesWithSameDate}
+                                            onClose={handleCloseModal}
+                                            onGenerate={() => {
+                                                // Lógica para manejar la generación de planilla
+                                                handleCloseModal();
+                                            }}
+                                        />
                                     <button
                                         type="button"
                                         className="btn btn-info"
@@ -87,6 +94,7 @@ const EnergyTable = ({ selectedYear }) => {
                                     >
                                         Ver
                                     </button>
+                                  
                                 </div>
                             </td>
                         </tr>

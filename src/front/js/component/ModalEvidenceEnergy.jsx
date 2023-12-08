@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+// ModalEvidenceEnergy.jsx
+import React from 'react';
 
-function ModalEvidenceEnergy({ onClose, onGenerate }) {
-    const [selectedActivity, setSelectedActivity] = useState(null);
-    const [activitiesWithSameDate, setActivitiesWithSameDate] = useState([]);
-
+function ModalEvidenceEnergy({ selectedActivity, activitiesWithSameDate, onClose, onGenerate,handleGeneratePlanilla, activity }) {
     const handleGenerate = () => {
         // Aquí puedes usar selectedActivity y activitiesWithSameDate según sea necesario
-        onGenerate(selectedActivity, activitiesWithSameDate);
+        onGenerate();
         onClose();
     };
 
     return (
         <>
-            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Cargar Planilla
+            <button type="button" 
+            className="btn btn-primary" 
+            data-bs-toggle="modal" 
+            data-bs-target="#exampleModal"
+            onClick={() => handleGeneratePlanilla(activity)}>
+                Cargar Planilla1
             </button>
 
             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -26,12 +28,12 @@ function ModalEvidenceEnergy({ onClose, onGenerate }) {
                         <div className="modal-body">
                             <p>Fecha y mantenimiento del elemento seleccionado: {`${selectedActivity?.year}-${selectedActivity?.mes}-${selectedActivity?.dia}`} - {selectedActivity?.actividad}</p>
                             <div className="mb-3">
-                                <label htmlFor="formFile" className="form-label">Ejemplo de entrada de archivo predeterminado</label>
+                                <label htmlFor="formFile" className="form-label">Anexar planilla</label>
                                 <input className="form-control" type="file" id="formFile" />
                             </div>
                             {activitiesWithSameDate.length > 0 && (
                                 <>
-                                    <p>Registros con la misma fecha:</p>
+                                    <p>Anadir registros con la misma fecha:</p>
                                     <ul className="list-group">
                                         {activitiesWithSameDate.map((otherActivity) => (
                                             <li key={otherActivity.id} className="list-group-item">
