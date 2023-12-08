@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User, Activity
+from api.models import db, User, Activity, MaintenanceEvidence
 from api.utils import generate_sitemap, APIException
 from base64 import b64encode
 import os
@@ -241,3 +241,42 @@ def add_document():
         db.session.rollback()
         return jsonify({"msg": f"Error registering Document: {str(error)}"}), 500
 
+@api.route('/add-maintenance-evidence/<int:activity_id>', methods=['POST'])
+@jwt_required()
+def add_maintenance_evidence(activity_id):
+    try:
+        # Obtener la actividad asociada al ID proporcionado
+        activity = Activity.query.get(activity_id)
+
+        if not activity:
+            return jsonify({"msg": "Activity not found"}), 404
+
+        # Verificar si el usuario tiene permisos para agregar evidencia a esta actividad (puedes personalizar esto según tus necesidades)
+        # Por ejemplo, puedes verificar si el usuario que intenta agregar evidencia es el mismo que creó la actividad.
+
+        # Obtener el archivo de la solicitud
+        file = request.files.get("evidence_file")
+
+        if file and allowed_file(file.filename):
+            # Guardar el archivo en el sistema de archivos
+            filename = secure_filename(file.filename)
+            file_path = os.path.join("uploads", filename)
+            file.save(file_path)
+        else:
+            return jsonify({"msg": "Invalid file or file format"}), 400
+
+        # Crear una nueva instancia de MaintenanceEvidence y asociarla a la actividad
+        new_evidence = MaintenanceEvidence(
+            activity_id=activity.id,
+            evidence_file=file_path
+        )
+
+        # Agregar la nueva evidencia a la base de datos
+        db.session.add(new_evidence)
+        db.session.commit()
+
+        return jsonify({"msg": "Maintenance evidence added successfully"}), 201
+
+    except Exception as error:
+        db.session.rollback()
+        return jsonify({"msg": f"Error adding maintenance evidence: {str(error)}"}), 500

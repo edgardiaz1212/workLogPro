@@ -145,6 +145,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem("user");
 				setStore({ token: "", user: "" });
 			},
+
 			addDocument:async(document)=>{
 				const store = getStore()
 				try {
@@ -168,7 +169,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return 500;
 				}
 			},
-			  
+			
+			addMaintenanceEvidence: async (activityId, formData) => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/add-maintenance-evidence/${activityId}`, {
+						method: "POST",
+						headers: {
+							"Authorization": `Bearer ${store.token}`,
+						},
+						body: formData,
+					});
+			
+					if (response.ok) {
+						return response.json();  // Devuelve los datos de la respuesta si es necesario
+					} else {
+						console.error("Error adding maintenance evidence:", response.statusText);
+						return 500;
+					}
+				} catch (error) {
+					console.error("Error adding maintenance evidence:", error);
+					return 500;
+				}
+			},
 		}
 	};
 };
