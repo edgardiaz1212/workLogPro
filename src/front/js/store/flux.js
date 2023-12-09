@@ -193,7 +193,49 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			
+			getUserProfile: async () => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/user/profile`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${store.token}`
+						}
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ profile: data }); // Almacenar los datos del perfil en el store
+					} else {
+						console.error("Error getting user profile:", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error getting user profile:", error);
+				}
+			},
+			updateUserProfile: async (updatedProfile) => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/user/profile`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						},
+						body: JSON.stringify(updatedProfile)
+					});
+
+					if (response.ok) {
+						// Actualizar el perfil en el store con los datos actualizados
+						await getActions().getUserProfile();
+						console.log("User profile updated successfully");
+					} else {
+						console.error("Error updating user profile:", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error updating user profile:", error);
+				}
+			},
 		}
 	};
 };
