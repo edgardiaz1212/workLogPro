@@ -17,6 +17,7 @@ import Activities from "./pages/Activities.jsx";
 import RegisterEnergy from "./pages/RegisterEnergy.jsx";
 import AddNewDoc from "./pages/AddNewDoc.jsx";
 import Profile from "./pages/Profile.jsx";
+import TemperatureRegistry from "./pages/TemperatureRegistry.jsx";
 
 
 //create your first component
@@ -44,6 +45,7 @@ const Layout = () => {
                         <Route element={<RegisterEnergy />} path="/registro-energia" />
                         <Route element={<AddNewDoc />} path="/new-doc" />
                         <Route element={<Profile/>} path="/profile"/>
+                        <Route element={<TemperatureRegistry/>} path="/registro-temperatura"/>
                     </Routes>
                     <Footer />
                 </ScrollToTop>
