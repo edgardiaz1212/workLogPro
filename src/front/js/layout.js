@@ -45,7 +45,7 @@ const Layout = () => {
                         <Route element={<RegisterEnergy />} path="/registro-energia" />
                         <Route element={<AddNewDoc />} path="/new-doc" />
                         <Route element={<Profile/>} path="/profile"/>
-                        <Route element={<TemperatureRegistry/>} path="/registro-temperatura"/>
+                        <Route element={<TemperatureRegistry/>} path="/temp-register"/>
                     </Routes>
                     <Footer />
                 </ScrollToTop>

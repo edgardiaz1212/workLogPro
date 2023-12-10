@@ -99,3 +99,23 @@ class MaintenanceEvidence(db.Model):
             "create_at": self.create_at,
             # Puedes agregar más campos según sea necesario
         }
+class Temperature(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    air_unit = db.Column(db.String(20), nullable=False)  # Nombre del aire (Aire 1, Aire 2, ..., Aire 7)
+    temperature = db.Column(db.Float, nullable=False)  # Temperatura registrada
+    measurement_time = db.Column(db.Time, nullable=False)  # Hora de la medición
+    measurement_date = db.Column(db.Date, nullable=False)  # Fecha de la medición
+    created_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
+
+    def __repr__(self):
+        return f'<Temperature {self.air_unit} - {self.temperature}°C - {self.measurement_date} {self.measurement_time}>'
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "air_unit": self.air_unit,
+            "temperature": self.temperature,
+            "measurement_time": str(self.measurement_time),
+            "measurement_date": str(self.measurement_date),
+            "created_at": str(self.created_at)
+        }
