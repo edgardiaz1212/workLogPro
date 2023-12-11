@@ -3,7 +3,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			token:localStorage.getItem("token") || null,
 			user: JSON.parse(localStorage.getItem("user")) || [],
-			processedData: ""
+			processedData: "",
+			temperatures: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -236,6 +237,96 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error updating user profile:", error);
 				}
 			},
+			addTemperature: async (temperatureData) => {
+                const store = getStore();
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/temperatures`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${store.token}`  // Asegúrate de tener un mecanismo de autenticación
+                        },
+                        body: JSON.stringify(temperatureData)
+                    });
+
+                    if (response.ok) {
+                        // Actualiza la lista de temperaturas en el estado
+                        setStore({
+                            temperatures: [...store.temperatures, temperatureData]
+                        });
+
+                        return response;
+                    } else {
+                        console.error("Error adding temperature:", response.statusText);
+                        return response;
+                    }
+                } catch (error) {
+                    console.error("Error adding temperature:", error);
+                    return error;
+                }
+            },
+			editTemperature: async (id, updatedTemperatureData) => {
+                const store = getStore();
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/temperatures/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${store.token}`
+                        },
+                        body: JSON.stringify(updatedTemperatureData)
+                    });
+
+                    if (response.ok) {
+                        // Actualiza la lista de temperaturas en el estado
+                        const updatedTemperatures = store.temperatures.map(temp => 
+                            temp.id === id ? { ...temp, ...updatedTemperatureData } : temp
+                        );
+
+                        setStore({
+                            temperatures: updatedTemperatures
+                        });
+
+                        return response;
+                    } else {
+                        console.error("Error updating temperature:", response.statusText);
+                        return response;
+                    }
+                } catch (error) {
+                    console.error("Error updating temperature:", error);
+                    return error;
+                }
+            },
+			deleteTemperature: async (id) => {
+                const store = getStore();
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/temperatures/${id}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": `Bearer ${store.token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        // Actualiza la lista de temperaturas en el estado eliminando el elemento correspondiente
+                        const updatedTemperatures = store.temperatures.filter(temp => temp.id !== id);
+
+                        setStore({
+                            temperatures: updatedTemperatures
+                        });
+
+                        return response;
+                    } else {
+                        console.error("Error deleting temperature:", response.statusText);
+                        return response;
+                    }
+                } catch (error) {
+                    console.error("Error deleting temperature:", error);
+                    return error;
+                }
+            },
+
+
 		}
 	};
 };

@@ -351,3 +351,56 @@ def create_temperature():
         return jsonify({'message': 'Temperature record created successfully'}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500  
+
+@api.route('/temperatures', methods=['GET'])
+def get_temperatures():
+    try:
+        temperatures = Temperature.query.all()
+        temperature_list = [temperature.serialize() for temperature in temperatures]
+        return jsonify({'temperatures': temperature_list})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@api.route('/temperatures/<int:id>', methods=['GET'])
+def get_temperature_by_id(id):
+    try:
+        temperature = Temperature.query.get(id)
+        if temperature:
+            return jsonify({'temperature': temperature.serialize()})
+        else:
+            return jsonify({'message': 'Temperature not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@api.route('/temperatures/<int:id>', methods=['PUT'])
+def update_temperature(id):
+    try:
+        temperature = Temperature.query.get(id)
+        if temperature:
+            data = request.get_json()
+            temperature.air_unit = data.get('air_unit', temperature.air_unit)
+            temperature.temperature = data.get('temperature', temperature.temperature)
+            temperature.measurement_time = data.get('measurement_time', temperature.measurement_time)
+            temperature.measurement_date = data.get('measurement_date', temperature.measurement_date)
+
+            db.session.commit()
+
+            return jsonify({'message': 'Temperature record updated successfully'})
+        else:
+            return jsonify({'message': 'Temperature not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@api.route('/temperatures/<int:id>', methods=['DELETE'])
+def delete_temperature(id):
+    try:
+        temperature = Temperature.query.get(id)
+        if temperature:
+            db.session.delete(temperature)
+            db.session.commit()
+
+            return jsonify({'message': 'Temperature record deleted successfully'})
+        else:
+            return jsonify({'message': 'Temperature not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
