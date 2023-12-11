@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../store/appContext';
+import TenTemperature from './TenTemperature.jsx';
 
 const TemperatureRegistry = () => {
     const { store, actions } = useContext(Context);
@@ -25,6 +26,7 @@ const TemperatureRegistry = () => {
     }, [selectedDate, selectedHour, selectedAir]);
 
     return (
+      <>
         <div className="container mt-5">
             <h2>Registro de Temperaturas</h2>
             <div className="mb-3">
@@ -93,6 +95,8 @@ const TemperatureRegistry = () => {
             </div>
             <button className="btn btn-primary" onClick={handleRegisterTemperature}>Registrar Temperatura</button>
         </div>
+        <TenTemperature/>
+        </>
     );
 };
 

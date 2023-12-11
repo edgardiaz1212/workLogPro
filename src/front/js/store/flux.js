@@ -4,7 +4,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			token:localStorage.getItem("token") || null,
 			user: JSON.parse(localStorage.getItem("user")) || [],
 			processedData: "",
-			temperatures: []
+			temperatures: [],
+			allTemperatures:[]
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -325,6 +326,32 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return error;
                 }
             },
+			getAllTemperatures: async () => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/all-temperatures`, {
+						method: 'GET',
+						headers: {
+							'Authorization': `Bearer ${store.token}`,
+						},
+					});
+	
+					if (response.ok) {
+						const data = await response.json();
+						// Actualiza el estado del almacén con todas las temperaturas
+						setStore({
+							allTemperatures: data.temperatures,
+						});
+						return data;
+					} else {
+						console.error('Error al obtener todas las temperaturas:', response.statusText);
+						return { error: response.statusText };
+					}
+				} catch (error) {
+					console.error('Error al obtener todas las temperaturas:', error);
+					return { error };
+				}
+			},
 
 
 		}
