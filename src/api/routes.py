@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User, Activity, MaintenanceEvidence
+from api.models import db, User, Activity, MaintenanceEvidence, Documents, Temperature
 from api.utils import generate_sitemap, APIException
 from base64 import b64encode
 import os
@@ -331,4 +331,23 @@ def update_user_profile():
     except Exception as error:
         # En caso de error, realizar un rollback y devolver un mensaje de error
         db.session.rollback()
-        return jsonify({"msg": f"Error updating user profile: {str(error)}"}), 500    
+        return jsonify({"msg": f"Error updating user profile: {str(error)}"}), 500  
+
+@api.route('/temperatures', methods=['POST'])
+def create_temperature():
+    try:
+        data = request.get_json()
+        air_unit = data.get('air_unit')
+        temperature = data.get('temperature')
+        measurement_time = data.get('measurement_time')
+        measurement_date = data.get('measurement_date')
+
+        new_temperature = Temperature(air_unit=air_unit, temperature=temperature,
+                                      measurement_time=measurement_time, measurement_date=measurement_date)
+        
+        db.session.add(new_temperature)
+        db.session.commit()
+
+        return jsonify({'message': 'Temperature record created successfully'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500  
