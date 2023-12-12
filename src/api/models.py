@@ -103,8 +103,8 @@ class Temperature(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     air_unit = db.Column(db.String(20), nullable=False)  # Nombre del aire (Aire 1, Aire 2, ..., Aire 7)
     temperature = db.Column(db.Float, nullable=False)  # Temperatura registrada
-    measurement_time = db.Column(db.Time, nullable=False)  # Hora de la medición
-    measurement_date = db.Column(db.Date, nullable=False)  # Fecha de la medición
+    measurement_time = db.Column(db.String(20), nullable=False)  # Hora de la medición
+    measurement_date = db.Column(db.String(20), nullable=False)  # Fecha de la medición
     created_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
 
     def __repr__(self):

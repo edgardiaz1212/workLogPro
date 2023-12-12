@@ -27,10 +27,10 @@ const TenTemperature = () => {
                 <tbody>
                     {lastTenTemperatures.map((temperature) => (
                         <tr key={temperature.id}>
-                            <td>{temperature.date}</td>
-                            <td>{temperature.hour}</td>
-                            <td>{temperature.air}</td>
-                            <td>{temperature.value}</td>
+                            <td>{temperature.measurement_date}</td>
+                            <td>{temperature.measurement_time}</td>
+                            <td>{temperature.air_unit}</td>
+                            <td>{temperature.temperature}</td>
                         </tr>
                     ))}
                 </tbody>

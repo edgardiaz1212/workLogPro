@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../store/appContext';
-import TenTemperature from './TenTemperature.jsx';
+import TenTemperature from '../component/TenTemperatures.jsx'
 
 const TemperatureRegistry = () => {
     const { store, actions } = useContext(Context);
@@ -12,10 +12,10 @@ const TemperatureRegistry = () => {
     const handleRegisterTemperature = () => {
         // Aquí puedes llamar a la función del flujo para agregar la temperatura
         const temperatureData = {
-            date: selectedDate,
-            hour: selectedHour,
-            air: selectedAir,
-            value: temperatureValue
+            air_unit: selectedAir,
+            temperature: temperatureValue,
+            measurement_time: selectedHour,
+            measurement_date: selectedDate
         };
 
         actions.addTemperature(temperatureData);
@@ -34,7 +34,7 @@ const TemperatureRegistry = () => {
                 {/* Componente de selección de fecha */}
                 {/* Asegúrate de manejar el estado de la fecha */}
                 <input
-                    type="text"
+                    type="date"
                     id="datePicker"
                     className="form-control"
                     value={selectedDate}
@@ -52,6 +52,7 @@ const TemperatureRegistry = () => {
                     onChange={(e) => setSelectedHour(e.target.value)}
                 >
                     {/* Opciones de horas preestablecidas */}
+                    <option >Seleccione una opcion</option>
                     <option value="2am">2am</option>
                     <option value="6am">6am</option>
                     <option value="9am">9am</option>
@@ -73,6 +74,7 @@ const TemperatureRegistry = () => {
                     onChange={(e) => setSelectedAir(e.target.value)}
                 >
                     {/* Opciones de aires acondicionados preestablecidos */}
+                    <option >Seleccione un aire</option>
                     <option value="Aire1">Aire 1</option>
                     <option value="Aire2">Aire 2</option>
                     <option value="Aire3">Aire 3</option>

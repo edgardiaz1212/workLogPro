@@ -329,7 +329,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getAllTemperatures: async () => {
 				const store = getStore();
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/all-temperatures`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/temperatures`, {
 						method: 'GET',
 						headers: {
 							'Authorization': `Bearer ${store.token}`,
