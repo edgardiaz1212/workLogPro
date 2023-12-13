@@ -19,6 +19,12 @@ const TemperatureRegistry = () => {
         };
 
         actions.addTemperature(temperatureData);
+
+        // Restablecer los valores a sus estados iniciales
+        setSelectedDate('');
+        setSelectedHour('');
+        setSelectedAir('');
+        setTemperatureValue('');
     };
 
     useEffect(() => {
@@ -60,7 +66,6 @@ const TemperatureRegistry = () => {
                     <option value="3pm">3pm</option>
                     <option value="6pm">6pm</option>
                     <option value="9pm">10pm</option>
-                    
                 </select>
             </div>
             <div className="mb-3">
@@ -82,7 +87,6 @@ const TemperatureRegistry = () => {
                     <option value="Aire5">Aire 5</option>
                     <option value="Aire6">Aire 6</option>
                     <option value="Aire7">Aire 7</option>
-                    
                 </select>
             </div>
             <div className="mb-3">
@@ -98,7 +102,7 @@ const TemperatureRegistry = () => {
             <button className="btn btn-primary" onClick={handleRegisterTemperature}>Registrar Temperatura</button>
         </div>
         <TenTemperature/>
-        </>
+      </>
     );
 };
 

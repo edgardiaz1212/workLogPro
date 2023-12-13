@@ -5,7 +5,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user: JSON.parse(localStorage.getItem("user")) || [],
 			processedData: "",
 			temperatures: [],
-			allTemperatures:[]
+			allTemperatures:[],
+			tenTemperatures:[]
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -352,7 +353,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error };
 				}
 			},
-
+			getLatestTenTemperatures: async () => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/temperatures/latest`, {
+						method: 'GET',
+						headers: {
+							'Authorization': `Bearer ${store.token}`,
+						},
+					});
+			
+					if (response.ok) {
+						const data = await response.json();
+						// Actualiza el estado del almacén con las últimas 10 temperaturas
+						setStore((prevState) => ({
+							...prevState,
+							tenTemperatures: data.temperatures,
+						}));
+						return data;
+					} else {
+						console.error('Error al obtener las últimas 10 temperaturas:', response.statusText);
+						return { error: response.statusText };
+					}
+				} catch (error) {
+					console.error('Error al obtener las últimas 10 temperaturas:', error);
+					return { error };
+				}
+			},
 
 		}
 	};

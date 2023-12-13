@@ -5,12 +5,9 @@ const TenTemperature = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        // Llamamos a la función del flujo para obtener todos los registros de temperaturas
-        actions.getAllTemperatures();
-    }, [actions]);
-
-    // Filtramos para obtener solo los últimos 10 registros
-    const lastTenTemperatures = store.allTemperatures.slice(-10);
+        // Llamamos a la función del flujo para obtener las últimas 10 temperaturas
+        actions.getLatestTenTemperatures();
+    }, []); // La dependencia es una matriz vacía, se ejecuta solo al montar el componente
 
     return (
         <div className="container mt-5">
@@ -25,7 +22,7 @@ const TenTemperature = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {lastTenTemperatures.map((temperature) => (
+                    {store.tenTemperatures.map((temperature) => (
                         <tr key={temperature.id}>
                             <td>{temperature.measurement_date}</td>
                             <td>{temperature.measurement_time}</td>

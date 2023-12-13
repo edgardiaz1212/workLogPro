@@ -360,6 +360,15 @@ def get_temperatures():
         return jsonify({'temperatures': temperature_list})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+@api.route('/temperatures/latest', methods=['GET'])
+def get_latest_temperatures():
+    try:
+        temperatures = Temperature.query.order_by(Temperature.created_at.desc()).limit(10).all()
+        temperature_list = [temperature.serialize() for temperature in temperatures]
+        return jsonify({'temperatures': temperature_list})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @api.route('/temperatures/<int:id>', methods=['GET'])
 def get_temperature_by_id(id):
