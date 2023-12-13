@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { Context } from '../store/appContext';
 
+
 const TenTemperature = ({ updateSignal }) => {
     const { store, actions } = useContext(Context);
 
@@ -12,9 +13,10 @@ const TenTemperature = ({ updateSignal }) => {
     const handleDeleteTemperature = (temperatureId) => {
         // Aquí puedes llamar a la función del flujo para eliminar la temperatura por su ID
         actions.deleteTemperature(temperatureId);
-        actions.getLatestTenTemperatures()
+        
     };
     return (
+        <>
         <div className="container mt-5">
             <h2>Últimos 10 Registros de Temperaturas</h2>
             <table className="table">
@@ -46,6 +48,7 @@ const TenTemperature = ({ updateSignal }) => {
                 </tbody>
             </table>
         </div>
+        </>
     );
 };
 

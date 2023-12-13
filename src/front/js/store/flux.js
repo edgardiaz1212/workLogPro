@@ -301,6 +301,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 			deleteTemperature: async (id) => {
                 const store = getStore();
+				const actions= getActions()
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/temperatures/${id}`, {
                         method: "DELETE",
@@ -311,12 +312,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                     if (response.ok) {
                         // Actualiza la lista de temperaturas en el estado eliminando el elemento correspondiente
-                        const updatedTemperatures = store.temperatures.filter(temp => temp.id !== id);
+                        const updatedTemperatures = store.temperatures.filter(temp => temp.id !== id)
 
                         setStore({
                             temperatures: updatedTemperatures
                         });
-
+						actions.getLatestTenTemperatures()
                         return response;
                     } else {
                         console.error("Error deleting temperature:", response.statusText);
