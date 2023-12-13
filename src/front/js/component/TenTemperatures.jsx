@@ -1,13 +1,13 @@
 import React, { useEffect, useContext } from 'react';
 import { Context } from '../store/appContext';
 
-const TenTemperature = () => {
+const TenTemperature = ({ updateSignal }) => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
         // Llamamos a la función del flujo para obtener las últimas 10 temperaturas
         actions.getLatestTenTemperatures();
-    }, []); // La dependencia es una matriz vacía, se ejecuta solo al montar el componente
+    }, [updateSignal]); // La dependencia es una matriz vacía, se ejecuta solo al montar el componente
 
 
     return (

@@ -9,8 +9,10 @@ const TemperatureRegistry = () => {
     const [selectedAir, setSelectedAir] = useState('');
     const [temperatureValue, setTemperatureValue] = useState('');
 
+     // Estado para la señal de actualización
+     const [updateSignal, setUpdateSignal] = useState(false);
+
     const handleRegisterTemperature = () => {
-        // Aquí puedes llamar a la función del flujo para agregar la temperatura
         const temperatureData = {
             air_unit: selectedAir,
             temperature: temperatureValue,
@@ -25,6 +27,8 @@ const TemperatureRegistry = () => {
         setSelectedHour('');
         setSelectedAir('');
         setTemperatureValue('');
+        // Cambiar la señal de actualización
+        setUpdateSignal(!updateSignal)
     };
 
     useEffect(() => {
@@ -101,7 +105,7 @@ const TemperatureRegistry = () => {
             </div>
             <button className="btn btn-primary" onClick={handleRegisterTemperature}>Registrar Temperatura</button>
         </div>
-        <TenTemperature/>
+        <TenTemperature updateSignal={updateSignal} />
       </>
     );
 };
