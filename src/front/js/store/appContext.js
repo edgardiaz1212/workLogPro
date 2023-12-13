@@ -22,14 +22,21 @@ const injectContext = PassedComponent => {
 		);
 
 		useEffect(() => {
-			/**
-			 * EDIT THIS!
-			 * This function is the equivalent to "window.onLoad", it only runs once on the entire application lifetime
-			 * you should do your ajax requests or fetch api requests here. Do not use setState() to save data in the
-			 * store, instead use actions, like this:
-			 **/
-			; // <---- calling this function from the flux.js actions
-		}, []);
+			const checkTokenExpiration = async () => {
+                const expiration = state.store.tokenExpiration;
+
+                if (expiration) {
+                    const currentTime = Math.floor(Date.now() / 1000);
+
+                    if (currentTime > expiration) {
+                        // Token expirado, eliminar el token y cualquier otra lógica que necesites
+                        state.actions.logout();  // Puedes definir una acción "logout" para limpiar el estado
+                    }
+                }
+            };
+
+            checkTokenExpiration();
+        }, [state.store.tokenExpiration, state.actions])
 
 		// The initial value for the context is not null anymore, but the current state of this component,
 		// the context will now have a getStore, getActions and setStore functions available, because they were declared

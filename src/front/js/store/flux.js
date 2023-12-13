@@ -365,11 +365,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 					if (response.ok) {
 						const data = await response.json();
-						// Actualiza el estado del almacén con las últimas 10 temperaturas
-						setStore((prevState) => ({
-							...prevState,
+						
+						// Utiliza la función de setStore para actualizar el estado
+						setStore({
 							tenTemperatures: data.temperatures,
-						}));
+						});
+						
 						return data;
 					} else {
 						console.error('Error al obtener las últimas 10 temperaturas:', response.statusText);
@@ -380,6 +381,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error };
 				}
 			},
+
 
 		}
 	};

@@ -9,6 +9,7 @@ const TenTemperature = () => {
         actions.getLatestTenTemperatures();
     }, []); // La dependencia es una matriz vacía, se ejecuta solo al montar el componente
 
+
     return (
         <div className="container mt-5">
             <h2>Últimos 10 Registros de Temperaturas</h2>
