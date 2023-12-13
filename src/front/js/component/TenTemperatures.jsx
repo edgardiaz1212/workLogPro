@@ -9,7 +9,11 @@ const TenTemperature = ({ updateSignal }) => {
         actions.getLatestTenTemperatures();
     }, [updateSignal]); // La dependencia es una matriz vacía, se ejecuta solo al montar el componente
 
-
+    const handleDeleteTemperature = (temperatureId) => {
+        // Aquí puedes llamar a la función del flujo para eliminar la temperatura por su ID
+        actions.deleteTemperature(temperatureId);
+        actions.getLatestTenTemperatures()
+    };
     return (
         <div className="container mt-5">
             <h2>Últimos 10 Registros de Temperaturas</h2>
@@ -29,6 +33,14 @@ const TenTemperature = ({ updateSignal }) => {
                             <td>{temperature.measurement_time}</td>
                             <td>{temperature.air_unit}</td>
                             <td>{temperature.temperature}</td>
+                            <td>
+                            <button
+                                    className="btn btn-danger"
+                                    onClick={() => handleDeleteTemperature(temperature.id)}
+                                >
+                                    Eliminar
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
