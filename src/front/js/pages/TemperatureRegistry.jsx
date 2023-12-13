@@ -15,38 +15,38 @@ const TemperatureRegistry = () => {
     // Estado para la señal de actualización
     const [updateSignal, setUpdateSignal] = useState(false);
 
-    const handleRegisterTemperature = () => {
+    const handleRegisterTemperature = async () => {
         if (!selectedDate || !selectedHour || !selectedAir || !temperatureValue) {
             console.log("Por favor completa todos los campos");
-            toast.error("Faltan campos por llenar")
+            toast.error("Faltan campos por llenar");
             return;
-          }
+        }
+    
         try {
-            
-       
-        const temperatureData = {
-            air_unit: selectedAir,
-            temperature: temperatureValue,
-            measurement_time: selectedHour,
-            measurement_date: selectedDate
-        };
-
-        actions.addTemperature(temperatureData);
-
-        // Restablecer los valores a sus estados iniciales
-        setSelectedDate('');
-        setSelectedHour('');
-        setSelectedAir('');
-        setTemperatureValue('');
-        // Cambiar la señal de actualización
-        setUpdateSignal(!updateSignal)
-
-    } catch (error) {
-        console.log("Error en la solicitud de registro:", error)
-    }
+            const result = await actions.addTemperature({
+                air_unit: selectedAir,
+                temperature: temperatureValue,
+                measurement_time: selectedHour,
+                measurement_date: selectedDate
+            });
+    
+            if (result.success) {
+                // Restablecer los valores a sus estados iniciales
+                setSelectedDate('');
+                setSelectedHour('');
+                setSelectedAir('');
+                setTemperatureValue('');
+                // Cambiar la señal de actualización
+                setUpdateSignal(!updateSignal);
+            } else {
+                console.error("Error en la solicitud de registro:", result.error);
+                toast.error("Error al registrar la temperatura");
+            }
+        } catch (error) {
+            console.error("Error en la solicitud de registro:", error);
+            toast.error("Error al registrar la temperatura");
+        }
     };
-
-
 
     useEffect(() => {
         // Puedes realizar alguna lógica adicional cuando cambie la fecha, la hora o el aire seleccionados
@@ -54,7 +54,7 @@ const TemperatureRegistry = () => {
 
     return (
         <>
-        <ToastContainer theme="dark" position="top-center" pauseOnFocusLoss={false} autoClose={3000} hideProgressBar />
+            <ToastContainer theme="dark" position="top-center" pauseOnFocusLoss={false} autoClose={3000} hideProgressBar />
             <div className="container mt-5 p-5 border border-danger">
                 <div className="section-title mt-3">
                     <h2>Registro de Temperaturas</h2>
@@ -90,7 +90,7 @@ const TemperatureRegistry = () => {
                             <option value="12pm">12pm</option>
                             <option value="3pm">3pm</option>
                             <option value="6pm">6pm</option>
-                            <option value="9pm">10pm</option>
+                            <option value="10pm">10pm</option>
                         </select>
                     </div>
                     <div className="input-group mb-3">
@@ -124,9 +124,9 @@ const TemperatureRegistry = () => {
                             onChange={(e) => setTemperatureValue(e.target.value)}
                         />
                     </div></div>
-                    <button className="btn btn-primary" onClick={handleRegisterTemperature}>Registrar Temperatura</button>
-                    <Link to="/temp-graphic" className='btn btn-secondary ms-3'> Ver Graficas</Link>
-                
+                <button className="btn btn-primary" onClick={handleRegisterTemperature}>Registrar Temperatura</button>
+                <Link to="/temp-graphic" className='btn btn-secondary ms-3'> Ver Graficas</Link>
+
             </div>
             <TenTemperature updateSignal={updateSignal} />
         </>

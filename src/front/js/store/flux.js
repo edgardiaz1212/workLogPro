@@ -240,33 +240,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			addTemperature: async (temperatureData) => {
-                const store = getStore();
-                try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/temperatures`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${store.token}`  // Asegúrate de tener un mecanismo de autenticación
-                        },
-                        body: JSON.stringify(temperatureData)
-                    });
-
-                    if (response.ok) {
-                        // Actualiza la lista de temperaturas en el estado
-                        setStore({
-                            temperatures: [...store.temperatures, temperatureData]
-                        });
-
-                        return response;
-                    } else {
-                        console.error("Error adding temperature:", response.statusText);
-                        return response;
-                    }
-                } catch (error) {
-                    console.error("Error adding temperature:", error);
-                    return error;
-                }
-            },
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/temperatures`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						},
+						body: JSON.stringify(temperatureData)
+					});
+			
+					if (response.ok) {
+						// Actualiza la lista de temperaturas en el estado
+						setStore({
+							temperatures: [...store.temperatures, temperatureData]
+						});
+			
+						return { success: true };
+					} else {
+						console.error("Error adding temperature:", response.statusText);
+						return { success: false, error: response.statusText };
+					}
+				} catch (error) {
+					console.error("Error adding temperature:", error);
+					return { success: false, error: error.message };
+				}
+			},
 			editTemperature: async (id, updatedTemperatureData) => {
                 const store = getStore();
                 try {

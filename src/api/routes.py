@@ -342,6 +342,17 @@ def create_temperature():
         measurement_time = data.get('measurement_time')
         measurement_date = data.get('measurement_date')
 
+# Verifica si ya existe una temperatura para el mismo aire, fecha y hora
+        existing_temperature = Temperature.query.filter_by(
+            air_unit=air_unit,
+            measurement_time=measurement_time,
+            measurement_date=measurement_date
+        ).first()
+
+        if existing_temperature:
+            return jsonify({'error': 'Ya existe una temperatura registrada para este aire, fecha y hora'}), 400
+
+
         new_temperature = Temperature(air_unit=air_unit, temperature=temperature,
                                       measurement_time=measurement_time, measurement_date=measurement_date)
         
