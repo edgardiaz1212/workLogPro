@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import TenRegistryEnergy from "../component/TenRegistryEnergy.jsx";
 
 function RegisterEnergy() {
     const { store, actions } = useContext(Context)
@@ -120,7 +121,7 @@ function RegisterEnergy() {
             </div>
             <div className="container  ">
                 <div className="row  ">
-                    <div className="col-8 g-5 w-5">
+                    <div className="col-6 g-5 ">
                         <div className={`input-group mb-3 ${errors.fecha_actividad ? 'error' : ''}`}>
                             <span className="input-group-text">Fecha de la actividad</span>
                             <input
@@ -283,8 +284,8 @@ function RegisterEnergy() {
                             </button>
                         </div>
                     </div>
-                    <div className="col-4 border border-danger">
-
+                    <div className="col-5 border border-danger">
+<TenRegistryEnergy/>
                     </div>
                 </div>
             </div>
