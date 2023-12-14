@@ -1,120 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { getYear, getMonth } from 'date-fns'; // Puedes usar esta librería para manejar fechas
 
-function TemperatureGraphic({ temperatures }) {
-  const [dataByQuarter, setDataByQuarter] = useState({});
-  const [dailyTemperature, setDailyTemperature] = useState({});
+function TemperatureGraphic() {
+  // Estado para almacenar datos de temperatura
+  const [temperatureData, setTemperatureData] = useState({
+    labels: [],
+    datasets: [],
+  });
+
+  // Simula datos de temperatura (puedes reemplazarlo con datos reales del estado)
+  const sampleData = {
+    air1: [25, 28, 30, 22, 26, 27, 29], // Temperaturas para el primer trimestre
+    air2: [23, 26, 28, 21, 24, 25, 27], // Temperaturas para el segundo trimestre
+    air3: [27, 30, 32, 25, 28, 29, 31], // Temperaturas para el tercer trimestre
+  };
 
   useEffect(() => {
-    // Función para organizar los datos por trimestre
-    const organizeDataByQuarter = () => {
-      const quarters = {
-        Q1: [],
-        Q2: [],
-        Q3: [],
-        Q4: [],
-      };
+    // Lógica para preparar datos y actualizar el estado
+    const labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const datasets = [];
 
-      temperatures.forEach((temperature) => {
-        const month = getMonth(new Date(temperature.measurement_date));
-        const quarter =
-          month <= 2
-            ? 'Q1'
-            : month <= 5
-            ? 'Q2'
-            : month <= 8
-            ? 'Q3'
-            : 'Q4';
+    // Iterar sobre cada aire
+    for (const airUnit in sampleData) {
+      if (sampleData.hasOwnProperty(airUnit)) {
+        const temperatures = sampleData[airUnit];
 
-        quarters[quarter].push({
-          date: temperature.measurement_date,
-          temperature: temperature.temperature,
+        // Calcular el promedio de temperaturas por mes
+        const averageTemperatures = Array.from({ length: 12 }, (_, index) => {
+          const start = index * 3;
+          const end = start + 3;
+          const trimesterTemperatures = temperatures.slice(start, end);
+          const trimesterAverage = trimesterTemperatures.reduce((sum, temp) => sum + temp, 0) / trimesterTemperatures.length;
+          return Math.round(trimesterAverage * 100) / 100; // Redondear a dos decimales
         });
-      });
 
-      setDataByQuarter(quarters);
-    };
+        datasets.push({
+          label: `Aire ${airUnit}`,
+          data: averageTemperatures,
+          borderColor: getRandomColor(), // Función para obtener un color aleatorio
+          fill: false,
+        });
+      }
+    }
 
-    // Función para organizar los datos para la gráfica lineal diaria y promedio
-    const organizeDataForLineChart = () => {
-      const dailyData = {
-        labels: [],
-        temperatures: [],
-        averageTemperatures: [],
-      };
+    // Actualizar el estado con los datos preparados
+    setTemperatureData({
+      labels,
+      datasets,
+    });
+  }, []);
 
-      temperatures.forEach((temperature) => {
-        const date = temperature.measurement_date;
-        const existingIndex = dailyData.labels.indexOf(date);
-
-        if (existingIndex !== -1) {
-          dailyData.temperatures[existingIndex].push(temperature.temperature);
-        } else {
-          dailyData.labels.push(date);
-          dailyData.temperatures.push([temperature.temperature]);
-        }
-      });
-
-      dailyData.labels.forEach((date, index) => {
-        const temperatures = dailyData.temperatures[index];
-        const averageTemperature =
-          temperatures.reduce((sum, temp) => sum + temp, 0) / temperatures.length;
-        dailyData.averageTemperatures.push(averageTemperature.toFixed(2));
-      });
-
-      setDailyTemperature(dailyData);
-    };
-
-    organizeDataByQuarter();
-    organizeDataForLineChart();
-  }, [temperatures]);
+  // Función para obtener un color aleatorio en formato hexadecimal
+  const getRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 
   return (
     <div>
-      <h2>Gráficas por Trimestre</h2>
-      {Object.keys(dataByQuarter).map((quarter) => (
-        <div key={quarter}>
-          <h3>{quarter}</h3>
-          <Line
-            data={{
-              labels: dataByQuarter[quarter].map((data) => data.date),
-              datasets: [
-                {
-                  label: 'Temperatura',
-                  data: dataByQuarter[quarter].map((data) => data.temperature),
-                  fill: false,
-                  borderColor: 'rgba(75,192,192,1)',
-                  lineTension: 0.1,
-                },
-              ],
-            }}
-          />
-        </div>
-      ))}
-
-      <h2>Gráfica Lineal de Temperatura Diaria y Promedio</h2>
-      <Line
-        data={{
-          labels: dailyTemperature.labels,
-          datasets: [
-            {
-              label: 'Temperatura Diaria',
-              data: dailyTemperature.temperatures.map((temps) => temps[0]),
-              fill: false,
-              borderColor: 'rgba(75,192,192,1)',
-              lineTension: 0.1,
-            },
-            {
-              label: 'Temperatura Promedio',
-              data: dailyTemperature.averageTemperatures,
-              fill: false,
-              borderColor: 'rgba(192,75,192,1)',
-              lineTension: 0.1,
-            },
-          ],
-        }}
-      />
+      <h2>Gráficas de Temperatura por Trimestre</h2>
+      <Line data={temperatureData} />
     </div>
   );
 }

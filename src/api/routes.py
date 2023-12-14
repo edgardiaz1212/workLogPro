@@ -191,6 +191,32 @@ def get_available_years():
     years_list = [year[0] for year in years]  # Convertir a lista
     return jsonify({"years": years_list})
 
+@api.route('/activities/last-10', methods=['GET'])
+@jwt_required()
+def get_last_10_activities():
+    # Ordenar actividades por fecha de manera descendente
+    activities = Activity.query.order_by(Activity.fecha_actividad.desc()).limit(10).all()
+
+    # Convertir actividades a un formato que puedas enviar al frontend
+    activities_data = [
+        {
+            "year": activity.fecha_actividad.year,
+            "mes": activity.fecha_actividad.month,
+            "dia": activity.fecha_actividad.day,
+            "actividad": activity.actividad,
+            "tipo_de_mantenimiento": activity.tipo_de_mantenimiento,
+            "tecnico_nombre_apellido": activity.tecnico_nombre_apellido,
+            "fecha_actividad": activity.fecha_actividad,
+            "actividad_satisfactoria": activity.actividad_satisfactoria,
+            "control_cambio_cor": activity.control_cambio_cor,
+            "id": activity.id,
+            # Agrega otros campos según sea necesario
+        }
+        for activity in activities
+    ]
+
+    return jsonify({"activities": activities_data})
+
 @api.route('/documents', methods=['POST'])
 @jwt_required()
 def add_document():

@@ -1,12 +1,12 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			token:localStorage.getItem("token") || null,
+			token: localStorage.getItem("token") || null,
 			user: JSON.parse(localStorage.getItem("user")) || [],
 			processedData: "",
 			temperatures: [],
-			allTemperatures:[],
-			tenTemperatures:[]
+			allTemperatures: [],
+			tenTemperatures: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -54,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							user: data.user,
 							token: data.token
 						});
-						
+
 						localStorage.setItem("user", JSON.stringify(data.user));
 						localStorage.setItem("token", data.token)
 						console.log("Inicio de sesión exitoso!!")
@@ -112,15 +112,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// Devolver los datos procesados directamente
 
 						return { activities: data.activities };
-					  } else {
+					} else {
 						console.error("Error al obtener actividades por año:", response.statusText);
 						return { error: response.statusText };
-					  }
-					} catch (error) {
-					  console.error("Error al obtener actividad por año", error);
-					  return { error };
 					}
-				  },
+				} catch (error) {
+					console.error("Error al obtener actividad por año", error);
+					return { error };
+				}
+			},
 			getYears: async () => {
 				const store = getStore();
 
@@ -144,12 +144,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return [];
 				}
 			},
+
+			getLast10Activities: async () => {
+				const store = getStore();
+
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/activities/last-10`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${store.token}`,
+						},
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ tenTemperatures: data.activities });
+						return data.activities;
+					} else {
+						console.error("Error al obtener las últimas 10 actividades:", response.statusText);
+						return { error: response.statusText };
+					}
+				} catch (error) {
+					console.error("Error al obtener las últimas 10 actividades", error);
+					return { error };
+				}
+			},
+
 			logout: () => {
 				localStorage.removeItem("user");
 				setStore({ token: "", user: "" });
 			},
 
-			addDocument:async(document)=>{
+			addDocument: async (document) => {
 				const store = getStore()
 				try {
 					let response = await fetch(`${process.env.BACKEND_URL}/documents`, {
@@ -172,7 +198,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return 500;
 				}
 			},
-			
+
 			addMaintenanceEvidence: async (activityId, formData) => {
 				const store = getStore();
 				try {
@@ -183,7 +209,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: formData,
 					});
-			
+
 					if (response.ok) {
 						return response.json();  // Devuelve los datos de la respuesta si es necesario
 					} else {
@@ -250,13 +276,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(temperatureData)
 					});
-			
+
 					if (response.ok) {
 						// Actualiza la lista de temperaturas en el estado
 						setStore({
 							temperatures: [...store.temperatures, temperatureData]
 						});
-			
+
 						return { success: true };
 					} else {
 						console.error("Error adding temperature:", response.statusText);
@@ -268,66 +294,66 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			editTemperature: async (id, updatedTemperatureData) => {
-                const store = getStore();
-                try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/temperatures/${id}`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${store.token}`
-                        },
-                        body: JSON.stringify(updatedTemperatureData)
-                    });
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/temperatures/${id}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						},
+						body: JSON.stringify(updatedTemperatureData)
+					});
 
-                    if (response.ok) {
-                        // Actualiza la lista de temperaturas en el estado
-                        const updatedTemperatures = store.temperatures.map(temp => 
-                            temp.id === id ? { ...temp, ...updatedTemperatureData } : temp
-                        );
+					if (response.ok) {
+						// Actualiza la lista de temperaturas en el estado
+						const updatedTemperatures = store.temperatures.map(temp =>
+							temp.id === id ? { ...temp, ...updatedTemperatureData } : temp
+						);
 
-                        setStore({
-                            temperatures: updatedTemperatures
-                        });
+						setStore({
+							temperatures: updatedTemperatures
+						});
 
-                        return response;
-                    } else {
-                        console.error("Error updating temperature:", response.statusText);
-                        return response;
-                    }
-                } catch (error) {
-                    console.error("Error updating temperature:", error);
-                    return error;
-                }
-            },
+						return response;
+					} else {
+						console.error("Error updating temperature:", response.statusText);
+						return response;
+					}
+				} catch (error) {
+					console.error("Error updating temperature:", error);
+					return error;
+				}
+			},
 			deleteTemperature: async (id) => {
-                const store = getStore();
-				const actions= getActions()
-                try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/temperatures/${id}`, {
-                        method: "DELETE",
-                        headers: {
-                            "Authorization": `Bearer ${store.token}`
-                        }
-                    });
+				const store = getStore();
+				const actions = getActions()
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/temperatures/${id}`, {
+						method: "DELETE",
+						headers: {
+							"Authorization": `Bearer ${store.token}`
+						}
+					});
 
-                    if (response.ok) {
-                        // Actualiza la lista de temperaturas en el estado eliminando el elemento correspondiente
-                        const updatedTemperatures = store.temperatures.filter(temp => temp.id !== id)
+					if (response.ok) {
+						// Actualiza la lista de temperaturas en el estado eliminando el elemento correspondiente
+						const updatedTemperatures = store.temperatures.filter(temp => temp.id !== id)
 
-                        setStore({
-                            temperatures: updatedTemperatures
-                        });
+						setStore({
+							temperatures: updatedTemperatures
+						});
 						actions.getLatestTenTemperatures()
-                        return response;
-                    } else {
-                        console.error("Error deleting temperature:", response.statusText);
-                        return response;
-                    }
-                } catch (error) {
-                    console.error("Error deleting temperature:", error);
-                    return error;
-                }
-            },
+						return response;
+					} else {
+						console.error("Error deleting temperature:", response.statusText);
+						return response;
+					}
+				} catch (error) {
+					console.error("Error deleting temperature:", error);
+					return error;
+				}
+			},
 			getAllTemperatures: async () => {
 				const store = getStore();
 				try {
@@ -337,7 +363,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							'Authorization': `Bearer ${store.token}`,
 						},
 					});
-	
+
 					if (response.ok) {
 						const data = await response.json();
 						// Actualiza el estado del almacén con todas las temperaturas
@@ -363,15 +389,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 							'Authorization': `Bearer ${store.token}`,
 						},
 					});
-			
+
 					if (response.ok) {
 						const data = await response.json();
-						
+
 						// Utiliza la función de setStore para actualizar el estado
 						setStore({
 							tenTemperatures: data.temperatures,
 						});
-						
+
 						return data;
 					} else {
 						console.error('Error al obtener las últimas 10 temperaturas:', response.statusText);
