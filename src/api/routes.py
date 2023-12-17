@@ -451,10 +451,10 @@ def delete_temperature(id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-@api.routes('/temperature-years', method=['GET'])
+@api.route('/temperature-years', methods=['GET'])
 @jwt_required()
 def get_temperature_years():
-    years=db.session.query(bd.extract('year',Temperature.measurement_date)).distinct().all()
+    years=db.session.query(db.extract('year',Temperature.measurement_date)).distinct().all()
     years_list=[year[0] for year in years]
     return jsonify({"years": years_list})
 

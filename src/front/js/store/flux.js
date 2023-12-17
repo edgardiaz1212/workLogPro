@@ -408,6 +408,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error };
 				}
 			},
+			getYearsTemperature : async () =>{
+				const store=getStore()
+			try {
+				const response =await fetch(`${process.env.BACKEND_URL}/temperature-years`,{
+					method: "GET",
+					headers:{
+						"Authorization": `Bearer ${store.token}`,
+					}
+				})
+				if (response.ok) {
+					const data = await response.json()
+					return data.years
+				} else{
+					console.log("Error al obtener años disponibles:", response.statusText);
+					return [];
+				}
+
+			} catch (error) {
+				console.log("Error al obtener los años disponibles:",error)
+			}
+			},
 
 
 		}
