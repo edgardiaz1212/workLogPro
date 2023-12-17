@@ -450,3 +450,32 @@ def delete_temperature(id):
             return jsonify({'message': 'Temperature not found'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+@api.routes('/temperature-years', method=['GET'])
+@jwt_required()
+def get_temperature_years():
+    years=db.session.query(bd.extract('year',Temperature.measurement_date)).distinct().all()
+    years_list=[year[0] for year in years]
+    return jsonify({"years": years_list})
+
+@api.route('/temperature/<int:year>', methods=['GET'])
+@jwt_required()
+def get_temperature_by_year(year):
+    # Filtramos temperaturas por año
+    temperatures = Temperature.query.filter(db.extract('year', Temperature.measurement_date) == year).all()
+
+    # Convertimos a un formato para enviar al frontend
+    temperatures_data = [
+        {
+            "year": temperature.measurement_date.year,
+            "month": temperature.measurement_date.month,
+            "day": temperature.measurement_date.day,
+            "air_unit": temperature.air_unit,
+            "temperature": temperature.temperature,
+            "measurement_time": temperature.measurement_time,
+            "id": temperature.id
+        }
+        for temperature in temperatures
+    ]
+    
+    return jsonify({"temperatures": temperatures_data})
