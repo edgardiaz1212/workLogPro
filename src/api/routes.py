@@ -479,3 +479,35 @@ def get_temperature_by_year(year):
     ]
     
     return jsonify({"temperatures": temperatures_data})
+
+@api.route('/temperature-by-quarter/<int:year>', methods=['GET'])
+@jwt_required()
+def get_temperature_by_quarter(year):
+    try:
+        quarterly_data = {}
+
+        for quarter in range(1, 5):
+            # Filtramos temperaturas por trimestre y año
+            temperatures = Temperature.query.filter(
+                db.extract('year', Temperature.measurement_date) == year,
+                db.extract('quarter', Temperature.measurement_date) == quarter
+            ).all()
+
+            # Convertimos a un formato para enviar al frontend
+            temperatures_data = [
+                {
+                    "month": temperature.measurement_date.month,
+                    "day": temperature.measurement_date.day,
+                    "air_unit": temperature.air_unit,
+                    "temperature": temperature.temperature,
+                    "measurement_time": temperature.measurement_time,
+                    "id": temperature.id
+                }
+                for temperature in temperatures
+            ]
+
+            quarterly_data[f'quarter_{quarter}'] = temperatures_data
+
+        return jsonify(quarterly_data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500    

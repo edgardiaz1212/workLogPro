@@ -408,28 +408,50 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error };
 				}
 			},
-			getYearsTemperature : async () =>{
-				const store=getStore()
-			try {
-				const response =await fetch(`${process.env.BACKEND_URL}/temperature-years`,{
-					method: "GET",
-					headers:{
-						"Authorization": `Bearer ${store.token}`,
+			getYearsTemperature: async () => {
+				const store = getStore()
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/temperature-years`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${store.token}`,
+						}
+					})
+					if (response.ok) {
+						const data = await response.json()
+						return data.years
+					} else {
+						console.log("Error al obtener años disponibles:", response.statusText);
+						return [];
 					}
-				})
-				if (response.ok) {
-					const data = await response.json()
-					return data.years
-				} else{
-					console.log("Error al obtener años disponibles:", response.statusText);
-					return [];
+
+				} catch (error) {
+					console.log("Error al obtener los años disponibles:", error)
 				}
-
-			} catch (error) {
-				console.log("Error al obtener los años disponibles:",error)
-			}
 			},
+			getTemperatureByQuarter: async (year) => {
+				const store = getStore();
 
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/temperature-by-quarter/${year}`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${store.token}`
+						}
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						return data;
+					} else {
+						console.error("Error fetching temperature by quarter:", response.statusText);
+						return [];
+					}
+				} catch (error) {
+					console.error("Error fetching temperature by quarter:", error);
+					return error;
+				}
+			},
 
 		}
 	};
