@@ -53,9 +53,7 @@ function TemperatureGraphic() {
           <h3>{`Trimestre ${index + 1}`}</h3>
           <Line
             data={{
-              labels: quarterlyData[quarter].map((entry) =>
-                `${entry.month}/${entry.day}`
-              ),
+              labels: quarterlyData[quarter].map((entry) => entry.measurement_time),
               datasets: [
                 {
                   label: 'Temperatura',
@@ -72,22 +70,19 @@ function TemperatureGraphic() {
                   type: 'linear',
                   position: 'bottom',
                   beginAtZero: true,
-                  ticks: {
-                    stepSize: 1,
-                    callback: (value, index, values) => {
-                      // Mapear valores de meses según tus necesidades
-                      const monthNames = [
-                        'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-                        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
-                      ];
-                      return monthNames[value - 1];
-                    },
+                  title: {
+                    display: true,
+                    text: 'Meses',
                   },
                 },
                 y: {
                   type: 'linear',
                   position: 'left',
                   beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: 'Temperatura',
+                  },
                 },
               },
             }}
