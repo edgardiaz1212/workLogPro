@@ -498,6 +498,7 @@ def get_temperature_by_quarter(year):
                 {
                     "month": temperature.measurement_date.month,
                     "day": temperature.measurement_date.day,
+                    "year": temperature.measurement_date.year,
                     "air_unit": temperature.air_unit,
                     "temperature": temperature.temperature,
                     "measurement_time": temperature.measurement_time,

@@ -32,6 +32,7 @@ function TemperatureGraphic() {
 
       // Procesar datos para obtener promedio por día y air_unit
       const processedData = {};
+      console.log(processedData)
       Object.keys(data).forEach((quarter) => {
         processedData[quarter] = {};
 
@@ -61,13 +62,13 @@ function TemperatureGraphic() {
 
         Object.keys(processedData[quarter]).forEach((dateKey) => {
           const dateAverages = Object.keys(processedData[quarter][dateKey]).map((airUnit) => ({
-            date: new Date(dateKey),  // Convertir la cadena de fecha a objeto de fecha
+            date: dateKey,
             airUnit,
             averageTemperature:
               processedData[quarter][dateKey][airUnit].reduce((sum, temp) => sum + temp, 0) /
               processedData[quarter][dateKey][airUnit].length,
           }));
-
+          console.log(dateAverages)
           averagedData[quarter] = averagedData[quarter].concat(dateAverages);
         });
       });
@@ -77,7 +78,7 @@ function TemperatureGraphic() {
       console.error("Error al obtener datos por trimestre", error);
     }
   };
-
+  console.log("data", quarterlyData)
   return (
     <div className="section-title mt-3">
       <h2>Gráficas de Temperatura por Trimestre</h2>
@@ -96,13 +97,14 @@ function TemperatureGraphic() {
           <h3>{`Trimestre ${index + 1}`}</h3>
           <Line
             data={{
-              labels: quarterlyData[quarter].map((entry) => entry.date.toISOString().slice(0, 10)),  // Formatear la fecha como cadena
+              labels: quarterlyData[quarter].map((entry) => entry.date),
               datasets: quarterlyData[quarter].length > 0
                 ? Object.keys(quarterlyData[quarter][0]).map((airUnit, airUnitIndex) => ({
-                  label: `Air Unit ${airUnitIndex + 1}`,
-                  data: quarterlyData[quarter]
-                    .filter((entry) => entry.airUnit === airUnit)
-                    .map((entry) => entry.averageTemperature),
+                  label: `Aire ${airUnitIndex + 1}`,
+                  data: quarterlyData[quarter].map((entry) => ({
+                    x: entry.date,
+                    y: entry[airUnit] ? entry[airUnit].averageTemperature : null,
+                  })),
                   borderColor: `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},1)`,
                   borderWidth: 2,
                   fill: false,
@@ -112,16 +114,15 @@ function TemperatureGraphic() {
             options={{
               scales: {
                 x: {
-                  type: 'time',  // Cambiado a 'time' para manejar fechas
-                  time: {
-                    unit: 'month',  // Ajusta la unidad de tiempo según tus necesidades
-                  },
+                  type: 'category',  // Cambiado a 'category'
                   position: 'bottom',
                 },
                 y: {
                   type: 'linear',
                   position: 'left',
                   beginAtZero: true,
+                  suggestedMin: 0,  // Establecer un valor mínimo sugerido
+                  suggestedMax: 25,
                 },
               },
             }}
