@@ -101,13 +101,13 @@ function TemperatureGraphic() {
               datasets: quarterlyData[quarter].length > 0
                 ? Object.keys(quarterlyData[quarter][0]).map((airUnit, airUnitIndex) => ({
                   label: `Aire ${airUnitIndex + 1}`,
-                  data: quarterlyData[quarter].map((entry) => ({
-                    x: entry.date,
-                    y: entry[airUnit] ? entry[airUnit].averageTemperature : null,
-                  })),
+                  data: quarterlyData[quarter]
+                    .filter((entry) => entry.airUnit === airUnit)
+                    .map((entry) => parseFloat(entry.averageTemperature)),
                   borderColor: `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},1)`,
                   borderWidth: 2,
                   fill: false,
+
                 }))
                 : [],
             }}
