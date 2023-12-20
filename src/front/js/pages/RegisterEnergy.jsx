@@ -20,7 +20,7 @@ function RegisterEnergy() {
         tipo_de_mantenimiento: "",
         observaciones: ""
     });
-    // Estado para rastrear los errores
+    
     const navigate = useNavigate()
 
     const [errors, setErrors] = useState({
