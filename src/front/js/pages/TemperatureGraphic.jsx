@@ -37,7 +37,7 @@ function TemperatureGraphic() {
         processedData[quarter] = {};
 
         data[quarter].forEach((entry) => {
-          const dateKey = `${entry.year}-${entry.month}-${entry.day}`;
+          const dateKey = `${entry.year}-${entry.day}-${entry.month}`;
           const airUnit = entry.air_unit;
 
           // Crear un objeto para el día si no existe
@@ -79,6 +79,23 @@ function TemperatureGraphic() {
     }
   };
   console.log("data", quarterlyData)
+  const data = [{
+    labels: quarterlyData[quarter].map((entry) => entry.date),
+    datasets: quarterlyData[quarter].length > 0
+      ? Object.entries(quarterlyData[quarter][0]).filter(([key]) => key !== 'date').map(([airUnit, airUnitValue], airUnitIndex) => ({
+        label: `Aire ${airUnitIndex + 1}`,
+        data: quarterlyData[quarter].map((entry) => ({
+          x: entry.date,
+          y: entry[airUnit] ? parseFloat(entry[airUnit].averageTemperature) : null,
+        })),
+        borderColor: `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},1)`,
+        borderWidth: 2,
+        fill: false,
+      }))
+      : [],
+  }]
+console.log(data)
+
   return (
     <div className="section-title mt-3">
       <h2>Gráficas de Temperatura por Trimestre</h2>
@@ -94,39 +111,46 @@ function TemperatureGraphic() {
       {/* Renderizar gráficas por trimestre */}
       {Object.keys(quarterlyData).map((quarter, index) => (
         <div key={index}>
-          <h3>{`Trimestre ${index + 1}`}</h3>
-          <Line
-            data={{
-              labels: quarterlyData[quarter].map((entry) => entry.date),
-              datasets: quarterlyData[quarter].length > 0
-                ? Object.keys(quarterlyData[quarter][0]).map((airUnit, airUnitIndex) => ({
-                  label: `Aire ${airUnitIndex + 1}`,
-                  data: quarterlyData[quarter]
-                    .filter((entry) => entry.airUnit === airUnit)
-                    .map((entry) => parseFloat(entry.averageTemperature)),
-                  borderColor: `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},1)`,
-                  borderWidth: 2,
-                  fill: false,
 
-                }))
-                : [],
-            }}
-            options={{
-              scales: {
-                x: {
-                  type: 'category',  // Cambiado a 'category'
-                  position: 'bottom',
-                },
-                y: {
-                  type: 'linear',
-                  position: 'left',
-                  beginAtZero: true,
-                  suggestedMin: 0,  // Establecer un valor mínimo sugerido
-                  suggestedMax: 25,
-                },
-              },
-            }}
-          />
+
+
+          {quarterlyData[quarter].length > 0 && (  // Verificar si hay datos
+            <>
+              <h3>{`Trimestre ${index + 1}`}</h3>
+              <Line
+                data={{
+                  labels: quarterlyData[quarter].map((entry) => entry.date),
+                  datasets: quarterlyData[quarter].length > 0
+                    ? Object.entries(quarterlyData[quarter][0]).filter(([key]) => key !== 'date').map(([airUnit, airUnitValue], airUnitIndex) => ({
+                      label: `Aire ${airUnitIndex + 1}`,
+                      data: quarterlyData[quarter].map((entry) => ({
+                        x: entry.date,
+                        y: entry[airUnit] ? parseFloat(entry[airUnit].averageTemperature) : null,
+                      })),
+                      borderColor: `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},1)`,
+                      borderWidth: 2,
+                      fill: false,
+                    }))
+                    : [],
+                }}
+                options={{
+                  scales: {
+                    x: {
+                      type: 'category',  // Cambiado a 'category'
+                      position: 'bottom',
+                    },
+                    y: {
+                      type: 'linear',
+                      position: 'left',
+                      beginAtZero: true,
+                      suggestedMin: 0,  // Establecer un valor mínimo sugerido
+                      suggestedMax: 25,
+                    },
+                  },
+                }}
+              />
+            </>
+          )}
         </div>
       ))}
     </div>
