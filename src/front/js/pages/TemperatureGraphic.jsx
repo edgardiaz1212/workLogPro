@@ -60,24 +60,27 @@ function TemperatureGraphic() {
   };
 
   const generateChartConfig = (quarter, data) => {
-    return {
-      labels: data.map((entry) => entry.date),
-      datasets: data.length > 0
-        ? [...new Set(data.map(entry => entry.airUnit))].map((airUnit, airUnitIndex) => ({
-          label: `Aire ${airUnitIndex + 1}`,
-          data: data
-            .filter((entry) => entry.airUnit === airUnit)
-            .map((entry) => ({
-              x: entry.date,
-              y: entry.averageTemperature,
-            })),
-          borderColor: `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},1)`,
-          borderWidth: 2,
-          fill: false,
-        }))
-        : [],
-    };
+  // Ordenar los datos por fecha antes de crear la configuración del gráfico
+  const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  return {
+    labels: sortedData.map((entry) => entry.date),
+    datasets: sortedData.length > 0
+      ? [...new Set(sortedData.map(entry => entry.airUnit))].map((airUnit, airUnitIndex) => ({
+        label: ` ${airUnit}`,
+        data: sortedData
+          .filter((entry) => entry.airUnit === airUnit)
+          .map((entry) => ({
+            x: entry.date,
+            y: entry.averageTemperature,
+          })),
+        borderColor: `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},1)`,
+        borderWidth: 3,
+        fill: false,
+      }))
+      : [],
   };
+};
 
   const handleYearChange = async (selectedYear) => {
     setSelectedYear(selectedYear);
@@ -104,6 +107,7 @@ function TemperatureGraphic() {
       <div className='container'>
         <select className="m-3" onChange={(e) => handleYearChange(e.target.value)}>
           <option value="">Seleccionar Año</option>
+          
           {availableYears.map((year) => (
             <option key={year} value={year}>
               {year}
@@ -112,13 +116,14 @@ function TemperatureGraphic() {
         </select>
 
         {Object.keys(quarterlyData).map((quarter, index) => (
-          <div key={index}>
+          <div className='m-4 ' key={index}>
             {quarterlyData[quarter].length > 0 && (
               <>
                 <h3>{`Trimestre ${index + 1}`}</h3>
                 <Line
                   data={generateChartConfig(quarter, quarterlyData[quarter])}
                   options={{
+                    responsive: true, 
                     scales: {
                       x: {
                         type: 'category',
@@ -132,15 +137,19 @@ function TemperatureGraphic() {
                         suggestedMax: 25,
                       },
                     },
+                    
                   }}
                 />
               </>
             )}
           </div>
         ))}
+        <div className="container mb-3 mt-4">
         <button type="button" className="btn btn-secondary ms-3" onClick={goBack}>
           Volver
-        </button></div>
+        </button>
+        </div>
+        </div>
     </>
   );
 }

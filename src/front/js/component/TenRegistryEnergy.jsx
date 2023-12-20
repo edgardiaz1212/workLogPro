@@ -2,7 +2,7 @@ import React from 'react'
 
 function TenRegistryEnergy() {
   return (
-    <div>TenRegistryEnergy</div>
+    <div>TenRegistryEnergy para tabla de edicion</div>
   )
 }
 
