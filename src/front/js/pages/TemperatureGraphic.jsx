@@ -27,22 +27,35 @@ function TemperatureGraphic() {
 
   const processDataForQuarter = (data) => {
     const processedData = {};
-
+  
     Object.keys(data).forEach((quarter) => {
       processedData[quarter] = [];
-
+  
       data[quarter].forEach((entry) => {
         const dateKey = `${entry.year}-${entry.month}-${entry.day}`;
         const airUnit = entry.air_unit;
-
-        processedData[quarter].push({
-          date: dateKey,
-          airUnit,
-          averageTemperature: entry.temperature,
-        });
+  
+        // Verificar si ya existe una entrada para esta fecha y airUnit
+        const existingEntry = processedData[quarter].find(
+          (item) => item.date === dateKey && item.airUnit === airUnit
+        );
+  
+        if (existingEntry) {
+          // Si ya existe, actualizar el promedio diario
+          existingEntry.averageTemperature =
+            (existingEntry.averageTemperature + entry.temperature) / 2;
+        } else {
+          // Si no existe, crear una nueva entrada
+          processedData[quarter].push({
+            date: dateKey,
+            airUnit,
+            averageTemperature: entry.temperature,
+          });
+        }
       });
     });
-
+  
+    console.log("ladata", processedData);
     return processedData;
   };
 
@@ -81,53 +94,53 @@ function TemperatureGraphic() {
 
   const goBack = () => {
     navigate(-1);
-};
+  };
 
   return (
     <>
-    <div className="section-title mt-3">
-      <h2>Gráficas de Temperatura por Trimestre</h2>
+      <div className="section-title mt-3">
+        <h2>Gráficas de Temperatura por Trimestre</h2>
       </div>
       <div className='container'>
-      <select className="m-3" onChange={(e) => handleYearChange(e.target.value)}>
-        <option value="">Seleccionar Año</option>
-        {availableYears.map((year) => (
-          <option key={year} value={year}>
-            {year}
-          </option>
-        ))}
-      </select>
+        <select className="m-3" onChange={(e) => handleYearChange(e.target.value)}>
+          <option value="">Seleccionar Año</option>
+          {availableYears.map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
 
-      {Object.keys(quarterlyData).map((quarter, index) => (
-        <div key={index}>
-          {quarterlyData[quarter].length > 0 && (
-            <>
-              <h3>{`Trimestre ${index + 1}`}</h3>
-              <Line
-                data={generateChartConfig(quarter, quarterlyData[quarter])}
-                options={{
-                  scales: {
-                    x: {
-                      type: 'category',
-                      position: 'bottom',
+        {Object.keys(quarterlyData).map((quarter, index) => (
+          <div key={index}>
+            {quarterlyData[quarter].length > 0 && (
+              <>
+                <h3>{`Trimestre ${index + 1}`}</h3>
+                <Line
+                  data={generateChartConfig(quarter, quarterlyData[quarter])}
+                  options={{
+                    scales: {
+                      x: {
+                        type: 'category',
+                        position: 'bottom',
+                      },
+                      y: {
+                        type: 'linear',
+                        position: 'left',
+                        beginAtZero: true,
+                        suggestedMin: 0,
+                        suggestedMax: 25,
+                      },
                     },
-                    y: {
-                      type: 'linear',
-                      position: 'left',
-                      beginAtZero: true,
-                      suggestedMin: 0,
-                      suggestedMax: 25,
-                    },
-                  },
-                }}
-              />
-            </>
-          )}
-        </div>
-      ))}
-    <button type="button" className="btn btn-secondary ms-3" onClick={goBack}>
-                                Volver
-                            </button></div>
+                  }}
+                />
+              </>
+            )}
+          </div>
+        ))}
+        <button type="button" className="btn btn-secondary ms-3" onClick={goBack}>
+          Volver
+        </button></div>
     </>
   );
 }
