@@ -134,10 +134,15 @@ function TemperatureGraphic() {
                         position: 'left',
                         beginAtZero: true,
                         suggestedMin: 0,
-                        suggestedMax: 25,
+                        
                       },
                     },
-                    
+                    plugins: {
+                      tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                      },
+                    },
                   }}
                 />
               </>
