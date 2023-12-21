@@ -8,17 +8,7 @@ export const Home = () => {
 
 	return (
 		<>
-		{/* <div className="text-center mt-5">
-			<h1>Hello Rigo!!</h1>
-			<p>
-				<img src={rigoImageUrl} />
-			</p>
-			<div className="alert alert-info">
-				{store.message || "Loading message from the backend (make sure your python backend is running)..."}
-			</div>
-			
-		</div> */}
-		
+	
   <section id="hero" className="d-flex align-items-center">
 
     <div className="container">
@@ -140,23 +130,6 @@ export const Home = () => {
               </div>
             </div>
           </div>
-
-          {/* <div className="col-lg-6 mt-4" data-aos="zoom-in" data-aos-delay="400">
-            <div className="member d-flex align-items-start">
-              <div className="pic"><img src="assets/img/team/team-4.jpg" className="img-fluid" alt=""/></div>
-              <div className="member-info">
-                <h4>Amanda Jepson</h4>
-                <span>Accountant</span>
-                <p>Dolorum tempora officiis odit laborum officiis et et accusamus</p>
-                <div className="social">
-                  <a href=""><i className="ri-twitter-fill"></i></a>
-                  <a href=""><i className="ri-facebook-fill"></i></a>
-                  <a href=""><i className="ri-instagram-fill"></i></a>
-                  <a href=""> <i className="ri-linkedin-box-fill"></i> </a>
-                </div>
-              </div>
-            </div>
-          </div> */}
 
         </div>
 

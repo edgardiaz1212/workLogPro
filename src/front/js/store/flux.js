@@ -259,6 +259,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error updating user profile:", error);
 				}
 			},
+			getUsersByUnit: async (unit) => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/users/${unit}`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+						},
+					});
+
+					const data = await response.json();
+
+					const result = {
+						status: response.status,
+						data: data,
+					};
+
+					if (response.ok) {
+						setStore({
+							// Agregar la información de los usuarios por unidad al store
+							processedData: data,
+						});
+					} else {
+						// Manejar errores, mostrar mensajes, etc.
+						console.error("Error fetching users by unit:", result);
+					}
+
+					return result;
+				} catch (error) {
+					console.error("Error fetching users by unit:", error);
+					return {
+						status: 500,
+						data: { message: "Error inesperado" },
+					};
+				}
+			},
 			addTemperature: async (temperatureData) => {
 				const store = getStore();
 				try {
