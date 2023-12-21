@@ -13,11 +13,12 @@ from werkzeug.utils import secure_filename
 
 api = Blueprint('api', __name__)
 
-ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xlsx'}  # Extensiones permitidas para los archivos
+# Extensiones permitidas para los archivos
+ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xlsx'}
 
-def allowed_file(filename): 
-     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def set_password(password, salt):
@@ -26,6 +27,7 @@ def set_password(password, salt):
 
 def check_password(hash_password, password, salt):
     return check_password_hash(hash_password, f"{password}{salt}")
+
 
 @api.route('/user', methods=['POST'])
 def register_user():
@@ -107,16 +109,21 @@ def login():
         return jsonify({"msg": "Bad credentials"}), 400
 
 
-@api.route('/user', methods=['GET'])
-@jwt_required()
-def get_user_by_alias():
-    if request.method == "GET":
-        user = User.query.filter_by(id=get_jwt_identity()).first()
+@api.route('/users/<unit>', methods=['GET'])
+def get_users_by_unit(unit):
+    try:
+        # Consulta los usuarios que pertenecen a la unidad especificada
+        users = User.query.filter_by(unit=unit).all()
 
-        if user:
-            return jsonify(user.serialize()), 200
-        else:
-            return jsonify({'error': 'User not found'}), 404
+        # Serializa los resultados
+        serialized_users = [user.serialize() for user in users]
+
+        # Devuelve la respuesta JSON
+        return jsonify(serialized_users)
+
+    except Exception as e:
+        # Maneja cualquier error y devuelve un mensaje de error
+        return jsonify({"error": str(e)}), 500
 
 
 @api.route('/activity', methods=['POST'])
@@ -139,7 +146,8 @@ def add_activity():
             control_cambio_cor=data.get('control_cambio_cor'),
             control_cambio_dcce=data.get('control_cambio_dcce'),
             tecnico_nombre_apellido=data.get('tecnico_nombre_apellido'),
-            personal_infra_nombre_apellido=data.get('personal_infra_nombre_apellido'),
+            personal_infra_nombre_apellido=data.get(
+                'personal_infra_nombre_apellido'),
             actividad=data.get('actividad'),
             actividad_satisfactoria=data.get('actividad_satisfactoria'),
             tipo_de_mantenimiento=data.get('tipo_de_mantenimiento'),
@@ -158,44 +166,13 @@ def add_activity():
         db.session.rollback()
         return jsonify({"msg": "Error adding activity", "error1": str(e)}), 500
 
+
 @api.route('/activities-by-year/<int:year>', methods=['GET'])
 @jwt_required()
 def get_activities_by_year(year):
     # Filtrar actividades por año
-    activities = Activity.query.filter(db.extract('year', Activity.fecha_actividad) == year).all()
-
-    # Convertir actividades a un formato que puedas enviar al frontend
-    activities_data = [
-        {
-            "year":activity.fecha_actividad.year,
-            "mes": activity.fecha_actividad.month,
-            "dia":activity.fecha_actividad.day,
-            "actividad": activity.actividad,
-            "tipo_de_mantenimiento":activity.tipo_de_mantenimiento,
-            "tecnico_nombre_apellido":activity.tecnico_nombre_apellido,
-            "fecha_actividad": activity.fecha_actividad,
-            "actividad_satisfactoria": activity.actividad_satisfactoria,
-            "control_cambio_cor": activity.control_cambio_cor,
-            "id":activity.id,
-            # Agrega otros campos según sea necesario
-        }
-        for activity in activities
-    ]
-
-    return jsonify({"activities": activities_data})
-
-@api.route('/get-available-years', methods=['GET'])
-@jwt_required()
-def get_available_years():
-    years = db.session.query(db.extract('year', Activity.fecha_actividad)).distinct().all()
-    years_list = [year[0] for year in years]  # Convertir a lista
-    return jsonify({"years": years_list})
-
-@api.route('/activities/last-10', methods=['GET'])
-@jwt_required()
-def get_last_10_activities():
-    # Ordenar actividades por fecha de manera descendente
-    activities = Activity.query.order_by(Activity.fecha_actividad.desc()).limit(10).all()
+    activities = Activity.query.filter(db.extract(
+        'year', Activity.fecha_actividad) == year).all()
 
     # Convertir actividades a un formato que puedas enviar al frontend
     activities_data = [
@@ -217,10 +194,48 @@ def get_last_10_activities():
 
     return jsonify({"activities": activities_data})
 
+
+@api.route('/get-available-years', methods=['GET'])
+@jwt_required()
+def get_available_years():
+    years = db.session.query(db.extract(
+        'year', Activity.fecha_actividad)).distinct().all()
+    years_list = [year[0] for year in years]  # Convertir a lista
+    return jsonify({"years": years_list})
+
+
+@api.route('/activities/last-10', methods=['GET'])
+@jwt_required()
+def get_last_10_activities():
+    # Ordenar actividades por fecha de manera descendente
+    activities = Activity.query.order_by(
+        Activity.fecha_actividad.desc()).limit(10).all()
+
+    # Convertir actividades a un formato que puedas enviar al frontend
+    activities_data = [
+        {
+            "year": activity.fecha_actividad.year,
+            "mes": activity.fecha_actividad.month,
+            "dia": activity.fecha_actividad.day,
+            "actividad": activity.actividad,
+            "tipo_de_mantenimiento": activity.tipo_de_mantenimiento,
+            "tecnico_nombre_apellido": activity.tecnico_nombre_apellido,
+            "fecha_actividad": activity.fecha_actividad,
+            "actividad_satisfactoria": activity.actividad_satisfactoria,
+            "control_cambio_cor": activity.control_cambio_cor,
+            "id": activity.id,
+            # Agrega otros campos según sea necesario
+        }
+        for activity in activities
+    ]
+
+    return jsonify({"activities": activities_data})
+
+
 @api.route('/documents', methods=['POST'])
 @jwt_required()
 def add_document():
-    
+
     try:
         document_name = request.form.get("document_name")
         document_type = request.form.get("document_type")
@@ -232,7 +247,8 @@ def add_document():
             return jsonify({"msg": "Missing parameters"}), 400
 
         # Verificar si el documento ya existe
-        document = Documents.query.filter_by(document_name=document_name).first()
+        document = Documents.query.filter_by(
+            document_name=document_name).first()
 
         if document is not None and document.document_version == document_version:
             return jsonify({"msg": "Document version already registered"}), 400
@@ -255,7 +271,7 @@ def add_document():
             document_version=document_version,
             document_unit=document_unit,
             document_file=file_path,
-            
+
         )
 
         db.session.add(new_document)
@@ -266,6 +282,7 @@ def add_document():
     except Exception as error:
         db.session.rollback()
         return jsonify({"msg": f"Error registering Document: {str(error)}"}), 500
+
 
 @api.route('/add-maintenance-evidence/<int:activity_id>', methods=['POST'])
 @jwt_required()
@@ -306,7 +323,8 @@ def add_maintenance_evidence(activity_id):
     except Exception as error:
         db.session.rollback()
         return jsonify({"msg": f"Error adding maintenance evidence: {str(error)}"}), 500
-    
+
+
 @api.route('/user/profile', methods=['GET'])
 @jwt_required()
 def get_user_profile():
@@ -325,7 +343,8 @@ def get_user_profile():
 
     except Exception as error:
         return jsonify({"msg": f"Error getting user profile: {str(error)}"}), 500
-    
+
+
 @api.route('/user/profile', methods=['PUT'])
 @jwt_required()
 def update_user_profile():
@@ -357,7 +376,8 @@ def update_user_profile():
     except Exception as error:
         # En caso de error, realizar un rollback y devolver un mensaje de error
         db.session.rollback()
-        return jsonify({"msg": f"Error updating user profile: {str(error)}"}), 500  
+        return jsonify({"msg": f"Error updating user profile: {str(error)}"}), 500
+
 
 @api.route('/temperatures', methods=['POST'])
 def create_temperature():
@@ -378,34 +398,39 @@ def create_temperature():
         if existing_temperature:
             return jsonify({'error': 'Ya existe una temperatura registrada para este aire, fecha y hora'}), 400
 
-
         new_temperature = Temperature(air_unit=air_unit, temperature=temperature,
                                       measurement_time=measurement_time, measurement_date=measurement_date)
-        
+
         db.session.add(new_temperature)
         db.session.commit()
 
         return jsonify({'message': 'Temperature record created successfully'}), 201
     except Exception as e:
-        return jsonify({'error': str(e)}), 500  
+        return jsonify({'error': str(e)}), 500
+
 
 @api.route('/temperatures', methods=['GET'])
 def get_temperatures():
     try:
         temperatures = Temperature.query.all()
-        temperature_list = [temperature.serialize() for temperature in temperatures]
+        temperature_list = [temperature.serialize()
+                            for temperature in temperatures]
         return jsonify({'temperatures': temperature_list})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
+
+
 @api.route('/temperatures/latest', methods=['GET'])
 def get_latest_temperatures():
     try:
-        temperatures = Temperature.query.order_by(Temperature.created_at.desc()).limit(10).all()
-        temperature_list = [temperature.serialize() for temperature in temperatures]
+        temperatures = Temperature.query.order_by(
+            Temperature.created_at.desc()).limit(10).all()
+        temperature_list = [temperature.serialize()
+                            for temperature in temperatures]
         return jsonify({'temperatures': temperature_list})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @api.route('/temperatures/<int:id>', methods=['GET'])
 def get_temperature_by_id(id):
@@ -418,6 +443,7 @@ def get_temperature_by_id(id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @api.route('/temperatures/<int:id>', methods=['PUT'])
 def update_temperature(id):
     try:
@@ -425,9 +451,12 @@ def update_temperature(id):
         if temperature:
             data = request.get_json()
             temperature.air_unit = data.get('air_unit', temperature.air_unit)
-            temperature.temperature = data.get('temperature', temperature.temperature)
-            temperature.measurement_time = data.get('measurement_time', temperature.measurement_time)
-            temperature.measurement_date = data.get('measurement_date', temperature.measurement_date)
+            temperature.temperature = data.get(
+                'temperature', temperature.temperature)
+            temperature.measurement_time = data.get(
+                'measurement_time', temperature.measurement_time)
+            temperature.measurement_date = data.get(
+                'measurement_date', temperature.measurement_date)
 
             db.session.commit()
 
@@ -436,6 +465,7 @@ def update_temperature(id):
             return jsonify({'message': 'Temperature not found'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @api.route('/temperatures/<int:id>', methods=['DELETE'])
 def delete_temperature(id):
@@ -450,19 +480,23 @@ def delete_temperature(id):
             return jsonify({'message': 'Temperature not found'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
+
+
 @api.route('/temperature-years', methods=['GET'])
 @jwt_required()
 def get_temperature_years():
-    years=db.session.query(db.extract('year',Temperature.measurement_date)).distinct().all()
-    years_list=[year[0] for year in years]
+    years = db.session.query(db.extract(
+        'year', Temperature.measurement_date)).distinct().all()
+    years_list = [year[0] for year in years]
     return jsonify({"years": years_list})
+
 
 @api.route('/temperature/<int:year>', methods=['GET'])
 @jwt_required()
 def get_temperature_by_year(year):
     # Filtramos temperaturas por año
-    temperatures = Temperature.query.filter(db.extract('year', Temperature.measurement_date) == year).all()
+    temperatures = Temperature.query.filter(db.extract(
+        'year', Temperature.measurement_date) == year).all()
 
     # Convertimos a un formato para enviar al frontend
     temperatures_data = [
@@ -477,8 +511,9 @@ def get_temperature_by_year(year):
         }
         for temperature in temperatures
     ]
-    
+
     return jsonify({"temperatures": temperatures_data})
+
 
 @api.route('/temperature-by-quarter/<int:year>', methods=['GET'])
 @jwt_required()
@@ -511,4 +546,4 @@ def get_temperature_by_quarter(year):
 
         return jsonify(quarterly_data)
     except Exception as e:
-        return jsonify({'error': str(e)}), 500    
+        return jsonify({'error': str(e)}), 500

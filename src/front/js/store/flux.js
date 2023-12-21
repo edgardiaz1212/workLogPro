@@ -10,7 +10,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
-
 			registerUser: async (user) => {
 
 				const store = getStore()
@@ -71,6 +70,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						data: { message: "Error inesperado" },
 					};
 				}
+			},
+			logout: () => {
+				localStorage.removeItem("user");
+				setStore({ token: "", user: "" });
 			},
 			addActivity: async (body) => {
 				const store = getStore()
@@ -144,7 +147,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return [];
 				}
 			},
-
 			getLast10Activities: async () => {
 				const store = getStore();
 
@@ -169,12 +171,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error };
 				}
 			},
-
-			logout: () => {
-				localStorage.removeItem("user");
-				setStore({ token: "", user: "" });
-			},
-
 			addDocument: async (document) => {
 				const store = getStore()
 				try {
@@ -198,7 +194,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return 500;
 				}
 			},
-
 			addMaintenanceEvidence: async (activityId, formData) => {
 				const store = getStore();
 				try {
@@ -221,7 +216,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return 500;
 				}
 			},
-
 			getUserProfile: async () => {
 				const store = getStore();
 				try {

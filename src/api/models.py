@@ -2,15 +2,16 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20),nullable=False)
-    surname=db.Column(db.String(20),nullable=False)
-    unit=db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(20), nullable=False)
+    surname = db.Column(db.String(20), nullable=False)
+    unit = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    emailDCH= db.Column(db.String(120), unique=True, nullable=False)
-    jobPosition=db.Column(db.String(120), nullable=False)
-    description=db.Column(db.String(120))
+    emailDCH = db.Column(db.String(120), unique=True, nullable=False)
+    jobPosition = db.Column(db.String(120), nullable=False)
+    description = db.Column(db.String(120))
     password = db.Column(db.String(255), unique=False, nullable=False)
     salt = db.Column(db.String(100), unique=False, nullable=False)
 
@@ -29,6 +30,8 @@ class User(db.Model):
             "description": self.description,
             # do not serialize the password, its a security breach
         }
+
+
 class Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fecha_actividad = db.Column(db.Date, nullable=False)
@@ -39,10 +42,11 @@ class Activity(db.Model):
     personal_infra_nombre_apellido = db.Column(db.String(50), nullable=False)
     actividad = db.Column(db.String(50), nullable=True)
     actividad_satisfactoria = db.Column(db.Boolean, nullable=True)
-    tipo_de_mantenimiento= db.Column(db.String(50))
-    observaciones= db.Column(db.String(50))
-    create_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
-    
+    tipo_de_mantenimiento = db.Column(db.String(50))
+    observaciones = db.Column(db.String(50))
+    create_at = db.Column(
+        db.DateTime, server_default=db.func.current_timestamp())
+
     def __repr__(self):
         return f'<Activity {self.fecha_actividad} >'
 
@@ -58,18 +62,20 @@ class Activity(db.Model):
             "actividad": self.actividad,
             "actividad_satisfactoria": self.actividad_satisfactoria,
             "tipo_de_mantenimiento": self.tipo_de_mantenimiento,
-            "observaciones":self.observaciones,
-            "created_at":self.create_at
+            "observaciones": self.observaciones,
+            "created_at": self.create_at
         }
+
+
 class Documents(db.Model):
-    id =db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     document_name = db.Column(db.String(255), nullable=False)
     document_type = db.Column(db.String(255), nullable=False)
     document_version = db.Column(db.String(255), nullable=False)
-    document_unit=db.Column(db.String(255), nullable=False)
+    document_unit = db.Column(db.String(255), nullable=False)
     document_file = db.Column(db.String(255), nullable=True)
     create_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    
+
     def serialize(self):
         return {
             "id": self.id,
@@ -77,17 +83,21 @@ class Documents(db.Model):
             "document_type": self.document_type,
             "document_version": self.document_version,
             "document_unit": self.document_unit,
-            "created_at":self.create_at
+            "created_at": self.create_at
         }
-        
+
+
 class MaintenanceEvidence(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'), nullable=False)
+    activity_id = db.Column(db.Integer, db.ForeignKey(
+        'activity.id'), nullable=False)
     evidence_file = db.Column(db.LargeBinary, nullable=False)
-    create_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
+    create_at = db.Column(
+        db.DateTime, server_default=db.func.current_timestamp())
 
     # Relación con la tabla Activity
-    activity = db.relationship('Activity', backref=db.backref('maintenance_evidences', lazy=True))
+    activity = db.relationship('Activity', backref=db.backref(
+        'maintenance_evidences', lazy=True))
 
     def __repr__(self):
         return f'<MaintenanceEvidence {self.create_at}>'
@@ -99,12 +109,14 @@ class MaintenanceEvidence(db.Model):
             "create_at": self.create_at,
             # Puedes agregar más campos según sea necesario
         }
+
+
 class Temperature(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    air_unit = db.Column(db.String(20), nullable=False)  # Nombre del aire (Aire 1, Aire 2, ..., Aire 7)
-    temperature = db.Column(db.Float, nullable=False)  # Temperatura registrada
-    measurement_time = db.Column(db.String(20), nullable=False)  # Hora de la medición
-    measurement_date = db.Column(db.Date, nullable=False)  # Fecha de la medición
+    air_unit = db.Column(db.String(20), nullable=False)
+    temperature = db.Column(db.Float, nullable=False)
+    measurement_time = db.Column(db.String(20), nullable=False)
+    measurement_date = db.Column(db.Date, nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
 
     def __repr__(self):
@@ -119,3 +131,16 @@ class Temperature(db.Model):
             "measurement_date": self.measurement_date.strftime('%Y-%m-%d'),
             "created_at": str(self.created_at)
         }
+
+def paginate(query, page, per_page):
+    try:
+        result = query.paginate(page=page, per_page=per_page, error_out=False)
+        return {
+            'items': result.items,
+            'page': result.page,
+            'pages': result.pages,
+            'total': result.total
+        }
+    except Exception as e:
+        print(f"Error en la paginación: {str(e)}")
+        return {}
