@@ -262,7 +262,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUsersInfraestructura: async () => {
 				const store = getStore();
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/users/Infraestructura}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/users/Infraestructura`, {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
@@ -275,13 +275,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						status: response.status,
 						data: data,
 					};
-					console.log("el",data)
+					console.log("el",response.status)
 					if (response.ok) {
 						setStore({
 							// Agregar la información de los usuarios por unidad al store
 							processedData: data,
 						});
-						
+					
 					} else {
 						// Manejar errores, mostrar mensajes, etc.
 						console.error("Error fetching users by unit:", result);

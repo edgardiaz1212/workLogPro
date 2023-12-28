@@ -8,6 +8,7 @@ export const Home = () => {
   const { store, actions } = useContext(Context);
   const {processedData} = store
   console.log(processedData)
+  
   useEffect(() => {
     // Llama a la acción getUsersInfraestructura cuando el componente se monta
     actions.getUsersInfraestructura();
