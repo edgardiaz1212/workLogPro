@@ -73,11 +73,11 @@ function Login() {
           <div className="col-md-auto">
             <form onKeyDown={handleKeyDown}>
               <div className="mb-3">
-                <label htmlFor="formControlInput1" className="form-label">Correo</label>
-                <input type="email" className="form-control" id="formControlInput1" placeholder="name@example.com" onChange={handleChange} name="email"/>
+                <label htmlFor="formControlInput1" className="form-label">Correo Corportativo</label>
+                <input type="email" className="form-control" id="formControlInput1" placeholder="alias@cantv.com.ve" onChange={handleChange} name="email"/>
               </div>
 
-              <label htmlFor="inputPassword" className="form-label">Password</label>
+              <label htmlFor="inputPassword" className="form-label">Contraseña</label>
               <input type="password" id="inputPassword" className="form-control" aria-describedby="passwordHelpBlock" onChange={handleChange} name="password" />
 
               <button type="button" className="btn btn-primary mt-3" onClick={() => handleLogin()}>Entrar</button>
