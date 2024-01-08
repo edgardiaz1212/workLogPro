@@ -144,3 +144,21 @@ def paginate(query, page, per_page):
     except Exception as e:
         print(f"Error en la paginación: {str(e)}")
         return {}
+
+class PendingsUnits (db.Model):
+    id= db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(225))
+    request_date= db.Column(db.DateTime, server_default=db.func.current_timestamp())
+    status=db.Column(db.String(50))
+    ticket_associated = db.Column(db.String(50))
+    finished=db.Column(db.Boolean, default=False)
+
+    def serialize(self):
+        return{
+            'id':self.id,
+            'description': self.description,
+            'request_date':self.status,
+            'status':self.status,
+            'ticket_associated':self.ticket_associated,
+            'finished':self.finished
+        }
