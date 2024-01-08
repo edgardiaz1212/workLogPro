@@ -483,6 +483,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return error;
 				}
 			},
+			registerPendingActivityByUnits:async(formData)=>{
+				const store =getStore()
+				try {
+					let response = await fetch(`${process.env.BACKEND_URL}/pending-by-units`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${store.token}`
+						},
+						body: formData,
+					})
+					let data = await response.json();
+
+					if (!response.ok) {
+						console.error("Error registering pending activity:", data.msg || "Unknown error");
+					}
+			
+					return data;
+
+				} catch (error) {
+					console.error("Error registering pending activity:", error);
+					return {
+						status: 500,
+						msg: "Unexpected error",
+					}
+				}
+			},
 
 		}
 	};
