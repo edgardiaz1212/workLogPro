@@ -157,7 +157,7 @@ class PendingsUnits (db.Model):
         return{
             'id':self.id,
             'description': self.description,
-            'request_date':self.status,
+            'request_date':self.request_date.strftime('%Y-%m-%d'),
             'status':self.status,
             'ticket_associated':self.ticket_associated,
             'finished':self.finished

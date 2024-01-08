@@ -295,8 +295,7 @@ def add_maintenance_evidence(activity_id):
             return jsonify({"msg": "Activity not found"}), 404
 
         # Verificar si el usuario tiene permisos para agregar evidencia a esta actividad (puedes personalizar esto según tus necesidades)
-        # Por ejemplo, puedes verificar si el usuario que intenta agregar evidencia es el mismo que creó la actividad.
-
+      
         # Obtener el archivo de la solicitud
         file = request.files.get("evidence_file")
 
@@ -547,3 +546,36 @@ def get_temperature_by_quarter(year):
         return jsonify(quarterly_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@api.route('/pending-by-units', methods=['POST'])
+@jwt_required()
+def add_pending_activities():
+    try:
+        description =request.form.get("description")
+        request_date=request.form.get('request_date')
+        status=request.form.get('status')
+        ticket_associated=request.form.get('ticket_associated')
+        finished=request.form.get('finished')
+
+        #Validar los Datos
+        if not all ([description,request_date, status, ticket_associated, finished]):
+            return jsonify({"msg":"MissingParameters"}), 400
+        
+        #Crear nueva instancia 
+        new_pending_activity= PendingsUnits(
+            description=description,
+            request_date=request_date,
+            status=status,
+            ticket_associated=ticket_associated,
+            finished=finished)
+                
+        #Agregar a la base de datos
+        db.session.add(new_pending_activity)
+        db.session.commit()
+
+        return jsonify({"msg":"Pending Activity successfull register"})
+    except Exception as error:
+        db.session.rollback()
+        return jsonify({"msg":f"Error adding pending activity"})
+
+        
