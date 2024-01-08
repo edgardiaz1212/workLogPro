@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../store/appContext";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 function PendingByUnits() {
+    const {  actions } = useContext(Context);
     const [formData, setFormData] = useState({
         description: '',
         request_date: '',
@@ -68,7 +70,7 @@ function PendingByUnits() {
                     <label>
                         Fecha de Solicitud:
                         <input
-                            type="text" // Puedes cambiar esto a un campo de fecha según tus necesidades
+                            type="date" // Puedes cambiar esto a un campo de fecha según tus necesidades
                             name="request_date"
                             value={formData.request_date}
                             onChange={handleChange}
