@@ -19,6 +19,7 @@ import AddNewDoc from "./pages/AddNewDoc.jsx";
 import Profile from "./pages/Profile.jsx";
 import TemperatureRegistry from "./pages/TemperatureRegistry.jsx";
 import TemperatureGraphic from "./pages/TemperatureGraphic.jsx";
+import PendingByUnits from "./pages/PendingByUnits.jsx";
 
 
 //create your first component
@@ -48,6 +49,7 @@ const Layout = () => {
                         <Route element={<Profile/>} path="/profile"/>
                         <Route element={<TemperatureRegistry/>} path="/temp-register"/>
                         <Route element={<TemperatureGraphic/>} path="/temp-graphic"/>
+                        <Route element={<PendingByUnits/>} path="/pending-by-units"/>
                     </Routes>
                     <Footer />
                 </ScrollToTop>
