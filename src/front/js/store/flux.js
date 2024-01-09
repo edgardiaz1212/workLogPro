@@ -483,10 +483,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return error;
 				}
 			},
-			registerPendingActivityByUnits:async(formData)=>{
+			registerPendingActivityByProviders:async(formData)=>{
 				const store =getStore()
 				try {
-					let response = await fetch(`${process.env.BACKEND_URL}/pending-by-units`, {
+					let response = await fetch(`${process.env.BACKEND_URL}/pending-by-providers`, {
 						method: "GET",
 						headers: {
 							"Authorization": `Bearer ${store.token}`

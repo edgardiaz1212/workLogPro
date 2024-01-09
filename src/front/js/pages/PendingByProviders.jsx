@@ -24,7 +24,7 @@ function PendingByUnits() {
 
         // Realizar la solicitud para registrar la nueva actividad pendiente
         try {
-            const response = await actions.registerPendingActivityByUnits(formData);
+            const response = await actions.registerPendingActivityByProviders(formData);
 
             // Verificar la respuesta del backend
             if (response && response.msg) {

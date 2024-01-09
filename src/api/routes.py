@@ -547,7 +547,7 @@ def get_temperature_by_quarter(year):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@api.route('/pending-by-units', methods=['POST'])
+@api.route('/pending-by-providers', methods=['POST'])
 @jwt_required()
 def add_pending_activities():
     try:
