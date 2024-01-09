@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-function PendingByUnits() {
+function PendingByProviders() {
     const { actions } = useContext(Context);
     const [formData, setFormData] = useState({
         provider:'',
@@ -141,4 +141,4 @@ function PendingByUnits() {
     );
 }
 
-export default PendingByUnits;
+export default PendingByProviders;
