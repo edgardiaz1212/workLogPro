@@ -563,7 +563,7 @@ def add_pending_activities():
             return jsonify({"msg":"MissingParameters"}), 400
         
         #Crear nueva instancia 
-        new_pending_activity= PendingsUnits(
+        new_pending_activity= PendingsProviders(
             provider=provider,
             description=description,
             request_date=request_date,

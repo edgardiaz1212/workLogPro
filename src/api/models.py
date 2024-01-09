@@ -145,7 +145,7 @@ def paginate(query, page, per_page):
         print(f"Error en la paginación: {str(e)}")
         return {}
 
-class PendingsUnits (db.Model):
+class PendingsProviders (db.Model):
     id= db.Column(db.Integer, primary_key=True)
     provider= db.Column(db.String(50))
     description = db.Column(db.String(225))
