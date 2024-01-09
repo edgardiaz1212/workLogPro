@@ -4,8 +4,9 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 function PendingByUnits() {
-    const {  actions } = useContext(Context);
+    const { actions } = useContext(Context);
     const [formData, setFormData] = useState({
+        provider:'',
         description: '',
         request_date: '',
         status: '',
@@ -32,6 +33,7 @@ function PendingByUnits() {
 
                 // Limpiar el formulario después de un registro exitoso
                 setFormData({
+                    provider:'',
                     description: '',
                     request_date: '',
                     status: '',
@@ -56,59 +58,84 @@ function PendingByUnits() {
                 <div className="section-title mt-3">
                     <h2>Formulario de Actividades Pendientes de Proveedores</h2>
                 </div>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Descripción:
-                        <input
-                            type="text"
-                            name="description"
-                            value={formData.description}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        Fecha de Solicitud:
-                        <input
-                            type="date" // Puedes cambiar esto a un campo de fecha según tus necesidades
-                            name="request_date"
-                            value={formData.request_date}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        Estatus:
-                        <input
-                            type="text"
-                            name="status"
-                            value={formData.status}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        Ticket Asociado:
-                        <input
-                            type="text"
-                            name="ticket_associated"
-                            value={formData.ticket_associated}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        Finalizado:
-                        <input
-                            type="checkbox"
-                            name="finished"
-                            checked={formData.finished}
-                            onChange={(e) => setFormData({ ...formData, finished: e.target.checked })}
-                        />
-                    </label>
-                    <br />
-                    <button className='btn btn-primary' type="submit">Registrar Actividad Pendiente</button>
-                </form>
+                <div className='row'>
+                    <div className="col-lg-7 mx-auto ">
+                        <form className="text-center" onSubmit={handleSubmit}>
+                            <div className="input-group mb-3">
+                                <label className="input-group-text" htmlFor="actividad">Actividad</label>
+                                <select
+                                    className="form-select"
+                                    id="actividad"
+                                    name="actividad"
+                                    onChange={handleChange}
+                                    value={formData.provider}
+                                >
+                                    <option value="">Seleccionar Proveedor</option>
+                                    <option value="1"> Energia Operaciones y Mantenimiento</option>
+                                    <option value="1.1">Servicios y Logisticas</option>
+                                    <option value="1.2">Seguridad Fisica</option>
+                                    <option value="2">Infraestructura</option>
+                                </select>
+                            </div>
+                            <div className="input-group mb-3">
+                                <span className="input-group-text">Descripción</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="description"
+                                    value={formData.description}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="input-group mb-3">
+                                <span className="input-group-text">Fecha de Solicitud</span>
+                                <input
+                                    type="date" // Puedes cambiar esto a un campo de fecha según tus necesidades
+                                    className="form-control"
+                                    name="request_date"
+                                    value={formData.request_date}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="input-group mb-3">
+                                <span className="input-group-text">Estatus</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="status"
+                                    value={formData.status}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="input-group mb-3">
+                                <span className="input-group-text">Ticket Asociado</span>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="ticket_associated"
+                                    value={formData.ticket_associated}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="input-group mb-3">
+                                <div className="input-group-text">
+                                    <input
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        name="finished"
+                                        checked={formData.finished}
+                                        onChange={(e) => setFormData({ ...formData, finished: e.target.checked })}
+                                    />
+                                    <label className="form-check-label" htmlFor="finished">Finalizado</label>
+                                </div>
+                            </div>
+                            <button className='btn btn-primary' type="submit">Registrar Actividad Pendiente</button>
+                        </form>
+                    </div>
+                    <div className="col-lg-12">
+                        tablas
+                    </div>
+                </div>
             </div>
         </>
     );

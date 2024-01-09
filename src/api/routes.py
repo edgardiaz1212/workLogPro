@@ -551,6 +551,7 @@ def get_temperature_by_quarter(year):
 @jwt_required()
 def add_pending_activities():
     try:
+        provider =request.fom.get("provider")
         description =request.form.get("description")
         request_date=request.form.get('request_date')
         status=request.form.get('status')
@@ -558,11 +559,12 @@ def add_pending_activities():
         finished=request.form.get('finished')
 
         #Validar los Datos
-        if not all ([description,request_date, status, ticket_associated, finished]):
+        if not all ([provider, description,request_date, status, ticket_associated, finished]):
             return jsonify({"msg":"MissingParameters"}), 400
         
         #Crear nueva instancia 
         new_pending_activity= PendingsUnits(
+            provider=provider,
             description=description,
             request_date=request_date,
             status=status,

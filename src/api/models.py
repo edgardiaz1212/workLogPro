@@ -147,6 +147,7 @@ def paginate(query, page, per_page):
 
 class PendingsUnits (db.Model):
     id= db.Column(db.Integer, primary_key=True)
+    provider= db.Column(db.String(50))
     description = db.Column(db.String(225))
     request_date= db.Column(db.DateTime, server_default=db.func.current_timestamp())
     status=db.Column(db.String(50))
@@ -156,6 +157,7 @@ class PendingsUnits (db.Model):
     def serialize(self):
         return{
             'id':self.id,
+            'provider': self.provider,
             'description': self.description,
             'request_date':self.request_date.strftime('%Y-%m-%d'),
             'status':self.status,
