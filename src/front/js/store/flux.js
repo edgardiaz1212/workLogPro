@@ -487,19 +487,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store =getStore()
 				try {
 					let response = await fetch(`${process.env.BACKEND_URL}/pending-by-providers`, {
-						method: "GET",
+						method: "POST",
 						headers: {
 							"Authorization": `Bearer ${store.token}`
 						},
-						body: formData,
+						body: JSON.stringify(formData)
 					})
-					let data = await response.json();
+					console.log(response);
 
-					if (!response.ok) {
-						console.error("Error registering pending activity:", data.msg || "Unknown error");
+					if (response.ok) {
+						return response;
+					}else {
+						console.log("Error adding Pending activity flux:", response.statusText)
 					}
-			
-					return data;
 
 				} catch (error) {
 					console.error("Error registering pending activity:", error);

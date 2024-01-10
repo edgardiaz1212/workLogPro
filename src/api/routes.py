@@ -551,12 +551,12 @@ def get_temperature_by_quarter(year):
 @jwt_required()
 def add_pending_activities():
     try:
-        provider =request.fom.get("provider")
-        description =request.form.get("description")
-        request_date=request.form.get('request_date')
-        status=request.form.get('status')
-        ticket_associated=request.form.get('ticket_associated')
-        finished=request.form.get('finished')
+        provider =data.get("provider")
+        description =data.get("description")
+        request_date=data.get('request_date')
+        status=data.get('status')
+        ticket_associated=data.get('ticket_associated')
+        finished=data.get('finished')
 
         #Validar los Datos
         if not all ([provider, description,request_date, status, ticket_associated, finished]):
@@ -577,7 +577,7 @@ def add_pending_activities():
 
         return jsonify({"msg":"Pending Activity successfull register"})
     except Exception as error:
+        print(f"Error en la solicitud: {str(error)}")
         db.session.rollback()
-        return jsonify({"msg":f"Error adding pending activity"})
-
+        return jsonify({"msg": f"Error al agregar la actividad pendiente: {str(error)}"}), 500
         

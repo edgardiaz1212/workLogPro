@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function PendingByProviders() {
     const { actions } = useContext(Context);
-    const [formData, setFormData] = useState({
+    const [newPending, setNewPending] = useState({
         provider:'',
         description: '',
         request_date: '',
@@ -16,7 +16,7 @@ function PendingByProviders() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setNewPending({ ...newPending, [name]: value });
     };
 
     const handleSubmit = async (e) => {
@@ -24,6 +24,14 @@ function PendingByProviders() {
 
         // Realizar la solicitud para registrar la nueva actividad pendiente
         try {
+            const formData = new FormData()
+            formData.append('provider',newPending.provider)
+            formData.append('description',newPending.description)
+            formData.append('request_date', newPending.request_date)
+            formData.append('status',newPending.status)
+            formData.append('ticket_associated',newPending.ticket_associated)
+            formData.append('finished',newPending.finished)
+
             const response = await actions.registerPendingActivityByProviders(formData);
 
             // Verificar la respuesta del backend
@@ -32,7 +40,7 @@ function PendingByProviders() {
                 toast.success(response.msg);
 
                 // Limpiar el formulario después de un registro exitoso
-                setFormData({
+                setNewPending({
                     provider:'',
                     description: '',
                     request_date: '',
@@ -62,13 +70,13 @@ function PendingByProviders() {
                     <div className="col-lg-7 mx-auto ">
                         <form className="text-center" onSubmit={handleSubmit}>
                             <div className="input-group mb-3">
-                                <label className="input-group-text" htmlFor="actividad">Actividad</label>
+                                <label className="input-group-text" htmlFor="provider">Proveedor</label>
                                 <select
                                     className="form-select"
-                                    id="actividad"
-                                    name="actividad"
+                                    id="provider"
+                                    name="provider"
                                     onChange={handleChange}
-                                    value={formData.provider}
+                                    value={newPending.provider}
                                 >
                                     <option value="">Seleccionar Proveedor</option>
                                     <option value="1"> Energia Operaciones y Mantenimiento</option>
@@ -83,7 +91,7 @@ function PendingByProviders() {
                                     type="text"
                                     className="form-control"
                                     name="description"
-                                    value={formData.description}
+                                    value={newPending.description}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -93,7 +101,7 @@ function PendingByProviders() {
                                     type="date" // Puedes cambiar esto a un campo de fecha según tus necesidades
                                     className="form-control"
                                     name="request_date"
-                                    value={formData.request_date}
+                                    value={newPending.request_date}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -103,7 +111,7 @@ function PendingByProviders() {
                                     type="text"
                                     className="form-control"
                                     name="status"
-                                    value={formData.status}
+                                    value={newPending.status}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -113,7 +121,7 @@ function PendingByProviders() {
                                     type="text"
                                     className="form-control"
                                     name="ticket_associated"
-                                    value={formData.ticket_associated}
+                                    value={newPending.ticket_associated}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -123,7 +131,7 @@ function PendingByProviders() {
                                         type="checkbox"
                                         className="form-check-input"
                                         name="finished"
-                                        checked={formData.finished}
+                                        checked={newPending.finished}
                                         onChange={(e) => setFormData({ ...formData, finished: e.target.checked })}
                                     />
                                     <label className="form-check-label" htmlFor="finished">Finalizado</label>
