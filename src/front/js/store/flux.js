@@ -275,13 +275,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						status: response.status,
 						data: data,
 					};
-					console.log("el",response.status)
+					console.log("el", response.status)
 					if (response.ok) {
 						setStore({
 							// Agregar la información de los usuarios por unidad al store
 							processedData: data,
 						});
-					
+
 					} else {
 						// Manejar errores, mostrar mensajes, etc.
 						console.error("Error fetching users by unit:", result);
@@ -483,28 +483,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return error;
 				}
 			},
-			registerPendingActivityByProviders:async(formData)=>{
-				const store =getStore()
+			registerPendingActivityByProviders: async (body) => {
+				const store = getStore()
 				try {
-					let response = await fetch(`${process.env.BACKEND_URL}/pending-by-providers`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/pending-by-providers`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
 							"Authorization": `Bearer ${store.token}`
 						},
-						body: JSON.stringify(formData)
+						body: JSON.stringify(body)
 					})
-					console.log(response);
+					console.log("Response status:", response.status);
+					console.log("Response headers:", response.headers);
+					const responseBody = await response.json();
+					console.log("Response body:", responseBody);
 
 					if (response.ok) {
-						console.log("la response d e flux",response)
+						console.log("la response d e flux", response)
 						return response;
-					}else {
+					} else {
 						console.log("Error adding Pending activity flux:", response.statusText)
 					}
 
 				} catch (error) {
-					console.error("Error registering pending activity:", error);
+					console.error("Error registering pending Activity:", error);
 					return {
 						status: 500,
 						msg: "Unexpected error",

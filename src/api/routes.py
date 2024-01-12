@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User, Activity, MaintenanceEvidence, Documents, Temperature
+from api.models import db, User, Activity, MaintenanceEvidence, Documents, Temperature, PendingsProviders
 from api.utils import generate_sitemap, APIException
 from base64 import b64encode
 import os
@@ -552,28 +552,20 @@ def get_temperature_by_quarter(year):
 def add_pending_activities():
     try:
         data = request.get_json()
-        provider = data.get("provider")
-        description = data.get("description")
-        request_date = data.get('request_date')
-        status = data.get('status')
-        ticket_associated = data.get('ticket_associated')
-        finished = data.get('finished')
-
         # Validar los Datos
         missing_params = [param for param in ["provider", "description", "request_date", "status", "ticket_associated", "finished"]
                           if data.get(param) is None]
-
         if missing_params:
             return jsonify({"msg": f"Missing parameters: {', '.join(missing_params)}"}), 400
 
         # Crear nueva instancia
         new_pending_activity = PendingsProviders(
-            provider=provider,
-            description=description,
-            request_date=request_date,
-            status=status,
-            ticket_associated=ticket_associated,
-            finished=finished
+            provider=data.get('provider'),
+            description=data.get('description'),
+            request_date=data.get('request_date'),
+            status=data.get('status'),
+            ticket_associated=data.get('ticket_associated'),
+            finished=data.get('finished')
         )
 
         # Agregar a la base de datos

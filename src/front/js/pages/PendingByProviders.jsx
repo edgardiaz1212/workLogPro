@@ -30,7 +30,7 @@ function PendingByProviders() {
             formData.append('ticket_associated', newPending.ticket_associated)
             formData.append('finished', newPending.finished)
 
-            const response = await actions.registerPendingActivityByProviders(formData);
+            const response = await actions.registerPendingActivityByProviders(newPending);
 
             // Verificar la respuesta del backend
             if (response.ok) {
@@ -38,17 +38,18 @@ function PendingByProviders() {
                 console.log("Actividad pendiente añadida")
 
                 // Limpiar el formulario después de un registro exitoso
-                setNewPending({
-                    provider: '',
-                    description: '',
-                    request_date: '',
-                    status: '',
-                    ticket_associated: '',
-                    finished: false,
-                });
+                // setNewPending({
+                //     provider: '',
+                //     description: '',
+                //     request_date: '',
+                //     status: '',
+                //     ticket_associated: '',
+                //     finished: false,
+                // });
             } else {
                 // Mostrar mensaje de error si no hay una respuesta exitosa
                 toast.error('Error al registrar la actividad pendiente');
+                console.log(response)
                 console.log("Error del servidor:", response.statusText)
             }
         } catch (error) {
@@ -67,7 +68,7 @@ function PendingByProviders() {
                 </div>
                 <div className='row'>
                     <div className="col-lg-7 mx-auto ">
-                        <form className="text-center" onSubmit={handleSubmit}>
+                        <form className="text-center" >
                             <div className="input-group mb-3">
                                 <label className="input-group-text" htmlFor="provider">Proveedor</label>
                                 <select
@@ -136,7 +137,7 @@ function PendingByProviders() {
                                     <label className="form-check-label" htmlFor="finished">Finalizado</label>
                                 </div>
                             </div>
-                            <button className='btn btn-primary' type="submit">Registrar Actividad Pendiente</button>
+                            <button className='btn btn-primary'onClick={handleSubmit}>Registrar Actividad Pendiente</button>
                         </form>
                     </div>
                     <div className="col-lg-12">
