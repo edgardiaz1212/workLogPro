@@ -33,7 +33,7 @@ function PendingByProviders() {
             const response = await actions.registerPendingActivityByProviders(newPending);
 
             // Verificar la respuesta del backend
-            if (response.ok) {
+            if (response.status === 201 || response.status === 200)  {
                 toast.success("Actividad pendiente registrada")
                 console.log("Actividad pendiente añadida")
 
