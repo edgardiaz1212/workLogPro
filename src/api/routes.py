@@ -387,7 +387,7 @@ def create_temperature():
         measurement_time = data.get('measurement_time')
         measurement_date = data.get('measurement_date')
 
-# Verifica si ya existe una temperatura para el mismo aire, fecha y hora
+        # Verifica si ya existe una temperatura para el mismo aire, fecha y hora
         existing_temperature = Temperature.query.filter_by(
             air_unit=air_unit,
             measurement_time=measurement_time,
@@ -551,33 +551,38 @@ def get_temperature_by_quarter(year):
 @jwt_required()
 def add_pending_activities():
     try:
-        provider =data.get("provider")
-        description =data.get("description")
-        request_date=data.get('request_date')
-        status=data.get('status')
-        ticket_associated=data.get('ticket_associated')
-        finished=data.get('finished')
+        data = request.get_json()
+        provider = data.get("provider")
+        description = data.get("description")
+        request_date = data.get('request_date')
+        status = data.get('status')
+        ticket_associated = data.get('ticket_associated')
+        finished = data.get('finished')
 
-        #Validar los Datos
-        if not all ([provider, description,request_date, status, ticket_associated, finished]):
-            return jsonify({"msg":"MissingParameters"}), 400
-        
-        #Crear nueva instancia 
-        new_pending_activity= PendingsProviders(
+        # Validar los Datos
+        missing_params = [param for param in ["provider", "description", "request_date", "status", "ticket_associated", "finished"]
+                          if data.get(param) is None]
+
+        if missing_params:
+            return jsonify({"msg": f"Missing parameters: {', '.join(missing_params)}"}), 400
+
+        # Crear nueva instancia
+        new_pending_activity = PendingsProviders(
             provider=provider,
             description=description,
             request_date=request_date,
             status=status,
             ticket_associated=ticket_associated,
-            finished=finished)
-                
-        #Agregar a la base de datos
+            finished=finished
+        )
+
+        # Agregar a la base de datos
         db.session.add(new_pending_activity)
         db.session.commit()
 
-        return jsonify({"msg":"Pending Activity successfull register"})
+        return jsonify({"msg": "Pending Activity successfully registered"}), 201
     except Exception as error:
-        print(f"Error en la solicitud: {str(error)}")
+        print(f"Error in the request: {str(error)}")
         db.session.rollback()
-        return jsonify({"msg": f"Error al agregar la actividad pendiente: {str(error)}"}), 500
+        return jsonify({"msg": f"Error adding pending activity: {str(error)}"}), 500
         

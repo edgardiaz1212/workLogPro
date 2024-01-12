@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function PendingByProviders() {
     const { actions } = useContext(Context);
     const [newPending, setNewPending] = useState({
-        provider:'',
+        provider: '',
         description: '',
         request_date: '',
         status: '',
@@ -19,29 +19,27 @@ function PendingByProviders() {
         setNewPending({ ...newPending, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
+    const handleSubmit = async () => {
         // Realizar la solicitud para registrar la nueva actividad pendiente
         try {
             const formData = new FormData()
-            formData.append('provider',newPending.provider)
-            formData.append('description',newPending.description)
+            formData.append('provider', newPending.provider)
+            formData.append('description', newPending.description)
             formData.append('request_date', newPending.request_date)
-            formData.append('status',newPending.status)
-            formData.append('ticket_associated',newPending.ticket_associated)
-            formData.append('finished',newPending.finished)
+            formData.append('status', newPending.status)
+            formData.append('ticket_associated', newPending.ticket_associated)
+            formData.append('finished', newPending.finished)
 
             const response = await actions.registerPendingActivityByProviders(formData);
 
             // Verificar la respuesta del backend
-            if (response && response.msg) {
-                // Mostrar mensaje de éxito
-                toast.success(response.msg);
+            if (response.ok) {
+                toast.success("Actividad pendiente registrada")
+                console.log("Actividad pendiente añadida")
 
                 // Limpiar el formulario después de un registro exitoso
                 setNewPending({
-                    provider:'',
+                    provider: '',
                     description: '',
                     request_date: '',
                     status: '',
@@ -51,9 +49,10 @@ function PendingByProviders() {
             } else {
                 // Mostrar mensaje de error si no hay una respuesta exitosa
                 toast.error('Error al registrar la actividad pendiente');
+                console.log("Error del servidor:", response.statusText)
             }
         } catch (error) {
-            console.error('Error para registrar la actividad pendiente:', error);
+            console.error('Error al registrar la actividad pendiente:', error);
             // Mostrar mensaje de error en caso de una excepción
             toast.error('Error inesperado al registrar la actividad pendiente');
         }
@@ -132,7 +131,7 @@ function PendingByProviders() {
                                         className="form-check-input"
                                         name="finished"
                                         checked={newPending.finished}
-                                        onChange={(e) => setFormData({ ...formData, finished: e.target.checked })}
+                                        onChange={(e) => setNewPending({ ...newPending, finished: e.target.checked })}
                                     />
                                     <label className="form-check-label" htmlFor="finished">Finalizado</label>
                                 </div>

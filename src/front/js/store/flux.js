@@ -489,6 +489,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					let response = await fetch(`${process.env.BACKEND_URL}/pending-by-providers`, {
 						method: "POST",
 						headers: {
+							"Content-Type": "application/json",
 							"Authorization": `Bearer ${store.token}`
 						},
 						body: JSON.stringify(formData)
@@ -496,6 +497,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(response);
 
 					if (response.ok) {
+						console.log("la response d e flux",response)
 						return response;
 					}else {
 						console.log("Error adding Pending activity flux:", response.statusText)
