@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import PendingTablesProviders from "../component/PendingTablesProviders.jsx";
 
 function PendingByProviders() {
     const { actions } = useContext(Context);
@@ -67,7 +68,7 @@ function PendingByProviders() {
             <ToastContainer theme="dark" position="top-center" pauseOnFocusLoss={false} autoClose={3000} hideProgressBar />
             <div className="container">
                 <div className="section-title mt-3">
-                    <h2>Formulario de Actividades Pendientes de Proveedores</h2>
+                    <h2>Registro de Actividades Pendientes de Proveedores</h2>
                 </div>
                 <div className='row'>
                     <div className="col-lg-7 mx-auto ">
@@ -148,7 +149,7 @@ function PendingByProviders() {
                         </form>
                     </div>
                     <div className="col-lg-12">
-                        tablas
+                        <PendingTablesProviders/>
                     </div>
                 </div>
             </div>
