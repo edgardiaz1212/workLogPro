@@ -19,7 +19,9 @@ function PendingByProviders() {
         setNewPending({ ...newPending, [name]: value });
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
         // Realizar la solicitud para registrar la nueva actividad pendiente
         try {
             const formData = new FormData()
@@ -33,23 +35,24 @@ function PendingByProviders() {
             const response = await actions.registerPendingActivityByProviders(newPending);
 
             // Verificar la respuesta del backend
-            if (response.status === 201 || response.status === 200)  {
-                toast.success("Actividad pendiente registrada")
-                console.log("Actividad pendiente añadida")
+            if (response.ok) {
+                if (response.status === 201 || response.status === 200) {
+                    toast.success("Actividad pendiente registrada")
+                    console.log("Actividad pendiente añadida")
 
-                // Limpiar el formulario después de un registro exitoso
-                // setNewPending({
-                //     provider: '',
-                //     description: '',
-                //     request_date: '',
-                //     status: '',
-                //     ticket_associated: '',
-                //     finished: false,
-                // });
+                    // Limpiar el formulario después de un registro exitoso
+                    setNewPending({
+                        provider: '',
+                        description: '',
+                        request_date: '',
+                        status: '',
+                        ticket_associated: '',
+                        finished: false,
+                    });
+                }
             } else {
                 // Mostrar mensaje de error si no hay una respuesta exitosa
-                toast.error('Error al registrar la actividad pendiente');
-                console.log(response)
+                toast.error('Error ' + response.status + ': ' + response.statusText);
                 console.log("Error del servidor:", response.statusText)
             }
         } catch (error) {
@@ -68,13 +71,14 @@ function PendingByProviders() {
                 </div>
                 <div className='row'>
                     <div className="col-lg-7 mx-auto ">
-                        <form className="text-center" >
+                        <form className="text-center" noValidate onSubmit={handleSubmit}>
                             <div className="input-group mb-3">
                                 <label className="input-group-text" htmlFor="provider">Proveedor</label>
                                 <select
                                     className="form-select"
                                     id="provider"
                                     name="provider"
+                                    required
                                     onChange={handleChange}
                                     value={newPending.provider}
                                 >
@@ -91,6 +95,7 @@ function PendingByProviders() {
                                     type="text"
                                     className="form-control"
                                     name="description"
+                                    required
                                     value={newPending.description}
                                     onChange={handleChange}
                                 />
@@ -98,9 +103,10 @@ function PendingByProviders() {
                             <div className="input-group mb-3">
                                 <span className="input-group-text">Fecha de Solicitud</span>
                                 <input
-                                    type="date" // Puedes cambiar esto a un campo de fecha según tus necesidades
+                                    type="date"
                                     className="form-control"
                                     name="request_date"
+                                    required
                                     value={newPending.request_date}
                                     onChange={handleChange}
                                 />
@@ -111,6 +117,7 @@ function PendingByProviders() {
                                     type="text"
                                     className="form-control"
                                     name="status"
+                                    required
                                     value={newPending.status}
                                     onChange={handleChange}
                                 />
@@ -137,7 +144,7 @@ function PendingByProviders() {
                                     <label className="form-check-label" htmlFor="finished">Finalizado</label>
                                 </div>
                             </div>
-                            <button className='btn btn-primary'onClick={handleSubmit}>Registrar Actividad Pendiente</button>
+                            <button className='btn btn-primary' type="submit">Registrar Actividad Pendiente</button>
                         </form>
                     </div>
                     <div className="col-lg-12">

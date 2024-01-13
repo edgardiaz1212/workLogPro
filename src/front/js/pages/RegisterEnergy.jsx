@@ -29,7 +29,7 @@ function RegisterEnergy() {
         // ... (agrega más campos según sea necesario)
     })
 
-    //cuando se carga el componente por defecto coloca al que esta registrado
+    //cuando se carga el componente por defecto coloca al usuario que esta registrado
     useEffect(() => {
         setNewActivity((prevData) => ({
             ...prevData,

@@ -556,7 +556,7 @@ def add_pending_activities():
         missing_params = [param for param in ["provider", "description", "request_date", "status", "ticket_associated", "finished"]
                           if data.get(param) is None]
         if missing_params:
-            return jsonify({"msg": f"Missing parameters: {', '.join(missing_params)}"}), 400
+            return jsonify({"msg": f"Missing parameter: {', '.join(missing_params)}"}), 400
 
         # Crear nueva instancia
         new_pending_activity = PendingsProviders(
@@ -576,5 +576,5 @@ def add_pending_activities():
     except Exception as error:
         print(f"Error in the request: {str(error)}")
         db.session.rollback()
-        return jsonify({"msg": f"Error adding pending activity: {str(error)}"}), 500
+        return jsonify({"msg": f"Error adding pending activity route: {str(error)}"}), 500
         
