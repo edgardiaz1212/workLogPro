@@ -579,7 +579,7 @@ def add_pending_activities():
         return jsonify({"msg": f"Error adding pending activity route: {str(error)}"}), 500
 
 @api.route('/pending/<provider>', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_pending_by_providers(provider):
     try:
         # Consulta para obtener los pendientes por proveedor
