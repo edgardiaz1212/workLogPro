@@ -577,4 +577,15 @@ def add_pending_activities():
         print(f"Error in the request: {str(error)}")
         db.session.rollback()
         return jsonify({"msg": f"Error adding pending activity route: {str(error)}"}), 500
-        
+
+@api.route('/pending/<provider>', methods=['GET'])
+@jwt_required
+def get_pending_by_providers(provider):
+    try:
+        # Consulta para obtener los pendientes por proveedor
+        pendings= PendingsProviders.query.filter_by(provider=provider).all()
+        #Serializar los resultados
+        serialized_pendings=[pending.serialize() for pending in pendings]
+        return jsonify(serialized_pendings), 200
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500

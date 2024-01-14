@@ -58,8 +58,11 @@ function PendingByProviders() {
             }
         } catch (error) {
             console.error('Error al registrar la actividad pendiente:', error);
-            // Mostrar mensaje de error en caso de una excepción
-            toast.error('Error inesperado al registrar la actividad pendiente');
+            if (error instanceof TypeError && error.message.includes('NetworkError')) {
+                toast.error('Error de red al intentar comunicarse con el servidor');
+            } else {
+                toast.error('Error inesperado al registrar la actividad pendiente');
+            }
         }
     };
 
