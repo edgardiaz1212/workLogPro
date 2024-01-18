@@ -1,11 +1,28 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import PendingTablesProviders from "../component/PendingTablesProviders.jsx";
 
 function PendingByProviders() {
-    const { actions } = useContext(Context);
+    const { store, actions } = useContext(Context);
+    const [pendingTables, setPendingTables] = useState([])
+
+    const fetchPendingTables = async () => {
+        try {
+          const response = await actions.getPendingsByProvider();
+          setPendingTables(response);
+          console.log(pendingTables)
+        } catch (error) {
+          console.error("Error fetching pending tables: ", error);
+          toast.error("Error fetching pending tables.");
+        }
+      };
+      
+      useEffect(() => {
+        fetchPendingTables();
+      }, []);
+    
     const [newPending, setNewPending] = useState({
         provider: '',
         description: '',
@@ -152,7 +169,7 @@ function PendingByProviders() {
                         </form>
                     </div>
                     <div className="col-lg-12">
-                        <PendingTablesProviders/>
+                        <PendingTablesProviders pendingTables={pendingTables}/>
                     </div>
                 </div>
             </div>
