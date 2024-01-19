@@ -536,6 +536,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			getAviableProviders: async () => {
+                const store = getStore();
+
+
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/get-pending-providers`, {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${store.token}`,
+                        },
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.providers;  // Ajusta según la estructura de tus datos
+                    } else {
+                        console.error("Error al obtener provedores:", response.statusText);
+                        return [];
+                    }
+                } catch (error) {
+                    console.error("Error al obtener provedores", error);
+                    return [];
+                }
+               
+            },
+
 		}
 	};
 };

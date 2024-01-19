@@ -589,3 +589,11 @@ def get_pending_by_providers(provider):
         return jsonify(serialized_pendings), 200
     except Exception as e:
         return jsonify({"error":str(e)}), 500
+
+@api.route('/get-pending-providers', methods=['GET'])
+@jwt_required()
+def get_available_providers():
+    providers = db.session.query(db.extract(
+        'provider', PendingsProviders.provider)).distinct().all()
+    providers_list = [provider[0] for provider in providers]  # Convertir a lista
+    return jsonify({"providers": providers_list})
