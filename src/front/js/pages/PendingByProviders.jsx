@@ -171,8 +171,8 @@ function PendingByProviders() {
                         </form>
                     </div>
                     <div className="col-lg-12">
-                        {providers.map(provider => (
-                            <PendingTablesProviders key={provider} provider={provider} />
+                        {providers.map((provider, index) => (
+                            <PendingTablesProviders key={index} provider={provider} />
                         ))}
                     </div>
                 </div>

@@ -514,10 +514,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				}
 			},
-			getPendingActivitiesByProvider: async (provider) => {
+			getUnresolvedActivitiesByProvider: async (provider) => {
 				const store = getStore()
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/pending/${provider}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/unresolved/${provider}`, {
 						method: 'GET',
 						headers: {
 							Authorization: `Bearer ${store.token}`,
@@ -525,7 +525,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					if (response.ok) {
 						const data = await response.json()
-						return { pendings: data.pendings }
+						return { unresolved: data }
 					} else {
 						console.error("Error al obtener pendientes por proveedor:", response.statusText);
 						return { error: response.statusText };
