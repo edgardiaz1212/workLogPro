@@ -11,19 +11,18 @@ function PendingByProviders() {
 
     useEffect(() => {
         const fetchProviders = async () => {
-          try {
-            const availableProviders = await actions.getAviableProviders();
-            setProviders(availableProviders); 
-            
-          } catch (error) {
-            console.error("Error al obtener proveedores:", error);
-            toast.error("Error al obtener proveedores");
-          }
+            try {
+                const availableProviders = await actions.getAviableProviders();
+                setProviders(availableProviders);
+
+            } catch (error) {
+                console.error("Error al obtener proveedores:", error);
+                toast.error("Error al obtener proveedores");
+            }
         };
-    
+
         fetchProviders();
-      }, [actions]);
-console.log(providers)
+    }, [actions]);
 
     const [newPending, setNewPending] = useState({
         provider: '',
@@ -172,7 +171,9 @@ console.log(providers)
                         </form>
                     </div>
                     <div className="col-lg-12">
-                        <PendingTablesProviders providers={providers}/>
+                        {providers.map(provider => (
+                            <PendingTablesProviders key={provider} provider={provider} />
+                        ))}
                     </div>
                 </div>
             </div>

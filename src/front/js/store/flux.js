@@ -514,7 +514,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				}
 			},
-			getPendingsByProvider: async (provider) => {
+			getPendingActivitiesByProvider: async (provider) => {
 				const store = getStore()
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/pending/${provider}`, {
