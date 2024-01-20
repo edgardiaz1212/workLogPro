@@ -6,7 +6,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			processedData: [],
 			temperatures: [],
 			allTemperatures: [],
-			tenTemperatures: []
+			tenTemperatures: [],
+			allProviders:[]
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -275,7 +276,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						status: response.status,
 						data: data,
 					};
-					console.log("el", response.status)
 					if (response.ok) {
 						setStore({
 							// Agregar la información de los usuarios por unidad al store
@@ -515,18 +515,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			getPendingsByProvider: async (provider) => {
-				const store= getStore()
+				const store = getStore()
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/pending/${provider}`,{
-						method:'GET',
-						headers:{
-							Authorization:`Bearer ${store.token}`,
+					const response = await fetch(`${process.env.BACKEND_URL}/pending/${provider}`, {
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${store.token}`,
 						}
 					})
-					if (response.ok){
-						const data =await response.json()
-						return {pendings : data.pendings}
-					}else {
+					if (response.ok) {
+						const data = await response.json()
+						return { pendings: data.pendings }
+					} else {
 						console.error("Error al obtener pendientes por proveedor:", response.statusText);
 						return { error: response.statusText };
 					}
@@ -537,30 +537,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getAviableProviders: async () => {
-                const store = getStore();
+				const store = getStore();
 
+				try {
+					// Realiza la solicitud al backend para obtener los proveedores
+					const response = await fetch(`${process.env.BACKEND_URL}/get-pending-providers`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						},
+					});
 
-                try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/get-pending-providers`, {
-                        method: "GET",
-                        headers: {
-                            "Authorization": `Bearer ${store.token}`,
-                        },
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        return data.providers;  // Ajusta según la estructura de tus datos
-                    } else {
-                        console.error("Error al obtener provedores:", response.statusText);
-                        return [];
-                    }
-                } catch (error) {
-                    console.error("Error al obtener provedores", error);
-                    return [];
-                }
-               
-            },
+					// Verifica la respuesta del backend
+					if (response.ok) {
+						const data = await response.json();
+						
+						// setStore({
+						// 	allProviders: data.providers,
+						// });console.log("flux",data)
+						return data.providers;
+					} else {
+						console.error("Error al obtener proveedores:", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error en la solicitud para obtener proveedores:", error);
+				}
+			},
 
 		}
 	};

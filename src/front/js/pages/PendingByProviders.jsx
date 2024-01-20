@@ -6,23 +6,25 @@ import PendingTablesProviders from "../component/PendingTablesProviders.jsx";
 
 function PendingByProviders() {
     const { store, actions } = useContext(Context);
-    const [pendingTables, setPendingTables] = useState([])
+    const [pendingTables, setPendingTables] = useState([]);
+    const [providers, setProviders] = useState([]);
 
-    const fetchPendingTables = async () => {
-        try {
-          const response = await actions.getPendingsByProvider();
-          setPendingTables(response);
-          console.log(pendingTables)
-        } catch (error) {
-          console.error("Error fetching pending tables: ", error);
-          toast.error("Error fetching pending tables.");
-        }
-      };
-      
-      useEffect(() => {
-        fetchPendingTables();
-      }, []);
+    useEffect(() => {
+        const fetchProviders = async () => {
+          try {
+            const availableProviders = await actions.getAviableProviders();
+            setProviders(availableProviders); 
+            
+          } catch (error) {
+            console.error("Error al obtener proveedores:", error);
+            toast.error("Error al obtener proveedores");
+          }
+        };
     
+        fetchProviders();
+      }, [actions]);
+console.log(providers)
+
     const [newPending, setNewPending] = useState({
         provider: '',
         description: '',
@@ -42,21 +44,21 @@ function PendingByProviders() {
 
         // Realizar la solicitud para registrar la nueva actividad pendiente
         try {
-            const formData = new FormData()
-            formData.append('provider', newPending.provider)
-            formData.append('description', newPending.description)
-            formData.append('request_date', newPending.request_date)
-            formData.append('status', newPending.status)
-            formData.append('ticket_associated', newPending.ticket_associated)
-            formData.append('finished', newPending.finished)
+            const formData = new FormData();
+            formData.append('provider', newPending.provider);
+            formData.append('description', newPending.description);
+            formData.append('request_date', newPending.request_date);
+            formData.append('status', newPending.status);
+            formData.append('ticket_associated', newPending.ticket_associated);
+            formData.append('finished', newPending.finished);
 
             const response = await actions.registerPendingActivityByProviders(newPending);
 
             // Verificar la respuesta del backend
             if (response.ok) {
                 if (response.status === 201 || response.status === 200) {
-                    toast.success("Actividad pendiente registrada")
-                    console.log("Actividad pendiente añadida")
+                    toast.success("Actividad pendiente registrada");
+                    console.log("Actividad pendiente añadida");
 
                     // Limpiar el formulario después de un registro exitoso
                     setNewPending({
@@ -71,7 +73,7 @@ function PendingByProviders() {
             } else {
                 // Mostrar mensaje de error si no hay una respuesta exitosa
                 toast.error('Error ' + response.status + ': ' + response.statusText);
-                console.log("Error del servidor:", response.statusText)
+                console.log("Error del servidor:", response.statusText);
             }
         } catch (error) {
             console.error('Error al registrar la actividad pendiente:', error);
@@ -82,6 +84,7 @@ function PendingByProviders() {
             }
         }
     };
+
 
     return (
         <>
@@ -169,7 +172,7 @@ function PendingByProviders() {
                         </form>
                     </div>
                     <div className="col-lg-12">
-                        <PendingTablesProviders pendingTables={pendingTables}/>
+                        <PendingTablesProviders providers={providers}/>
                     </div>
                 </div>
             </div>

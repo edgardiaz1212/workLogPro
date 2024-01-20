@@ -593,7 +593,14 @@ def get_pending_by_providers(provider):
 @api.route('/get-pending-providers', methods=['GET'])
 @jwt_required()
 def get_available_providers():
-    providers = db.session.query(db.extract(
-        'provider', PendingsProviders.provider)).distinct().all()
-    providers_list = [provider[0] for provider in providers]  # Convertir a lista
-    return jsonify({"providers": providers_list})
+    try:
+        # Obtener la lista de proveedores distintos
+        providers = db.session.query(db.distinct(PendingsProviders.provider)).all()
+        
+        # Convertir a una lista simple
+        providers_list = [provider[0] for provider in providers]
+
+        return jsonify({"providers": providers_list}), 200
+    except Exception as e:
+        print(f"Error al obtener proveedores: {str(e)}")
+        return jsonify({"error": f"Error al obtener proveedores: {str(e)}"}), 500
