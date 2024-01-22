@@ -20,6 +20,7 @@ import Profile from "./pages/Profile.jsx";
 import TemperatureRegistry from "./pages/TemperatureRegistry.jsx";
 import TemperatureGraphic from "./pages/TemperatureGraphic.jsx";
 import PendingByProviders from "./pages/PendingByProviders.jsx";
+import PendingListByProvider from "./pages/PendingListByProvider.jsx";
 
 
 //create your first component
@@ -50,6 +51,7 @@ const Layout = () => {
                         <Route element={<TemperatureRegistry/>} path="/temp-register"/>
                         <Route element={<TemperatureGraphic/>} path="/temp-graphic"/>
                         <Route element={<PendingByProviders/>} path="/pending-by-units"/>
+                        <Route element={<PendingListByProvider/>} path="/pending-list"/>
                     </Routes>
                     <Footer />
                 </ScrollToTop>
