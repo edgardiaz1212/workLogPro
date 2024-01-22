@@ -6,8 +6,8 @@ import PendingTablesProviders from "../component/PendingTablesProviders.jsx";
 
 function PendingByProviders() {
     const { store, actions } = useContext(Context);
-    const [pendingTables, setPendingTables] = useState([]);
     const [providers, setProviders] = useState([]);
+    const [forceUpdate, setForceUpdate] = useState(false); // Agregamos un estado para forzar la actualización
 
     useEffect(() => {
         const fetchProviders = async () => {
@@ -22,7 +22,7 @@ function PendingByProviders() {
         };
 
         fetchProviders();
-    }, [actions]);
+    }, [actions, forceUpdate]);
 
     const [newPending, setNewPending] = useState({
         provider: '',
@@ -40,63 +40,61 @@ function PendingByProviders() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-      
+
         // Realizar la solicitud para registrar la nueva actividad pendiente
         try {
-          const formData = new FormData();
-          formData.append('provider', newPending.provider);
-          formData.append('description', newPending.description);
-          formData.append('request_date', newPending.request_date);
-          formData.append('status', newPending.status);
-          formData.append('ticket_associated', newPending.ticket_associated);
-          formData.append('finished', newPending.finished);
-      
-          const response = await actions.registerPendingActivityByProviders(newPending);
-      
-          // Verificar la respuesta del backend
-          if (response.ok) {
-            if (response.status === 201 || response.status === 200) {
-              toast.success("Actividad pendiente registrada");
-              console.log("Actividad pendiente añadida");
-      
-              // Actualizar la lista de proveedores
-              const updatedProviders = await actions.getAviableProviders();
-              setProviders(updatedProviders);
-              
-              // Limpiar el formulario después de un registro exitoso
-              setNewPending({
-                provider: '',
-                description: '',
-                request_date: '',
-                status: '',
-                ticket_associated: '',
-                finished: false,
-              });
-            }
-          } else {
-            // Mostrar mensaje de error si no hay una respuesta exitosa
-            toast.error('Error ' + response.status + ': ' + response.statusText);
-            console.log("Error del servidor:", response.statusText);
-          }
-        } catch (error) {
-          console.error('Error al registrar la actividad pendiente:', error);
-          if (error instanceof TypeError && error.message.includes('NetworkError')) {
-            toast.error('Error de red al intentar comunicarse con el servidor');
-          } else {
-            toast.error('Error inesperado al registrar la actividad pendiente');
-          }
-        }
-      };
+            const formData = new FormData();
+            formData.append('provider', newPending.provider);
+            formData.append('description', newPending.description);
+            formData.append('request_date', newPending.request_date);
+            formData.append('status', newPending.status);
+            formData.append('ticket_associated', newPending.ticket_associated);
+            formData.append('finished', newPending.finished);
 
+            const response = await actions.registerPendingActivityByProviders(newPending);
+
+            // Verificar la respuesta del backend
+            if (response.ok) {
+                if (response.status === 201 || response.status === 200) {
+                    toast.success("Actividad pendiente registrada");
+                    console.log("Actividad pendiente añadida");
+
+                    // Limpiar el formulario después de un registro exitoso
+                    setNewPending({
+                        provider: '',
+                        description: '',
+                        request_date: '',
+                        status: '',
+                        ticket_associated: '',
+                        finished: false,
+                    });
+
+                    // Forzar la actualización de la lista de proveedores y actividades pendientes
+                    setForceUpdate((prev) => !prev);
+                }
+            } else {
+                // Mostrar mensaje de error si no hay una respuesta exitosa
+                toast.error('Error ' + response.status + ': ' + response.statusText);
+                console.log("Error del servidor:", response.statusText);
+            }
+        } catch (error) {
+            console.error('Error al registrar la actividad pendiente:', error);
+            if (error instanceof TypeError && error.message.includes('NetworkError')) {
+                toast.error('Error de red al intentar comunicarse con el servidor');
+            } else {
+                toast.error('Error inesperado al registrar la actividad pendiente');
+            }
+        }
+    };
 
     return (
         <>
             <ToastContainer theme="dark" position="top-center" pauseOnFocusLoss={false} autoClose={3000} hideProgressBar />
-            <div className="container">
-                <div className="section-title mt-3">
+            <div className="container ">
+                <div className="section-title mt-3 ">
                     <h2>Registro de Actividades Pendientes de Proveedores</h2>
                 </div>
-                <div className='row'>
+                <div className='row border border-danger'>
                     <div className="col-lg-7 mx-auto ">
                         <form className="text-center" noValidate onSubmit={handleSubmit}>
                             <div className="input-group mb-3">
@@ -174,17 +172,23 @@ function PendingByProviders() {
                             <button className='btn btn-primary' type="submit">Registrar Actividad Pendiente</button>
                         </form>
                     </div>
-                    <div className="col-lg-12">
-                        {providers.map((provider, index) => (
-                            <PendingTablesProviders 
-                            key={index} 
-                            provider={provider} 
-                            setProviders={setProviders} 
-                            setActivities={setPendingTables}/>
-                        ))}
-                    </div>
                 </div>
-            </div>
+               </div>
+                
+                    
+                    <div className="row border border-danger">
+                        <div className="col-auto">
+                            {providers.map((provider, index) => (
+                                <PendingTablesProviders
+                                    key={index}
+                                    provider={provider}
+                                    forceUpdate={forceUpdate} />
+                            ))}
+                        </div>
+                    </div>
+                
+            
+
         </>
     );
 }
