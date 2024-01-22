@@ -578,6 +578,18 @@ def add_pending_activities():
         db.session.rollback()
         return jsonify({"msg": f"Error adding pending activity route: {str(error)}"}), 500
 
+@api.route('/last-unresolved/<provider>', methods=['GET'])
+@jwt_required()
+def get_last_10_unresolved(provider):
+    try:
+        # Consulta para obtener los pendientes por proveedor
+        unresolve= PendingsProviders.query.filter_by(provider=provider).limit(10).all()
+        #Serializar los resultados
+        serialized_unresolve=[unresolved.serialize() for unresolved in unresolve]
+        return jsonify(serialized_unresolve), 200
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500
+
 @api.route('/unresolved/<provider>', methods=['GET'])
 @jwt_required()
 def get_unresolved_by_providers(provider):

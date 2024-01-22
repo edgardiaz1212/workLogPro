@@ -40,49 +40,53 @@ function PendingByProviders() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+      
         // Realizar la solicitud para registrar la nueva actividad pendiente
         try {
-            const formData = new FormData();
-            formData.append('provider', newPending.provider);
-            formData.append('description', newPending.description);
-            formData.append('request_date', newPending.request_date);
-            formData.append('status', newPending.status);
-            formData.append('ticket_associated', newPending.ticket_associated);
-            formData.append('finished', newPending.finished);
-
-            const response = await actions.registerPendingActivityByProviders(newPending);
-
-            // Verificar la respuesta del backend
-            if (response.ok) {
-                if (response.status === 201 || response.status === 200) {
-                    toast.success("Actividad pendiente registrada");
-                    console.log("Actividad pendiente añadida");
-
-                    // Limpiar el formulario después de un registro exitoso
-                    setNewPending({
-                        provider: '',
-                        description: '',
-                        request_date: '',
-                        status: '',
-                        ticket_associated: '',
-                        finished: false,
-                    });
-                }
-            } else {
-                // Mostrar mensaje de error si no hay una respuesta exitosa
-                toast.error('Error ' + response.status + ': ' + response.statusText);
-                console.log("Error del servidor:", response.statusText);
+          const formData = new FormData();
+          formData.append('provider', newPending.provider);
+          formData.append('description', newPending.description);
+          formData.append('request_date', newPending.request_date);
+          formData.append('status', newPending.status);
+          formData.append('ticket_associated', newPending.ticket_associated);
+          formData.append('finished', newPending.finished);
+      
+          const response = await actions.registerPendingActivityByProviders(newPending);
+      
+          // Verificar la respuesta del backend
+          if (response.ok) {
+            if (response.status === 201 || response.status === 200) {
+              toast.success("Actividad pendiente registrada");
+              console.log("Actividad pendiente añadida");
+      
+              // Actualizar la lista de proveedores
+              const updatedProviders = await actions.getAviableProviders();
+              setProviders(updatedProviders);
+              
+              // Limpiar el formulario después de un registro exitoso
+              setNewPending({
+                provider: '',
+                description: '',
+                request_date: '',
+                status: '',
+                ticket_associated: '',
+                finished: false,
+              });
             }
+          } else {
+            // Mostrar mensaje de error si no hay una respuesta exitosa
+            toast.error('Error ' + response.status + ': ' + response.statusText);
+            console.log("Error del servidor:", response.statusText);
+          }
         } catch (error) {
-            console.error('Error al registrar la actividad pendiente:', error);
-            if (error instanceof TypeError && error.message.includes('NetworkError')) {
-                toast.error('Error de red al intentar comunicarse con el servidor');
-            } else {
-                toast.error('Error inesperado al registrar la actividad pendiente');
-            }
+          console.error('Error al registrar la actividad pendiente:', error);
+          if (error instanceof TypeError && error.message.includes('NetworkError')) {
+            toast.error('Error de red al intentar comunicarse con el servidor');
+          } else {
+            toast.error('Error inesperado al registrar la actividad pendiente');
+          }
         }
-    };
+      };
 
 
     return (
@@ -106,10 +110,10 @@ function PendingByProviders() {
                                     value={newPending.provider}
                                 >
                                     <option value="">Seleccionar Proveedor</option>
-                                    <option value="1"> Energia Operaciones y Mantenimiento</option>
-                                    <option value="1.1">Servicios y Logisticas</option>
-                                    <option value="1.2">Seguridad Fisica</option>
-                                    <option value="2">Infraestructura</option>
+                                    <option value="Energia Operaciones y Mantenimiento"> Energia Operaciones y Mantenimiento</option>
+                                    <option value="Servicios y Logisticas">Servicios y Logisticas</option>
+                                    <option value="Seguridad Fisica">Seguridad Fisica</option>
+                                    <option value="Infraestructura">Infraestructura</option>
                                 </select>
                             </div>
                             <div className="input-group mb-3">
@@ -172,7 +176,11 @@ function PendingByProviders() {
                     </div>
                     <div className="col-lg-12">
                         {providers.map((provider, index) => (
-                            <PendingTablesProviders key={index} provider={provider} />
+                            <PendingTablesProviders 
+                            key={index} 
+                            provider={provider} 
+                            setProviders={setProviders} 
+                            setActivities={setPendingTables}/>
                         ))}
                     </div>
                 </div>

@@ -535,6 +535,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error };
 				}
 			},
+			getLast10UnresolvedActivitiesByProvider: async (provider) => {
+				const store = getStore()
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/last-unresolved/${provider}`, {
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${store.token}`,
+						}
+					})
+					if (response.ok) {
+						const data = await response.json()
+						return { unresolved: data }
+					} else {
+						console.error("Error al obtener pendientes por proveedor:", response.statusText);
+						return { error: response.statusText };
+					}
+				} catch (error) {
+					console.error("Error al obtener pendientes por proveedor", error);
+					return { error };
+				}
+			},
 
 			getAviableProviders: async () => {
 				const store = getStore();
