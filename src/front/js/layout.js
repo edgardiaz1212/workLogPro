@@ -51,7 +51,7 @@ const Layout = () => {
                         <Route element={<TemperatureRegistry/>} path="/temp-register"/>
                         <Route element={<TemperatureGraphic/>} path="/temp-graphic"/>
                         <Route element={<PendingByProviders/>} path="/pending-by-units"/>
-                        <Route element={<PendingListByProvider/>} path="/pending-list"/>
+                        <Route element={<PendingListByProvider/>} path="/pending-list-by-provider:provider"/>
                     </Routes>
                     <Footer />
                 </ScrollToTop>

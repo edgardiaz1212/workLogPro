@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { Link } from 'react-router-dom'
 import { Context } from '../store/appContext';
 import "../../styles/pendingCard.css"
 
@@ -41,7 +42,7 @@ function PendingTablesProviders({ provider, forceUpdate }) {
             </li>
           ))}
         </ul>
-      <button className='btn btn-secondary'>Ver todas</button>
+        <Link to={`/pending-list-by-provider/${provider}`} className='btn btn-secondary'>Ver todas</Link>
       </div>
     </div>
   );
