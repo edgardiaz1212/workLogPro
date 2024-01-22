@@ -26,7 +26,7 @@ function PendingTablesProviders({ provider, forceUpdate }) {
   }, [provider, actions, forceUpdate]);
 
   return (
-    <div>
+    <div >
       <div className="card">
         <div className="header">
           <span className="title">{provider}</span>
@@ -41,6 +41,7 @@ function PendingTablesProviders({ provider, forceUpdate }) {
             </li>
           ))}
         </ul>
+      <button className='btn btn-secondary'>Ver todas</button>
       </div>
     </div>
   );

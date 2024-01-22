@@ -173,20 +173,26 @@ function PendingByProviders() {
                         </form>
                     </div>
                 </div>
-               </div>
+               
                 
                     
-                    <div className="row border border-danger">
-                        <div className="col-auto">
+                    <div className="row ">
+                        
                             {providers.map((provider, index) => (
-                                <PendingTablesProviders
+                            <>
+                            <div className="col-4 pt-4">
+                            <PendingTablesProviders
                                     key={index}
                                     provider={provider}
                                     forceUpdate={forceUpdate} />
+                            
+                            
+                            </div>
+                            </>
                             ))}
-                        </div>
+                        
                     </div>
-                
+                </div>
             
 
         </>
