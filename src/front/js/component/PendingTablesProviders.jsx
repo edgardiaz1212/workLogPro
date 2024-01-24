@@ -30,7 +30,13 @@ function PendingTablesProviders({ provider, forceUpdate }) {
     <div >
       <div className="card">
         <div className="header">
-          <span className="title">{provider}</span>
+          
+          <span className="title" >{provider === 'energia' ? 'Energía Operaciones y Mantenimiento' :
+            provider === 'infraestructura' ? 'Infraestructura' :
+              provider === 'servicios-logistica' ? 'Servicios y Logística' :
+                provider === 'seguridad-fisica' ? 'Seguridad Física' : 
+          provider === 'proteccion-digital' ? 'Protección  Digital' : 'Seguridad e Higiene Industrial'}
+          </span>
         </div>
         <ul className="lists">
           {activities.map((activity, index) => (
@@ -39,6 +45,7 @@ function PendingTablesProviders({ provider, forceUpdate }) {
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
               </svg>
               <span>{activity.description}</span>
+              
             </li>
           ))}
         </ul>

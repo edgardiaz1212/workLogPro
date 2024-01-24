@@ -108,11 +108,12 @@ function PendingByProviders() {
                                     value={newPending.provider}
                                 >
                                     <option value="">Seleccionar Proveedor</option>
-                                    <option value="energia"> Energia Operaciones y Mantenimiento</option>
-                                    <option value="servicios-logisticas">Servicios y Logisticas</option>
-                                    <option value="seguridad-fisica">Seguridad Fisica</option>
+                                    <option value="energia"> Energía  Operaciones y Mantenimiento</option>
+                                    <option value="servicios-logistica">Servicios y Logística</option>
+                                    <option value="seguridad-fisica">Seguridad Física</option>
                                     <option value="infraestructura">Infraestructura</option>
-                                    <option value="proteccion-digital">Infraestructura</option>
+                                    <option value="proteccion-digital">Protección  Digital</option>
+                                    <option value="SHA">Seguridad e Higiene Industrial</option>
                                 </select>
                             </div>
                             <div className="input-group mb-3">

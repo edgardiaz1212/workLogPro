@@ -616,3 +616,33 @@ def get_available_providers():
     except Exception as e:
         print(f"Error al obtener proveedores: {str(e)}")
         return jsonify({"error": f"Error al obtener proveedores: {str(e)}"}), 500
+    
+@api.route('/edit-pending-activities', methods=['PUT'])
+@jwt_required()
+def edit_pending_activities():
+    try:
+        data = request.get_json()
+
+        activity_id = data.get('id')
+        new_description = data.get('new_description')
+        new_status = data.get('new_status')
+        new_ticket_associated = data.get('new_ticket_associated')
+        new_finished = data.get('new_finished')
+
+        pending_activity = PendingsProviders.query.get(activity_id)
+
+        if not pending_activity:
+            return jsonify({"error": "Actividad no encontrada"}), 404
+
+        # actualizar los datos
+        pending_activity.description = new_description
+        pending_activity.status = new_status
+        pending_activity.ticket_associated = new_ticket_associated
+        pending_activity.finished = new_finished
+
+        db.session.commit()
+
+        return jsonify({"message": "la actividad en pending actualizada"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
