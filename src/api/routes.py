@@ -646,3 +646,20 @@ def edit_pending_activities():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@api.route('/delete-pending-activity/<int:activity_id>', methods=['DELETE'])
+@jwt_required()
+def delete_pending_activity(activity_id):
+    try:
+        pending_activity = PendingsProviders.query.get(activity_id)
+
+        if not pending_activity:
+            return jsonify({"error": "Actividad no encontrada"}), 404
+        
+        db.session.delete(pending_activity)
+        db.session.commit()
+
+        return jsonify({"message": "Actividad borrada "}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
