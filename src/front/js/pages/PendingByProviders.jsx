@@ -108,10 +108,11 @@ function PendingByProviders() {
                                     value={newPending.provider}
                                 >
                                     <option value="">Seleccionar Proveedor</option>
-                                    <option value="Energia Operaciones y Mantenimiento"> Energia Operaciones y Mantenimiento</option>
-                                    <option value="Servicios y Logisticas">Servicios y Logisticas</option>
-                                    <option value="Seguridad Fisica">Seguridad Fisica</option>
-                                    <option value="Infraestructura">Infraestructura</option>
+                                    <option value="energia"> Energia Operaciones y Mantenimiento</option>
+                                    <option value="servicios-logisticas">Servicios y Logisticas</option>
+                                    <option value="seguridad-fisica">Seguridad Fisica</option>
+                                    <option value="infraestructura">Infraestructura</option>
+                                    <option value="proteccion-digital">Infraestructura</option>
                                 </select>
                             </div>
                             <div className="input-group mb-3">
@@ -137,15 +138,22 @@ function PendingByProviders() {
                                 />
                             </div>
                             <div className="input-group mb-3">
-                                <span className="input-group-text">Estatus</span>
-                                <input
+                                <label className="input-group-text">Estatus</label>
+                                <select
                                     type="text"
-                                    className="form-control"
+                                    className="form-select"
                                     name="status"
                                     required
                                     value={newPending.status}
                                     onChange={handleChange}
-                                />
+                                >
+                                    <option value="">Seleccionar Estatus</option>
+                                    <option value="pendiente"> Pendiente</option>
+                                    <option value="ejecucion">En Ejecucion</option>
+
+                                </select>
+
+
                             </div>
                             <div className="input-group mb-3">
                                 <span className="input-group-text">Ticket Asociado</span>
@@ -173,27 +181,27 @@ function PendingByProviders() {
                         </form>
                     </div>
                 </div>
-               
-                
-                    
-                    <div className="row ">
-                        
-                            {providers.map((provider, index) => (
-                            <>
+
+
+
+                <div className="row ">
+
+                    {providers.map((provider, index) => (
+                        <>
                             <div className="col-4 pt-4">
-                            <PendingTablesProviders
+                                <PendingTablesProviders
                                     key={index}
                                     provider={provider}
                                     forceUpdate={forceUpdate} />
-                            
-                            
+
+
                             </div>
-                            </>
-                            ))}
-                        
-                    </div>
+                        </>
+                    ))}
+
                 </div>
-            
+            </div>
+
 
         </>
     );
