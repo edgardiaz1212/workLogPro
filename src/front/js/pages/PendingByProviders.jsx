@@ -166,7 +166,7 @@ function PendingByProviders() {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <div className="input-group mb-3">
+                            {/* <div className="input-group mb-3">
                                 <div className="input-group-text">
                                     <input
                                         type="checkbox"
@@ -177,7 +177,7 @@ function PendingByProviders() {
                                     />
                                     <label className="form-check-label" htmlFor="finished">Finalizado</label>
                                 </div>
-                            </div>
+                            </div> */}
                             <button className='btn btn-primary' type="submit">Registrar Actividad Pendiente</button>
                         </form>
                     </div>

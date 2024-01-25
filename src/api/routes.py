@@ -595,7 +595,7 @@ def get_last_10_unresolved(provider):
 def get_unresolved_by_providers(provider):
     try:
         # Consulta para obtener los pendientes por proveedor
-        unresolve= PendingsProviders.query.filter_by(provider=provider).all()
+        unresolve= PendingsProviders.query.filter_by(provider=provider, finished= False).all()
         #Serializar los resultados
         serialized_unresolve=[unresolved.serialize() for unresolved in unresolve]
         return jsonify(serialized_unresolve), 200

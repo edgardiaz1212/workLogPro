@@ -7,7 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			temperatures: [],
 			allTemperatures: [],
 			tenTemperatures: [],
-			allProviders:[]
+			allProviders: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -573,10 +573,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					// Verifica la respuesta del backend
 					if (response.ok) {
 						const data = await response.json();
-						
-						// setStore({
-						// 	allProviders: data.providers,
-						// });console.log("flux",data)
 						return data.providers;
 					} else {
 						console.error("Error al obtener proveedores:", response.statusText);
@@ -585,6 +581,50 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error en la solicitud para obtener proveedores:", error);
 				}
 			},
+			editPendingActivityProvider: async (activity) => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/edit-pending-activities`, {
+						method: 'PUT',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						},
+						body: JSON.stringify(activity),
+					})
+					if (response.ok) {
+						const data = await response.json()
+						console.log('Activity updated successfully:', data);
+					} else {
+						console.error('Error updating activity:', response.statusText)
+					}
+				} catch (error) {
+					console.error('Error updating activity:', error)
+				}
+			},
+			deletePendingActivityProvider: async (activityId) => {
+				const store = getStore();
+				try {
+				  const response = await fetch(`${process.env.BACKEND_URL}/delete-pending-activity/${activityId}`, {
+					method: 'DELETE',
+					headers: {
+					  "Content-Type": "application/json",
+					  "Authorization": `Bearer ${store.token}`
+					},
+				  });
+			  
+				  if (response.ok) {
+					// The activity was deleted successfully
+					console.log('Activity deleted successfully');
+				  } else {
+					// Handle errors
+					console.error('Error deleting activity:', response.statusText);
+				  }
+				} catch (error) {
+				  // Handle network or other errors
+				  console.error('Error deleting activity:', error);
+				}
+			  },
 
 		}
 	};
