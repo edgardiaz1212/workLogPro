@@ -584,24 +584,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 			editPendingActivityProvider: async (activity) => {
 				const store = getStore();
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/edit-pending-activities`, {
-						method: 'PUT',
-						headers: {
-							"Content-Type": "application/json",
-							"Authorization": `Bearer ${store.token}`
-						},
-						body: JSON.stringify(activity),
-					})
-					if (response.ok) {
-						const data = await response.json()
-						console.log('Activity updated successfully:', data);
-					} else {
-						console.error('Error updating activity:', response.statusText)
-					}
+				  const response = await fetch(`${process.env.BACKEND_URL}/edit-pending-activities`, {
+					method: 'PUT',
+					headers: {
+					  "Content-Type": "application/json",
+					  "Authorization": `Bearer ${store.token}`
+					},
+					body: JSON.stringify(activity),
+				  });
+			  
+				  const data = await response.json();
+				  console.log(data)
+				  if (response.ok) {
+					console.log('Activity updated successfully:', data);
+					return data; // Return the data for consistency
+				  } else {
+					console.error('Error updating activity:', data);
+					return null;
+				  }
 				} catch (error) {
-					console.error('Error updating activity:', error)
+				  console.error('Error updating activity:', error);
+				  return null;
 				}
-			},
+			  },
 			deletePendingActivityProvider: async (activityId) => {
 				const store = getStore();
 				try {

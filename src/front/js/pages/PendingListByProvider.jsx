@@ -44,25 +44,26 @@ const PendingListByProvider = () => {
   const handleSaveEdit = async (activity) => {
     try {
       const response = await actions.editPendingActivityProvider(activity);
-      if (response.ok) {
-        console.log('Activity updated successfully');
+      if (response) {
+        console.log('Activity updated successfully:', response);
         setEditableActivity(null);
       } else {
-        console.error('Error updating activity:', response.statusText);
+        console.error('Error updating activity:', response);
       }
     } catch (error) {
       console.error('Error updating activity:', error);
     }
   };
+
   const handleDeleteClick = async (activityId) => {
     try {
       const response = await actions.deletePendingActivityProvider(activityId);
-      
+
       if (!response) {
         console.error('Error deleting activity: Empty response');
         return;
       }
-  
+
       if (response.ok) {
         console.log('Activity deleted successfully');
         // Update the state immediately
@@ -101,42 +102,87 @@ const PendingListByProvider = () => {
                   <input
                     type="text"
                     value={activity.description}
-                    onChange={(e) => setActivities((prev) => {
-                      const updatedActivities = [...prev];
-                      updatedActivities[index].description = e.target.value;
-                      return updatedActivities;
-                    })}
+                    onChange={(e) => {
+                      e.persist();
+                      setActivities((prev) => {
+                        const updatedActivities = [...prev];
+                        updatedActivities[index].description = e.target.value;
+                        return updatedActivities;
+                      });
+                    }}
                   />
                 ) : (
                   activity.description
                 )}</td>
                 <td>{editableActivity === index ? (
                   <input
-                  type="text"
-                  value={activity.request_date}
-                  onChange={(e) => setActivities((prev) => {
-                    const updatedActivities = [...prev];
-                    updatedActivities[index].request_date = e.target.value;
-                    return updatedActivities;
-                  })}
-                />
-              ) : (
-                activity.request_date
-              )} </td>
-                <td>{}
-                  {activity.status}</td>
+                    type="date"
+                    value={activity.request_date}
+                    onChange={(e) => {
+                      e.persist()
+                      setActivities((prev) => {
+                        const updatedActivities = [...prev];
+                        updatedActivities[index].request_date = e.target.value;
+                        return updatedActivities;
+                      })
+                    }}
+                  />
+                ) : (
+                  activity.request_date
+                )} </td>
                 <td>
-                  {activity.ticket_associated}</td>
+                  {editableActivity === index ? (
+                    <select
+                      type="text"
+                      value={activity.status}
+                      onChange={(e) => {
+                        e.persist()
+                        setActivities((prev) => {
+                          const updatedActivities = [...prev];
+                          updatedActivities[index].status = e.target.value;
+                          return updatedActivities;
+                        })
+                      }}
+                    >
+                      <option value="pendiente"> Pendiente</option>
+                      <option value="ejecucion">En Ejecucion</option>
+                    </select>
+
+                  ) : (
+                    activity.status
+                  )}
+                </td>
+                <td>
+                  {editableActivity === index ? (
+                    <input
+                      type="text"
+                      value={activity.ticket_associated}
+                      onChange={(e) => {
+                        e.persist()
+                        setActivities((prev) => {
+                          const updatedActivities = [...prev];
+                          updatedActivities[index].ticket_associated = e.target.value;
+                          return updatedActivities;
+                        })
+                      }}
+                    />
+                  ) : (
+                    activity.ticket_associated
+                  )}
+                </td>
                 <td>
                   {editableActivity === index ? (
                     <input
                       type="checkbox"
                       checked={activity.finished}
-                      onChange={(e) => setActivities((prev) => {
-                        const updatedActivities = [...prev];
-                        updatedActivities[index].finished = e.target.checked;
-                        return updatedActivities;
-                      })}
+                      onChange={(e) => {
+                        e.persist()
+                        setActivities((prev) => {
+                          const updatedActivities = [...prev];
+                          updatedActivities[index].finished = e.target.checked;
+                          return updatedActivities;
+                        })
+                      }}
                     />
                   ) : (
                     activity.finished.toString()

@@ -94,7 +94,7 @@ function PendingByProviders() {
                 <div className="section-title mt-3 ">
                     <h2>Registro de Actividades Pendientes de Proveedores</h2>
                 </div>
-                <div className='row border border-danger'>
+                <div className='row '>
                     <div className="col-lg-7 mx-auto ">
                         <form className="text-center" noValidate onSubmit={handleSubmit}>
                             <div className="input-group mb-3">
@@ -183,10 +183,8 @@ function PendingByProviders() {
                     </div>
                 </div>
 
-
-
-                <div className="row ">
-
+                <div className="row m-3">
+                    <h1 className="text-center">Ultimas actividades registradas</h1>
                     {providers.map((provider, index) => (
                         <>
                             <div className="col-4 pt-4">

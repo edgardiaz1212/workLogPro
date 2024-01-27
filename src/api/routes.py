@@ -634,7 +634,7 @@ def edit_pending_activities():
         if not pending_activity:
             return jsonify({"error": "Actividad no encontrada"}), 404
 
-        # actualizar los datos
+        # Actualizar los datos
         pending_activity.description = new_description
         pending_activity.status = new_status
         pending_activity.ticket_associated = new_ticket_associated
@@ -642,7 +642,17 @@ def edit_pending_activities():
 
         db.session.commit()
 
-        return jsonify({"message": "la actividad en pending actualizada"}), 200
+        # Devolver la actividad actualizada
+        updated_activity = {
+            "id": pending_activity.id,
+            "description": pending_activity.description,
+            "request_date": pending_activity.request_date.strftime('%Y-%m-%d'),  # Format date as string
+            "status": pending_activity.status,
+            "ticket_associated": pending_activity.ticket_associated,
+            "finished": pending_activity.finished
+        }
+
+        return jsonify(updated_activity), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
