@@ -65,7 +65,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 							const currentTime = Math.floor(Date.now() / 1000);
 							
 							const tokenExpiration = currentTime + data.expiresIn;
-							setStore({ tokenExpiration });
+							setStore({ tokenExpiration })
+							localStorage.setItem("tokenExpiration", tokenExpiration)
 						}
 					} else {
 						// Manejar errores, mostrar mensajes, etc.

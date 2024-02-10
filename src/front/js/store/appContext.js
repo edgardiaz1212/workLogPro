@@ -24,7 +24,7 @@ const injectContext = PassedComponent => {
 		useEffect(() => {
 			const checkTokenExpiration = async () => {
                
-				const expiration = state.store.tokenExpiration;
+				const expiration = localStorage.getItem("tokenExpiration");
 				console.log(expiration)
                 if (expiration) {
                     const currentTime = Math.floor(Date.now() / 1000);
