@@ -7,7 +7,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			temperatures: [],
 			allTemperatures: [],
 			tenTemperatures: [],
-			allProviders: []
+			allProviders: [],
+			tokenExpiration: null // Estado para almacenar la fecha de vencimiento del token
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -43,7 +44,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 
 					const data = await response.json();
-
+					console.log(data)
 					const result = {
 						status: response.status,
 						data: data,
@@ -52,12 +53,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						setStore({
 							user: data.user,
-							token: data.token
+							token: data.token,
+							tokenExpiration: null
 						});
 
 						localStorage.setItem("user", JSON.stringify(data.user));
 						localStorage.setItem("token", data.token)
 						console.log("Inicio de sesión exitoso!!")
+
+						if (data.expiresIn) {
+							const currentTime = Math.floor(Date.now() / 1000);
+							
+							const tokenExpiration = currentTime + data.expiresIn;
+							setStore({ tokenExpiration });
+						}
 					} else {
 						// Manejar errores, mostrar mensajes, etc.
 						console.error("Error logging in:", result);

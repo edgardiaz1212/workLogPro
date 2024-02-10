@@ -9,6 +9,7 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
+from datetime import datetime, timedelta
 
 
 api = Blueprint('api', __name__)
@@ -98,11 +99,14 @@ def login():
         user = User.query.filter_by(email=email).one_or_none()
         if user is not None:
             if check_password(user.password, password, user.salt):
+                # Calcula la fecha de expiración del token
+                expires_at = datetime.utcnow() + timedelta(hours=12)
                 token = create_access_token(identity=user.id)
                 # Utiliza el método serialize() para obtener la información del usuario
                 return jsonify({
                     "token": token,
-                    "user": user.serialize()
+                    "user": user.serialize(),
+                    "expiresIn": expires_at.timestamp() 
                 }), 200
             else:
                 return jsonify({"msg": "Bad credentials"}), 400
