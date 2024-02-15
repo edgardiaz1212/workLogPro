@@ -28,7 +28,7 @@ const injectContext = PassedComponent => {
 				console.log(expiration)
                 if (expiration) {
                     const currentTime = Math.floor(Date.now() / 1000);
-
+					console.log(currentTime)
                     if (currentTime > expiration) {
                         // Token expirado, eliminar el token y cualquier otra lógica que necesites
                         state.actions.logout();  // Puedes definir una acción "logout" para limpiar el estado
