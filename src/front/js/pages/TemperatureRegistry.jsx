@@ -55,7 +55,7 @@ const TemperatureRegistry = () => {
     return (
         <>
             <ToastContainer theme="dark" position="top-center" pauseOnFocusLoss={false} autoClose={3000} hideProgressBar />
-            <div className="container mt-5 p-5 border border-danger">
+            <div className="container mt-5 p-5 ">
                 <div className="section-title mt-3">
                     <h2>Registro de Temperaturas</h2>
                 </div>
