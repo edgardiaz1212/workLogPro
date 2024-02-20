@@ -44,7 +44,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 
 					const data = await response.json();
-					console.log(data)
+					console.log("la data al loguear",data)
 					const result = {
 						status: response.status,
 						data: data,
@@ -64,9 +64,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						if (data.expiresIn) {
 							const currentTime = Math.floor(Date.now() / 1000);
 							console.log(currentTime)
-							console.log(data.expiresIn)
+							console.log("expira",data.expiresIn)
 							console.log(Date.now())
-							const tokenExpiration = currentTime + data.expiresIn;
+							const tokenExpiration = data.expiresIn;
 							setStore({ tokenExpiration })
 							localStorage.setItem("tokenExpiration", tokenExpiration)
 						}
@@ -85,8 +85,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			logout: () => {
+				const store = getStore()
 				localStorage.removeItem("user");
-				setStore({ token: "", user: "" });
+				localStorage.removeItem("token")
+				localStorage.removeItem("tokenExpiration")
+				console.log(store)
+				// setStore({ token: "", user: "" });
 			},
 			addActivity: async (body) => {
 				const store = getStore()
