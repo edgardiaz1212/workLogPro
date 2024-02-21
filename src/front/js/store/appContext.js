@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import getState from "./flux.js";
+import { useNavigate } from "react-router-dom";
 
 // Don't change, here is where we initialize our context, by default it's just going to be null.
 export const Context = React.createContext(null);
@@ -8,7 +9,7 @@ export const Context = React.createContext(null);
 // https://github.com/4GeeksAcademy/react-hello-webapp/blob/master/src/js/layout.js#L35
 const injectContext = PassedComponent => {
 	const StoreWrapper = props => {
-		//this will be passed as the contenxt value
+			//this will be passed as the contenxt value
 		const [state, setState] = useState(
 			getState({
 				getStore: () => state.store,
@@ -31,7 +32,8 @@ const injectContext = PassedComponent => {
 					console.log(currentTime)
                     if (currentTime > expiration) {
                         // Token expirado, eliminar el token y cualquier otra lógica que necesites
-                        state.actions.logout();  // Puedes definir una acción "logout" para limpiar el estado
+                        state.actions.logout()
+						  // Puedes definir una acción "logout" para limpiar el estado
                     }
                 }
             };
