@@ -6,7 +6,13 @@ import { Context } from "../store/appContext";
 export const Navbar = () => {
   const { store, actions } = useContext(Context)
   // Verifica si el usuario tiene un token y pertenece a la unidad de infraestructura
+  // Verifica si el token ha expirado
+  const tokenExpiration = store.tokenExpiration;
+  const isTokenExpired = tokenExpiration && Date.now() > tokenExpiration;
+
+  // Verifica si el usuario está autenticado y pertenece a la unidad de infraestructura
   const isUserAuthenticated = store.token !== null && store.user.unit === "Infraestructura";
+
   const navigate = useNavigate()
   // Función para cerrar sesión
   const handleLogout = () => {
