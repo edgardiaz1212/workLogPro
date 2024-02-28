@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import logoCantv from "../../img/CDHLogo.jpg"
 import { Context } from "../store/appContext";
 
+
+
 export const Navbar = () => {
   const { store, actions } = useContext(Context)
   // Verifica si el usuario tiene un token y pertenece a la unidad de infraestructura
   // Verifica si el token ha expirado
   const tokenExpiration = store.tokenExpiration;
-  const isTokenExpired = tokenExpiration && Date.now() > tokenExpiration;
+  const isTokenExpired = Date.now() > tokenExpiration;
+  console.log("expired", isTokenExpired)
 
   // Verifica si el usuario está autenticado y pertenece a la unidad de infraestructura
   const isUserAuthenticated = store.token !== null && store.user.unit === "Infraestructura";
@@ -17,7 +20,7 @@ export const Navbar = () => {
   // Función para cerrar sesión
   const handleLogout = () => {
     actions.logout();
-    
+
   };
 
   return (
@@ -55,8 +58,8 @@ export const Navbar = () => {
                     <li><a href="/register">Agregar Personal</a></li>
                   </ul>
                 </li>
-                 <li><a className="nav-link scrollto" href="/profile">Perfil</a></li>
-                 </>
+                <li><a className="nav-link scrollto" href="/profile">Perfil</a></li>
+              </>
               )}
               <li><a className="nav-link scrollto" href="#contact">Contacto</a></li>
               <li><a className="nav-link scrollto" href="/">OpenDCIM</a></li>
@@ -71,6 +74,8 @@ export const Navbar = () => {
 
         </div>
       </header>
+    
+
     </>
   );
 };
