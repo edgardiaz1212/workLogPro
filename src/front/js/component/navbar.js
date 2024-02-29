@@ -10,7 +10,7 @@ export const Navbar = () => {
   // Verifica si el usuario tiene un token y pertenece a la unidad de infraestructura
   // Verifica si el token ha expirado
   const tokenExpiration = store.tokenExpiration;
-  const isTokenExpired = Date.now() > tokenExpiration;
+  const isTokenExpired = Date.now() < tokenExpiration;
   console.log("expired", isTokenExpired)
 
   // Verifica si el usuario está autenticado y pertenece a la unidad de infraestructura
@@ -74,7 +74,7 @@ export const Navbar = () => {
 
         </div>
       </header>
-    
+
 
     </>
   );

@@ -173,19 +173,19 @@ const PendingListByProvider = () => {
                 <td>
                   {editableActivity === index ? (
                     <input
-                      type="checkbox"
-                      checked={activity.finished}
+                      type="text"
+                      checked={activity.id}
                       onChange={(e) => {
                         e.persist()
                         setActivities((prev) => {
                           const updatedActivities = [...prev];
-                          updatedActivities[index].finished = e.target.checked;
+                          updatedActivities[index].id = e.target.value;
                           return updatedActivities;
                         })
                       }}
                     />
                   ) : (
-                    activity.finished.toString()
+                    activity.id.toString()
                   )}
                 </td>
                 <td>

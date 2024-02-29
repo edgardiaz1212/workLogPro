@@ -621,13 +621,12 @@ def get_available_providers():
         print(f"Error al obtener proveedores: {str(e)}")
         return jsonify({"error": f"Error al obtener proveedores: {str(e)}"}), 500
     
-@api.route('/edit-pending-activities', methods=['PUT'])
+@api.route('/edit-pending-activities/<int:activity_id>', methods=['PUT'])
 @jwt_required()
-def edit_pending_activities():
+def edit_pending_activities(activity_id):
     try:
         data = request.get_json()
 
-        activity_id = data.get('id')
         new_description = data.get('new_description')
         new_status = data.get('new_status')
         new_ticket_associated = data.get('new_ticket_associated')
