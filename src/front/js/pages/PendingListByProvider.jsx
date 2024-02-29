@@ -6,7 +6,8 @@ import "../../styles/pendingCard.css";
 const PendingListByProvider = () => {
   const { actions } = useContext(Context);
   const [activities, setActivities] = useState([]);
-  const [editableActivity, setEditableActivity] = useState(null);
+  const [editableActivityIndex, setEditableActivityIndex] = useState(null);
+  const [editedActivity, setEditedActivity] = useState(null);
   const { provider } = useParams();
   const navigate = useNavigate();
 
@@ -34,45 +35,46 @@ const PendingListByProvider = () => {
   };
 
   const handleEditClick = (index) => {
-    setEditableActivity(index);
+    setEditableActivityIndex(index);
+    // Al hacer clic en editar, clonamos la actividad seleccionada para editarla
+    setEditedActivity({ ...activities[index] });
   };
 
   const handleCancelEdit = () => {
-    setEditableActivity(null);
+    setEditableActivityIndex(null);
+    setEditedActivity(null);
   };
 
-  const handleSaveEdit = async (activity) => {
+  const handleSaveEdit = async () => {
     try {
-      const response = await actions.editPendingActivityProvider(activity);
+      // Create a copy of the edited activity
+      const updatedActivity = { ...activities[editableActivityIndex] };
+  
+      // Update the copy with the new values from the form
+      updatedActivity.description = editedActivity.description;
+      updatedActivity.request_date = editedActivity.request_date;
+      updatedActivity.status = editedActivity.status;
+      updatedActivity.ticket_associated = editedActivity.ticket_associated;
+  
+      // Send the updated activity to the server
+      const response = await actions.editPendingActivityProvider(updatedActivity);
+  
       if (response) {
         console.log('Activity updated successfully:', response);
-        setEditableActivity(null);
+  
+        // Update the state with the actual updated activity from the server response
+        const updatedActivities = [...activities];
+        updatedActivities[editableActivityIndex] = response.data; // Assuming the response object has a "data" property containing the updated activity
+        setActivities(updatedActivities);
+  
+        // Reset the editing state
+        setEditableActivityIndex(null);
+        setEditedActivity(null);
       } else {
         console.error('Error updating activity:', response);
       }
     } catch (error) {
       console.error('Error updating activity:', error);
-    }
-  };
-
-  const handleDeleteClick = async (activityId) => {
-    try {
-      const response = await actions.deletePendingActivityProvider(activityId);
-
-      if (!response) {
-        console.error('Error deleting activity: Empty response');
-        return;
-      }
-
-      if (response.ok) {
-        console.log('Activity deleted successfully');
-        // Update the state immediately
-        setActivities((prev) => prev.filter((activity) => activity.id !== activityId));
-      } else {
-        console.error('Error deleting activity:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error deleting activity:', error);
     }
   };
 
@@ -98,7 +100,7 @@ const PendingListByProvider = () => {
             {activities.map((activity, index) => (
               <tr key={index}>
                 {/* <td>{activity.id}</td> */}
-                <td>{editableActivity === index ? (
+                <td>{editableActivityIndex === index ? (
                   <input
                     type="text"
                     value={activity.description}
@@ -114,7 +116,7 @@ const PendingListByProvider = () => {
                 ) : (
                   activity.description
                 )}</td>
-                <td>{editableActivity === index ? (
+                <td>{editableActivityIndex === index ? (
                   <input
                     type="date"
                     value={activity.request_date}
@@ -131,7 +133,7 @@ const PendingListByProvider = () => {
                   activity.request_date
                 )} </td>
                 <td>
-                  {editableActivity === index ? (
+                  {editableActivityIndex === index ? (
                     <select
                       type="text"
                       value={activity.status}
@@ -153,7 +155,7 @@ const PendingListByProvider = () => {
                   )}
                 </td>
                 <td>
-                  {editableActivity === index ? (
+                  {editableActivityIndex === index ? (
                     <input
                       type="text"
                       value={activity.ticket_associated}
@@ -171,7 +173,7 @@ const PendingListByProvider = () => {
                   )}
                 </td>
                 <td>
-                  {editableActivity === index ? (
+                  {editableActivityIndex === index ? (
                     <input
                       type="text"
                       checked={activity.id}
@@ -189,7 +191,7 @@ const PendingListByProvider = () => {
                   )}
                 </td>
                 <td>
-                  {editableActivity === index ? (
+                  {editableActivityIndex === index ? (
                     <>
                       <button onClick={() => handleSaveEdit(activity)}>Guardar</button>
                       <button onClick={handleCancelEdit}>Cancelar</button>

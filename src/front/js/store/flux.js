@@ -44,7 +44,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 
 					const data = await response.json();
-					console.log("la data al loguear",data)
+					console.log("la data al loguear", data)
 					const result = {
 						status: response.status,
 						data: data,
@@ -64,7 +64,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						if (data.expiresIn) {
 							const currentTime = Math.floor(Date.now() / 1000);
 							console.log(currentTime)
-							console.log("expira",data.expiresIn)
+							console.log("expira", data.expiresIn)
 							console.log(Date.now())
 							const tokenExpiration = data.expiresIn;
 							setStore({ tokenExpiration })
@@ -600,52 +600,51 @@ const getState = ({ getStore, getActions, setStore }) => {
 			editPendingActivityProvider: async (activity) => {
 				const store = getStore();
 				try {
-				  const response = await fetch(`${process.env.BACKEND_URL}/edit-pending-activities`, {
-					method: 'PUT',
-					headers: {
-					  "Content-Type": "application/json",
-					  "Authorization": `Bearer ${store.token}`
-					},
-					body: JSON.stringify(activity),
-				  });
-			  
-				  const data = await response.json();
-				  console.log(data)
-				  if (response.ok) {
-					console.log('Activity updated successfully:', data);
-					return data; // Return the data for consistency
-				  } else {
-					console.error('Error updating activity:', data);
-					return null;
-				  }
+					const response = await fetch(`${process.env.BACKEND_URL}/edit-pending-activities/${activity.id}`, {
+						method: 'PUT',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						},
+						body: JSON.stringify(activity),
+					});
+
+					const data = await response.json();
+					if (response.ok) {
+						console.log('flux Activity updated successfully:', data);
+						return data; // Return the data for consistency
+					} else {
+						console.error('Error updating activity:', data);
+						return null;
+					}
 				} catch (error) {
-				  console.error('Error updating activity:', error);
-				  return null;
+					console.error('Error updating activity:', error);
+					return null;
 				}
-			  },
+			},
 			deletePendingActivityProvider: async (activityId) => {
 				const store = getStore();
 				try {
-				  const response = await fetch(`${process.env.BACKEND_URL}/delete-pending-activity/${activityId}`, {
-					method: 'DELETE',
-					headers: {
-					  "Content-Type": "application/json",
-					  "Authorization": `Bearer ${store.token}`
-					},
-				  });
-			  
-				  if (response.ok) {
-					// The activity was deleted successfully
-					console.log('Activity deleted successfully');
-				  } else {
-					// Handle errors
-					console.error('Error deleting activity:', response.statusText);
-				  }
+					const response = await fetch(`${process.env.BACKEND_URL}/delete-pending-activity/${activityId}`, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						},
+					});
+
+					if (response.ok) {
+						// The activity was deleted successfully
+						console.log('Activity deleted successfully');
+					} else {
+						// Handle errors
+						console.error('Error deleting activity:', response.statusText);
+					}
 				} catch (error) {
-				  // Handle network or other errors
-				  console.error('Error deleting activity:', error);
+					// Handle network or other errors
+					console.error('Error deleting activity:', error);
 				}
-			  },
+			},
 
 		}
 	};

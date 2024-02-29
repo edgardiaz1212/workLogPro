@@ -630,7 +630,7 @@ def edit_pending_activities(activity_id):
         new_description = data.get('new_description')
         new_status = data.get('new_status')
         new_ticket_associated = data.get('new_ticket_associated')
-        new_finished = data.get('new_finished')
+        new_request_date = data.get('new_request_date')
 
         pending_activity = PendingsProviders.query.get(activity_id)
 
@@ -641,7 +641,7 @@ def edit_pending_activities(activity_id):
         pending_activity.description = new_description
         pending_activity.status = new_status
         pending_activity.ticket_associated = new_ticket_associated
-        pending_activity.finished = new_finished
+        pending_activity.request_date = new_request_date
 
         db.session.commit()
 
@@ -649,7 +649,7 @@ def edit_pending_activities(activity_id):
         updated_activity = {
             "id": pending_activity.id,
             "description": pending_activity.description,
-            "request_date": pending_activity.request_date.strftime('%Y-%m-%d'),  # Format date as string
+            "request_date": pending_activity.request_date,  # Format date as string
             "status": pending_activity.status,
             "ticket_associated": pending_activity.ticket_associated,
             "finished": pending_activity.finished
